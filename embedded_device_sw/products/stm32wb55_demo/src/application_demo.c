@@ -17,9 +17,11 @@
  */
 
 #include <string.h>
-#include "stm32wbxx_hal.h"
 #include "cmsis_os.h"
 #include "object.h"
+#include "err.h"
+#include "bsp.h"                /* TBD: */
+#include "stm32wbxx_hal.h"      /* TBD: */
 
 #define LEDn                                    3
 #define LED1_PIN                                GPIO_PIN_5
@@ -95,11 +97,11 @@ osThreadDef(app_demo_2, app_demo_2_thread, osPriorityNormal, 0, 256);
 
 void app_demo_1_thread(void const * argument)
 {
-//    object* uart;
+    object* uart;
 
     (void) argument;
 
-//    uart = object_get_binding(CONFIG_UART1_NAME);
+    uart = object_get_binding(CONFIG_UART1_NAME);
 
     osDelay(1000);
 
@@ -107,13 +109,13 @@ void app_demo_1_thread(void const * argument)
     {
         bsp_led_on(LED_BLUE);
 
-//        uart_write(uart, "Blue On\r\n", strlen("Blue On\r\n"));
+        uart_write(uart, "Blue On\r\n", strlen("Blue On\r\n"));
 
         osDelay(1000);
 
         bsp_led_off(LED_BLUE);
 
-//        uart_write(uart, "Blue Off\r\n", strlen("Blue Off\r\n"));
+        uart_write(uart, "Blue Off\r\n", strlen("Blue Off\r\n"));
 
         osDelay(1000);
     }
@@ -121,11 +123,11 @@ void app_demo_1_thread(void const * argument)
 
 void app_demo_2_thread(void const * argument)
 {
-//    object* uart;
+    object* uart;
 
     (void) argument;
 
-//    uart = object_get_binding(CONFIG_UART1_NAME);
+    uart = object_get_binding(CONFIG_UART1_NAME);
 
     osDelay(2000);
 
@@ -133,13 +135,13 @@ void app_demo_2_thread(void const * argument)
     {
         bsp_led_on(LED_GREEN);
 
-//        uart_write(uart, "Green On\r\n", strlen("Green On\r\n"));
+        uart_write(uart, "Green On\r\n", strlen("Green On\r\n"));
 
         osDelay(1000);
 
         bsp_led_off(LED_GREEN);
 
-//        uart_write(uart, "Green Off\r\n", strlen("Green Off\r\n"));
+        uart_write(uart, "Green Off\r\n", strlen("Green Off\r\n"));
 
         osDelay(1000);
     }

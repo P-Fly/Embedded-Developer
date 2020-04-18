@@ -337,7 +337,7 @@
               <MiscControls></MiscControls>
               <Define>CORE_CM4,STM32WB,STM32WB55xx,USE_HAL_DRIVER,</Define>
               <Undefine></Undefine>
-              <IncludePath>..\conf;..\include;..\..\..\bsp\arch\arm\cortex_m\cmsis\core\include;..\..\..\bsp\arch\arm\cortex_m\cmsis\device\stm32wb55\include;..\..\..\bsp\drivers\lib\stm32wbxx\include;..\..\..\framework\include;..\..\..\middlewares\external\freertos\CMSIS_RTOS;..\..\..\middlewares\external\freertos\include;..\..\..\middlewares\external\freertos\portable\RVDS\ARM_CM4F</IncludePath>
+              <IncludePath>..\conf;..\include;..\..\..\bsp\arch\arm\cortex_m\cmsis\core\include;..\..\..\bsp\arch\arm\cortex_m\cmsis\device\stm32wb55\include;..\..\..\bsp\drivers\include;..\..\..\bsp\drivers\lib\stm32wbxx\include;..\..\..\framework\include;..\..\..\middlewares\external\freertos\CMSIS_RTOS;..\..\..\middlewares\external\freertos\include;..\..\..\middlewares\external\freertos\portable\RVDS\ARM_CM4F;..\..\..\utils\include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -394,7 +394,14 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>bsp\drivers\</GroupName>
+          <GroupName>bsp\drivers\stm32wbxx</GroupName>
+          <Files>
+            <File>
+              <FileName>uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\drivers\src\stm32wbxx\uart.c</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>bsp\drivers\lib\stm32wbxx</GroupName>
