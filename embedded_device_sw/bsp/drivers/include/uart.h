@@ -22,6 +22,7 @@
 #include <stddef.h>
 #include "object.h"
 #include "err.h"
+#include "bsp_conf.h"
 
 /* Word Length */
 #define UART_CONFIG_WORD_LENGTH_7B              (0 << 0)
@@ -36,7 +37,7 @@
 #define UART_CONFIG_STOP_BITS_2                 (3 << 2)
 #define UARD_CONFIG_STOP_BITS_MASK(config)      ((config) & (0x03 << 2))
 
-/* Parity mode */
+/* Parity Mode */
 #define UART_CONFIG_PARITY_NONE                 (0 << 4)
 #define UART_CONFIG_PARITY_EVEN                 (1 << 4)
 #define UART_CONFIG_PARITY_ODD                  (2 << 4)
@@ -65,7 +66,7 @@ typedef struct
 } uart_config_t;
 
 /**
- * @brief   Uart interface definitions
+ * @brief   Uart interface definitions.
  */
 typedef struct
 {

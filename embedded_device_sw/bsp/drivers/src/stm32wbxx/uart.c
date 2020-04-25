@@ -22,7 +22,7 @@
 #include "err.h"
 #include "ring_buff.h"
 #include "stm32wbxx_hal.h"
-#include "bsp.h"
+#include "uart.h"
 
 #if defined(CONFIG_UART1_ENABLE)
 
@@ -314,7 +314,7 @@ static stm32wbxx_uart_handle_t uart1_handle;
 static uart_config_t uart1_config =
 {
     .baudrate = CONFIG_UART1_HW_BAUDRATE,
-    .configs = CONFIG_UART1_HW_CONFIG,
+    .configs = CONFIG_UART1_HW_CONFIGS,
 };
 
 /**
@@ -364,7 +364,7 @@ static void stm32wbxx_uart1_msp_init(UART_HandleTypeDef* uart)
  *
  * @retval  None.
  */
-int stm32wbxx_uart1_probe(const object* obj)
+static int stm32wbxx_uart1_probe(const object* obj)
 {
     stm32wbxx_uart_handle_t* handle = (stm32wbxx_uart_handle_t*)obj->object_data;
     int ret;
@@ -403,12 +403,13 @@ int stm32wbxx_uart1_probe(const object* obj)
  *
  * @retval  None.
  */
-int stm32wbxx_uart1_shutdown(const object* obj)
+static int stm32wbxx_uart1_shutdown(const object* obj)
 {
     return 0;
 }
 
-module_early_driver(STM32WBXX_UART1, stm32wbxx_uart1_probe,
+module_early_driver(CONFIG_UART1_NAME,
+    stm32wbxx_uart1_probe,
     stm32wbxx_uart1_shutdown,
     &uart1_intf, &uart1_handle, &uart1_config);
 

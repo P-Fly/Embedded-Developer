@@ -20,8 +20,9 @@
 #include "cmsis_os.h"
 #include "object.h"
 #include "err.h"
-#include "bsp.h"                /* TBD: */
 #include "stm32wbxx_hal.h"      /* TBD: */
+#include "uart.h"
+#include "crc.h"
 
 #define LEDn                                    3
 #define LED1_PIN                                GPIO_PIN_5
@@ -34,7 +35,7 @@
 #define LEDx_GPIO_CLK_ENABLE(__INDEX__)         __HAL_RCC_GPIOB_CLK_ENABLE() /* All Led on same port */
 #define LEDx_GPIO_CLK_DISABLE(__INDEX__)        __HAL_RCC_GPIOB_CLK_ENABLE() /* All Led on same port */
 
-typedef enum 
+typedef enum
 {
     LED1 = 0,
     LED2 = 1,
@@ -63,17 +64,17 @@ void bsp_led_init(Led_TypeDef Led)
 
     HAL_GPIO_Init(GPIO_PORT[Led], &gpioinitstruct);
 
-    HAL_GPIO_WritePin(GPIO_PORT[Led], GPIO_PIN[Led], GPIO_PIN_RESET); 
+    HAL_GPIO_WritePin(GPIO_PORT[Led], GPIO_PIN[Led], GPIO_PIN_RESET);
 }
 
 void bsp_led_on(Led_TypeDef Led)
 {
-    HAL_GPIO_WritePin(GPIO_PORT[Led], GPIO_PIN[Led], GPIO_PIN_SET); 
+    HAL_GPIO_WritePin(GPIO_PORT[Led], GPIO_PIN[Led], GPIO_PIN_SET);
 }
 
 void bsp_led_off(Led_TypeDef Led)
 {
-    HAL_GPIO_WritePin(GPIO_PORT[Led], GPIO_PIN[Led], GPIO_PIN_RESET); 
+    HAL_GPIO_WritePin(GPIO_PORT[Led], GPIO_PIN[Led], GPIO_PIN_RESET);
 }
 
 int app_demo_init(void)

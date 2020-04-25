@@ -16,6 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "cmsis_os.h"
+#include "object.h"
+#include "err.h"
 #include "stm32wbxx_hal.h"
 
 void Error_Handler(void)
@@ -27,7 +30,7 @@ void SystemClock_Config(void)
     RCC_OscInitTypeDef RCC_OscInitStruct = {0};
     RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
-  /** Initializes the CPU, AHB and APB busses clocks 
+  /** Initializes the CPU, AHB and APB busses clocks
   */
     RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_MSI;
     RCC_OscInitStruct.MSIState = RCC_MSI_ON;
@@ -44,7 +47,7 @@ void SystemClock_Config(void)
     {
         Error_Handler();
     }
-    /** Configure the SYSCLKSource, HCLK, PCLK1 and PCLK2 clocks dividers 
+    /** Configure the SYSCLKSource, HCLK, PCLK1 and PCLK2 clocks dividers
     */
     RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK4|RCC_CLOCKTYPE_HCLK2
                                 |RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
@@ -71,5 +74,6 @@ void hardware_early_startup(void)
     /* TBD: Need create RCC object */
     __HAL_RCC_USART1_CLK_ENABLE();
     __HAL_RCC_GPIOB_CLK_ENABLE();
+    __HAL_RCC_CRC_CLK_ENABLE();
 }
 
