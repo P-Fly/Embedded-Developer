@@ -54,7 +54,7 @@ static void init_thread(void const* argument);
 osThreadDef(init, init_thread, osPriorityRealtime, 0, 2048);
 
 /**
- * @brief   Initialize thread, include all drivers, services, applications etc..
+ * @brief   Initialize thread, include all drivers, services, applications etc.
  *
  * @param   argument None.
  *

@@ -337,7 +337,7 @@
               <MiscControls></MiscControls>
               <Define>CORE_CM4,STM32WB,STM32WB55xx,USE_HAL_DRIVER,</Define>
               <Undefine></Undefine>
-              <IncludePath>..\conf;..\include;..\..\..\bsp\arch\arm\cortex_m\cmsis\core\include;..\..\..\bsp\arch\arm\cortex_m\cmsis\device\stm32wb55\include;..\..\..\bsp\drivers\include;..\..\..\bsp\drivers\lib\stm32wbxx\include;..\..\..\framework\include;..\..\..\middlewares\external\freertos\CMSIS_RTOS;..\..\..\middlewares\external\freertos\include;..\..\..\middlewares\external\freertos\portable\RVDS\ARM_CM4F;..\..\..\utils\include</IncludePath>
+              <IncludePath>..\conf;..\include;..\..\..\bsp\arch\arm\cortex_m\cmsis\core\include;..\..\..\bsp\arch\arm\cortex_m\cmsis\device\stm32wb55\include;..\..\..\bsp\drivers\include;..\..\..\bsp\drivers\lib\stm32wbxx\include;..\..\..\framework\include;..\..\..\middlewares\external\freertos\CMSIS_RTOS;..\..\..\middlewares\external\freertos\include;..\..\..\middlewares\external\freertos\portable\RVDS\ARM_CM4F;..\..\..\middlewares\external\cunit\include;..\..\..\utils\include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -814,6 +814,46 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>middlewares\external\cunit</GroupName>
+          <Files>
+            <File>
+              <FileName>CUError.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\middlewares\external\cunit\src\framework\CUError.c</FilePath>
+            </File>
+            <File>
+              <FileName>MyMem.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\middlewares\external\cunit\src\framework\MyMem.c</FilePath>
+            </File>
+            <File>
+              <FileName>TestDB.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\middlewares\external\cunit\src\framework\TestDB.c</FilePath>
+            </File>
+            <File>
+              <FileName>TestRun.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\middlewares\external\cunit\src\framework\TestRun.c</FilePath>
+            </File>
+            <File>
+              <FileName>Util.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\middlewares\external\cunit\src\framework\Util.c</FilePath>
+            </File>
+            <File>
+              <FileName>Console.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\middlewares\external\cunit\src\console\Console.c</FilePath>
+            </File>
+            <File>
+              <FileName>Basic.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\middlewares\external\cunit\src\basic\Basic.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>framework\base</GroupName>
           <Files>
             <File>
@@ -825,6 +865,16 @@
               <FileName>init.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\framework\src\base\init.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>framework\unit</GroupName>
+          <Files>
+            <File>
+              <FileName>unit.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\framework\src\unit\unit.c</FilePath>
             </File>
           </Files>
         </Group>
