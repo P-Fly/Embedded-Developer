@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <stdio.h>
 #include <string.h>
 #include "cmsis_os.h"
 #include "object.h"
@@ -111,12 +112,14 @@ void app_demo_1_thread(void const * argument)
         bsp_led_on(LED_BLUE);
 
         uart_write(uart, "Blue On\r\n", strlen("Blue On\r\n"));
+        printf("Trace OK\r\n");
 
         osDelay(1000);
 
         bsp_led_off(LED_BLUE);
 
         uart_write(uart, "Blue Off\r\n", strlen("Blue Off\r\n"));
+        printf("Trace OK\r\n");
 
         osDelay(1000);
     }
