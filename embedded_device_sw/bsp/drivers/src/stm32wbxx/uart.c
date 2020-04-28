@@ -362,12 +362,14 @@ static void stm32wbxx_uart1_msp_init(UART_HandleTypeDef* uart)
  *
  * @param   obj Pointer to the uart object handle.
  *
- * @retval  None.
+ * @retval  Returns 0 on success, negative error code otherwise.
  */
 static int stm32wbxx_uart1_probe(const object* obj)
 {
     stm32wbxx_uart_handle_t* handle = (stm32wbxx_uart_handle_t*)obj->object_data;
     int ret;
+
+    (void)memset(handle, 0, sizeof(stm32wbxx_uart_handle_t));
 
     handle->uart.Instance = USART1;
 
@@ -401,7 +403,7 @@ static int stm32wbxx_uart1_probe(const object* obj)
  *
  * @param   obj Pointer to the uart object handle.
  *
- * @retval  None.
+ * @retval  Returns 0 on success, negative error code otherwise.
  */
 static int stm32wbxx_uart1_shutdown(const object* obj)
 {

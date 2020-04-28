@@ -188,12 +188,14 @@ static crc_config_t crc_config =
  *
  * @param   obj Pointer to the CRC object handle.
  *
- * @retval  None.
+ * @retval  Returns 0 on success, negative error code otherwise.
  */
 static int stm32wbxx_crc_probe(const object* obj)
 {
     stm32wbxx_crc_handle_t* handle = (stm32wbxx_crc_handle_t*)obj->object_data;
     int ret;
+
+    (void)memset(handle, 0, sizeof(stm32wbxx_crc_handle_t));
 
     handle->crc.Instance = CRC;
 
@@ -209,7 +211,7 @@ static int stm32wbxx_crc_probe(const object* obj)
  *
  * @param   obj Pointer to the CRC object handle.
  *
- * @retval  None.
+ * @retval  Returns 0 on success, negative error code otherwise.
  */
 static int stm32wbxx_crc_shutdown(const object* obj)
 {

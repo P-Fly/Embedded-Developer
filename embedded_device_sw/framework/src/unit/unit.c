@@ -36,25 +36,27 @@ static void unit_thread(void const* argument)
 }
 
 /**
- * @brief   Probe the CRC driver.
+ * @brief   Probe the unit module.
  *
- * @param   obj Pointer to the CRC object handle.
+ * @param   obj Pointer to the unit object handle.
  *
- * @retval  None.
+ * @retval  Returns 0 on success, negative error code otherwise.
  */
 static int unit_probe(const object* obj)
 {
+    (void)obj;
+
     osThreadCreate(osThread(unit), NULL);
 
     return 0;
 }
 
 /**
- * @brief   Remove the CRC driver.
+ * @brief   Remove the unit module.
  *
- * @param   obj Pointer to the CRC object handle.
+ * @param   obj Pointer to the unit object handle.
  *
- * @retval  None.
+ * @retval  Returns 0 on success, negative error code otherwise.
  */
 static int unit_shutdown(const object* obj)
 {
