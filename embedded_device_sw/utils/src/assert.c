@@ -22,7 +22,7 @@
 #include "cmsis_os.h"
 #include "object.h"
 #include "err.h"
-#include "trace_conf.h"
+#include "utils_conf.h"
 
 #ifdef CONFIG_ASSERT_ENABLE
 
@@ -88,7 +88,7 @@ static void abort(void)
  *      __ASSERT_MSG is defined.
  *      _AEABI_PORTABILITY_LEVEL is defined and not 0.
  */
-__attribute__((used, noreturn))
+__attribute__((noreturn))
 void __aeabi_assert(const char* expr, const char* file, int line)
 {
     char str[12], *p;

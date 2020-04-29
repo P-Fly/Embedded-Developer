@@ -854,26 +854,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>middlewares\internal\trace</GroupName>
-          <Files>
-            <File>
-              <FileName>trace.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\middlewares\internal\trace\src\trace.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>middlewares\internal\assert</GroupName>
-          <Files>
-            <File>
-              <FileName>assert.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\middlewares\internal\assert\src\assert.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>framework\base</GroupName>
           <Files>
             <File>
@@ -895,6 +875,21 @@
               <FileName>unit.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\framework\src\unit\unit.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>utils</GroupName>
+          <Files>
+            <File>
+              <FileName>assert.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utils\src\assert.c</FilePath>
+            </File>
+            <File>
+              <FileName>trace.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utils\src\trace.c</FilePath>
             </File>
           </Files>
         </Group>

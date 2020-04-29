@@ -22,7 +22,7 @@
 #include "object.h"
 #include "err.h"
 #include "uart.h"
-#include "trace_conf.h"
+#include "utils_conf.h"
 
 #ifdef CONFIG_TRACE_ENABLE
 

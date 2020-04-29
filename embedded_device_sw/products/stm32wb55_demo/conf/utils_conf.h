@@ -16,13 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __TRACE_CONF_H__
-#define __TRACE_CONF_H__
+#ifndef __UTILS_CONF_H__
+#define __UTILS_CONF_H__
 
 #define CONFIG_TRACE_ENABLE
+#if defined(CONFIG_TRACE_ENABLE)
 #define CONFIG_TRACE_NAME TRACE_MODULE
 #define CONFIG_TRACE_PORT_NAME CONFIG_UART1_NAME
+#endif
 
 #define CONFIG_ASSERT_ENABLE
 
-#endif /* __TRACE_CONF_H__ */
+#endif /* __UTILS_CONF_H__ */
