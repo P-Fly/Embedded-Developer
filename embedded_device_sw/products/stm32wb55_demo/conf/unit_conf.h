@@ -20,7 +20,9 @@
 #define __UNIT_CONF_H__
 
 #define CONFIG_UNIT_ENABLE
-#define CONFIG_UNIT_NAME UNIT_TEST
+#if defined(CONFIG_UNIT_ENABLE)
+#define CONFIG_UNIT_NAME UNIT_MODULE
 #define CONFIG_UNIT_CRC_TEST_ENABLE
+#endif
 
 #endif /* __UNIT_CONF_H__ */

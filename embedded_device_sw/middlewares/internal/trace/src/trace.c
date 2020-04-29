@@ -120,7 +120,7 @@ static int trace_shutdown(const object* obj)
     return 0;
 }
 
-module_early_driver(CONFIG_TRACE_PORT_NAME,
+module_early_driver(CONFIG_TRACE_NAME,
     trace_probe,
     trace_shutdown,
     NULL, &trace_handle, NULL);

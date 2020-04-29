@@ -88,6 +88,8 @@ static int object_do_one_initcall(int level)
 /**
  * @brief   Execute all the object initialization functions at a given level.
  *
+ * @param   None.
+ *
  * @retval  Returns 0 on success, negative error code otherwise.
  */
 int object_init(void)

@@ -335,7 +335,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>CORE_CM4,STM32WB,STM32WB55xx,USE_HAL_DRIVER,</Define>
+              <Define>CORE_CM4,STM32WB,STM32WB55xx,USE_HAL_DRIVER,__ASSERT_MSG</Define>
               <Undefine></Undefine>
               <IncludePath>..\conf;..\include;..\..\..\bsp\arch\arm\cortex_m\cmsis\core\include;..\..\..\bsp\arch\arm\cortex_m\cmsis\device\stm32wb55\include;..\..\..\bsp\drivers\include;..\..\..\bsp\drivers\lib\stm32wbxx\include;..\..\..\framework\include;..\..\..\middlewares\external\freertos\CMSIS_RTOS;..\..\..\middlewares\external\freertos\include;..\..\..\middlewares\external\freertos\portable\RVDS\ARM_CM4F;..\..\..\middlewares\external\cunit\include;..\..\..\utils\include</IncludePath>
             </VariousControls>
@@ -860,6 +860,16 @@
               <FileName>trace.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\middlewares\internal\trace\src\trace.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>middlewares\internal\assert</GroupName>
+          <Files>
+            <File>
+              <FileName>assert.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\middlewares\internal\assert\src\assert.c</FilePath>
             </File>
           </Files>
         </Group>
