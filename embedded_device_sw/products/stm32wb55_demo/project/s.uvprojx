@@ -894,6 +894,16 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>tcase</GroupName>
+          <Files>
+            <File>
+              <FileName>tcase_ring_buff.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\tcase\utils\tcase_ring_buff.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>products</GroupName>
           <Files>
             <File>

@@ -26,11 +26,12 @@ typedef struct
     int front;
     int rear;
     int size;
+    int cnt;
     char* buffer;
 } ring_buff_t;
 
-#define is_empty(ring) (ring->front == ring->rear)
-#define is_full(ring)  (ring->front == (ring->rear + 1) % ring->size)
+#define is_empty(ring) ((ring)->cnt == 0)
+#define is_full(ring)  ((ring)->cnt == (ring)->size)
 
 /**
  * @brief   Read data and increment the read pointer.
@@ -53,6 +54,7 @@ static inline int ring_buffer_read(ring_buff_t* ring, char* value)
 
     *value = ring->buffer[ring->front];
     ring->front = (ring->front + 1) % ring->size;
+    ring->cnt--;
 
     return 0;
 }
@@ -78,6 +80,7 @@ static inline int ring_buffer_write(ring_buff_t* ring, char value)
 
     ring->buffer[ring->rear] = value;
     ring->rear = (ring->rear + 1) % ring->size;
+    ring->cnt++;
 
     return 0;
 }
@@ -106,6 +109,7 @@ static inline int ring_buffer_init(ring_buff_t* ring, char* buffer, int size)
     ring->rear = 0;
     ring->buffer = buffer;
     ring->size = size;
+    ring->cnt = 0;
 
     return 0;
 }

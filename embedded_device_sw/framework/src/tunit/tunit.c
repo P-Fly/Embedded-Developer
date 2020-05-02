@@ -22,30 +22,50 @@
 #include "err.h"
 #include "CUnit.h"
 #include "Basic.h"
-#include "tunit_conf.h"
 #include "tunit.h"
 
 #ifdef CONFIG_TUNIT_ENABLE
 
-static int tunit_suit_initialize(void)
+/**
+ * @brief   Suite initialization function.
+ *
+ * @param   None.
+ *
+ * @retval  Returns 0 on success, negative error code otherwise.
+ */
+static int tcase_suit_initialize(void)
 {
     return 0;
 }
 
-static int tunit_suit_cleanup(void)
+/**
+ * @brief   Suite cleanup function.
+ *
+ * @param   None.
+ *
+ * @retval  Returns 0 on success, negative error code otherwise.
+ */
+static int tcase_suit_cleanup(void)
 {
     return 0;
 }
 
-static void tunit_testcase(void)
+/**
+ * @brief   Testing function in a test case.
+ *
+ * @param   None.
+ *
+ * @retval  None.
+ */
+static void tcase_testcase(void)
 {
-    CU_TEST(CU_TRUE);
+    TUNIT_TEST(CU_TRUE);
 }
 
-define_tunit_suit(CONFIG_TUNIT_SUIT_NAME,
-    tunit_suit_initialize, tunit_suit_cleanup);
-define_tunit_case(CONFIG_TUNIT_SUIT_NAME,
-    tunit_testcase, tunit_testcase);
+define_tunit_suit(CONFIG_TUNIT_TUNIT_SUIT_NAME,
+    tcase_suit_initialize, tcase_suit_cleanup);
+define_tunit_case(CONFIG_TUNIT_TUNIT_SUIT_NAME,
+    tcase_testcase, tcase_testcase);
 
 extern tunit_suit tunit_suit$$Base[];
 extern tunit_suit tunit_suit$$Limit[];

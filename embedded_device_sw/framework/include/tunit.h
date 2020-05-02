@@ -19,6 +19,10 @@
 #ifndef __TUNIT_H__
 #define __TUNIT_H__
 
+#include <string.h>
+#include "CUnit.h"
+#include "tunit_conf.h"
+
 #define _STRINGIFY(x) #x
 #define STRINGIFY(s) _STRINGIFY(s)
 
@@ -77,5 +81,8 @@ typedef struct _tunit_case
 
 #define define_tunit_case(_suit_name, _case_name, _case_func)       \
     __define_tunit_case(_suit_name, _case_name, _case_func)
+
+#define TUNIT_TEST(value) CU_TEST(value)
+#define TUNIT_TEST_FATAL(value) CU_TEST_FATAL(value)
 
 #endif /* __TUNIT_H__ */
