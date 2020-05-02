@@ -1347,7 +1347,7 @@
   </Group>
 
   <Group>
-    <GroupName>framework\unit</GroupName>
+    <GroupName>framework\tunit</GroupName>
     <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
@@ -1359,8 +1359,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\..\framework\src\unit\unit.c</PathWithFileName>
-      <FilenameWithoutPath>unit.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\..\framework\src\tunit\tunit.c</PathWithFileName>
+      <FilenameWithoutPath>tunit.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

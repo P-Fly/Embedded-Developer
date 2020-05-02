@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __UNIT_CONF_H__
-#define __UNIT_CONF_H__
+#ifndef __TUNIT_CONF_H__
+#define __TUNIT_CONF_H__
 
-#define CONFIG_UNIT_ENABLE
-#if defined(CONFIG_UNIT_ENABLE)
-#define CONFIG_UNIT_NAME UNIT_MODULE
-#define CONFIG_UNIT_CRC_TEST_ENABLE
+#define CONFIG_TUNIT_ENABLE
+#if defined(CONFIG_TUNIT_ENABLE)
+#define CONFIG_TUNIT_NAME TUNIT_MODULE
+#define CONFIG_TUNIT_SUIT_NAME CUNIT_SUIT
 #endif
 
-#endif /* __UNIT_CONF_H__ */
+#endif /* __TUNIT_CONF_H__ */

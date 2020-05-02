@@ -54,7 +54,7 @@
 #include <math.h>
 
 /** CUnit version number. */
-#define CU_VERSION "@VERSION@-@RELEASE@"
+#define CU_VERSION "2.1-3"
 
 /*  Max string lengths for names (includes terminating NULL. */
 /** Maximum length of a test name string. */
@@ -324,9 +324,16 @@
 #define CU_ASSERT_DOUBLE_NOT_EQUAL_FATAL(actual, expected, granularity) \
   { CU_assertImplementation(((fabs((double)(actual) - (expected)) > fabs((double)(granularity)))), __LINE__, ("CU_ASSERT_DOUBLE_NOT_EQUAL_FATAL(" #actual ","  #expected "," #granularity ")"), __FILE__, "", CU_TRUE); }
 
+#include <stdio.h>
+#include <assert.h>
 #define CUNIT_DO_NOT_DEFINE_UNLESS_BUILDING_TESTS
 inline void test_exit(int status)
 {
+    if (status != CUE_SUCCESS)
+    {
+        printf("\nAborting due to error #%d\n", (int)status);
+        assert(0);
+    }
 }
 
 #ifdef USE_DEPRECATED_CUNIT_NAMES

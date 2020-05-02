@@ -68,12 +68,14 @@ extern "C" {
   /** Generate report on tracked memory (old macro). */
   #define CU_DUMP_MEMORY_USAGE(x) CU_dump_memory_usage((x))
 #else   /* MEMTRACE */
+#include "FreeRTOS.h"
+
   /** Standard calloc() if MEMTRACE not defined. */
   #define CU_CALLOC(x, y)         calloc((x), (y))
   /** Standard malloc() if MEMTRACE not defined. */
-  #define CU_MALLOC(x)            malloc((x))
+  #define CU_MALLOC(x)            pvPortMalloc(x)   /* malloc((x))*/
   /** Standard free() if MEMTRACE not defined. */
-  #define CU_FREE(x)              free((x))
+  #define CU_FREE(x)              vPortFree(x)      /* free((x)) */
   /** Standard realloc() if MEMTRACE not defined. */
   #define CU_REALLOC(x, y)        realloc((x), (y))
   /** No-op if MEMTRACE not defined. */

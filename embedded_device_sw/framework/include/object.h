@@ -67,7 +67,7 @@ typedef struct _object
  */
 #define __define_object(object_name, probe_fn, shutdown_fn, suspend_fn,     \
                 resume_fn, intf, runtime, config, id)                       \
-    static object __object_def_##object_name##id                            \
+    static object __object_def_##id##_##object_name                         \
     __attribute__((used, section("module_object_" #id))) = {                \
         .name = STRINGIFY(object_name),                                     \
         .probe = (probe_fn),                                                \
