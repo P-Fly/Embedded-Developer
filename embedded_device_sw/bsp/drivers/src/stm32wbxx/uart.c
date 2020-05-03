@@ -17,7 +17,6 @@
  */
 
 #include <string.h>
-#include "cmsis_os.h"
 #include "object.h"
 #include "err.h"
 #include "ring_buff.h"

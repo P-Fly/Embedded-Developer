@@ -18,7 +18,6 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "cmsis_os.h"
 #include "object.h"
 #include "err.h"
 #include "uart.h"

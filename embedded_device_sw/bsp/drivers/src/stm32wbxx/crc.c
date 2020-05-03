@@ -17,7 +17,6 @@
  */
 
 #include <string.h>
-#include "cmsis_os.h"
 #include "object.h"
 #include "err.h"
 #include "stm32wbxx_hal.h"
@@ -31,7 +30,6 @@
 typedef struct
 {
     CRC_HandleTypeDef crc;
-    void* private_data;
 } stm32wbxx_crc_handle_t;
 
 /**
@@ -52,8 +50,16 @@ static int stm32wbxx_crc_configure(const object* obj, const crc_config_t* config
     if (!config)
         return -EINVAL;
 
-    handle->crc.Init.DefaultPolynomialUse = DEFAULT_POLYNOMIAL_DISABLE;
-    handle->crc.Init.GeneratingPolynomial = config->polynomial;
+    if (config->polynomial == CRC_CONFIG_POLYNOMIAL_DEFAULT)
+    {
+        handle->crc.Init.DefaultPolynomialUse = DEFAULT_POLYNOMIAL_ENABLE;
+    }
+    else
+    {
+        handle->crc.Init.DefaultPolynomialUse = DEFAULT_POLYNOMIAL_DISABLE;
+        handle->crc.Init.GeneratingPolynomial = config->polynomial;
+    }
+
     handle->crc.Init.DefaultInitValueUse = DEFAULT_INIT_VALUE_DISABLE;
     handle->crc.Init.InitValue = config->initial_value;
     handle->crc.Init.InputDataInversionMode = CRC_INPUTDATA_INVERSION_NONE;
@@ -217,7 +223,7 @@ static int stm32wbxx_crc_shutdown(const object* obj)
 {
     stm32wbxx_crc_handle_t* handle = (stm32wbxx_crc_handle_t*)obj->object_data;
 
-    if (HAL_CRC_Init(&handle->crc) != HAL_OK)
+    if (HAL_CRC_DeInit(&handle->crc) != HAL_OK)
     {
         return -EIO;
     }
