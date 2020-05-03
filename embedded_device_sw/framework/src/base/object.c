@@ -108,6 +108,149 @@ int object_init(void)
 }
 
 /**
+ * @brief   De-initialize one object.
+ *
+ * @param   level Object level.
+ *
+ * @retval  Returns 0 on success, negative error code otherwise.
+ */
+static int object_do_one_deinitcall(int level)
+{
+    object* obj;
+    int ret;
+
+    for (obj = object_levels[level]; obj < object_levels[level + 1]; obj++)
+    {
+        if (obj && obj->shutdown)
+        {
+            ret = obj->shutdown(obj);
+            if (ret)
+                return ret;
+        }
+    }
+
+    return 0;
+}
+
+/**
+ * @brief   Execute all the object de-initialization functions at a given level.
+ *
+ * @param   None.
+ *
+ * @retval  Returns 0 on success, negative error code otherwise.
+ */
+int object_deinit(void)
+{
+    int level;
+    int ret;
+
+    for (level = OBJECT_LEVELS_NUM - 2; level >= 0; level -= 2)
+    {
+        ret = object_do_one_deinitcall(level);
+        if (ret)
+            return ret;
+    }
+
+    return 0;
+}
+
+/**
+ * @brief   Suspend one object.
+ *
+ * @param   level Object level.
+ * @param   suspend_level Suspend level.
+ *
+ * @retval  Returns 0 on success, negative error code otherwise.
+ */
+static int object_do_one_suspendcall(int level, int suspend_level)
+{
+    object* obj;
+    int ret;
+
+    for (obj = object_levels[level]; obj < object_levels[level + 1]; obj++)
+    {
+        if (obj && obj->suspend)
+        {
+            ret = obj->suspend(obj, suspend_level);
+            if (ret)
+                return ret;
+        }
+    }
+
+    return 0;
+}
+
+/**
+ * @brief   Execute all the object suspend functions at a given level.
+ *
+ * @param   suspend_level Suspend level.
+ *
+ * @retval  Returns 0 on success, negative error code otherwise.
+ */
+int object_suspend(int suspend_level)
+{
+    int level;
+    int ret;
+
+    for (level = OBJECT_LEVELS_NUM - 2; level >= 0; level -= 2)
+    {
+        ret = object_do_one_suspendcall(level, suspend_level);
+        if (ret)
+            return ret;
+    }
+
+    return 0;
+}
+
+/**
+ * @brief   Resume one object.
+ *
+ * @param   level Object level.
+ * @param   resume_level Resume level.
+ *
+ * @retval  Returns 0 on success, negative error code otherwise.
+ */
+static int object_do_one_resumecall(int level, int resume_level)
+{
+    object* obj;
+    int ret;
+
+    for (obj = object_levels[level]; obj < object_levels[level + 1]; obj++)
+    {
+        if (obj && obj->resume)
+        {
+            ret = obj->resume(obj, resume_level);
+            if (ret)
+                return ret;
+        }
+    }
+
+    return 0;
+}
+
+/**
+ * @brief   Execute all the object resume functions at a given level.
+ *
+ * @param   resume_level Resume level.
+ *
+ * @retval  Returns 0 on success, negative error code otherwise.
+ */
+int object_resume(int resume_level)
+{
+    int level;
+    int ret;
+
+    for (level = 0; level < OBJECT_LEVELS_NUM; level += 2)
+    {
+        ret = object_do_one_resumecall(level, resume_level);
+        if (ret)
+            return ret;
+    }
+
+    return 0;
+}
+
+/**
  * @brief   Get the object handle.
  *
  * @param   name Object name

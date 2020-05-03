@@ -32,8 +32,8 @@ typedef struct _object object;
  */
 typedef int (*probe)(const object* obj);
 typedef int (*shutdown)(const object* obj);
-typedef int (*suspend)(const object* obj);
-typedef int (*resume)(const object* obj);
+typedef int (*suspend)(const object* obj, int level);
+typedef int (*resume)(const object* obj, int level);
 
 /**
  * @brief   Standard object model structure.
@@ -99,6 +99,9 @@ typedef struct _object
             intf, runtime, config, 6)
 
 extern int object_init(void);
+extern int object_deinit(void);
+extern int object_suspend(int level);
+extern int object_resume(int level);
 extern object* _object_get_binding(const char* const name);
 #define object_get_binding(name) _object_get_binding(STRINGIFY(name))
 
