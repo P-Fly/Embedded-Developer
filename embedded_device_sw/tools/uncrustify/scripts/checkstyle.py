@@ -7,8 +7,7 @@ import os
 import subprocess
 
 #default config file
-UNCRUSTIFY_BIN = os.path.join(os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)),
-		"../uncrustify-0.71.0_f-win32/")), "uncrustify.exe")
+UNCRUSTIFY_BIN = "uncrustify"
 
 CONFIG_FILE = os.path.join(os.path.join(os.path.dirname(__file__), "../cfg/"), "embedded_device_sw.cfg")
 
