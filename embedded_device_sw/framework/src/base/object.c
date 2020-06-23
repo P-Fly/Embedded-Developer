@@ -40,25 +40,25 @@ extern object module_object_6$$Limit[];
 /**
  * @brief   Define object levels.
  */
-static object* object_levels[] =
+static object *object_levels[] =
 {
-    module_object_0$$Base,
-    module_object_0$$Limit,
-    module_object_1$$Base,
-    module_object_1$$Limit,
-    module_object_2$$Base,
-    module_object_2$$Limit,
-    module_object_3$$Base,
-    module_object_3$$Limit,
-    module_object_4$$Base,
-    module_object_4$$Limit,
-    module_object_5$$Base,
-    module_object_5$$Limit,
-    module_object_6$$Base,
-    module_object_6$$Limit,
+	module_object_0$$Base,
+	module_object_0$$Limit,
+	module_object_1$$Base,
+	module_object_1$$Limit,
+	module_object_2$$Base,
+	module_object_2$$Limit,
+	module_object_3$$Base,
+	module_object_3$$Limit,
+	module_object_4$$Base,
+	module_object_4$$Limit,
+	module_object_5$$Base,
+	module_object_5$$Limit,
+	module_object_6$$Base,
+	module_object_6$$Limit,
 };
 
-#define OBJECT_LEVELS_NUM (sizeof(object_levels)/sizeof(object_levels[0]))
+#define OBJECT_LEVELS_NUM (sizeof(object_levels) / sizeof(object_levels[0]))
 
 /**
  * @brief   Initialize one object.
@@ -69,20 +69,19 @@ static object* object_levels[] =
  */
 static int object_do_one_initcall(int level)
 {
-    object* obj;
-    int ret;
+	object *obj;
+	int ret;
 
-    for (obj = object_levels[level]; obj < object_levels[level + 1]; obj++)
-    {
-        if (obj && obj->probe)
-        {
-            ret = obj->probe(obj);
-            if (ret)
-                return ret;
-        }
-    }
+	for (obj = object_levels[level]; obj < object_levels[level + 1];
+	     obj++) {
+		if (obj && obj->probe) {
+			ret = obj->probe(obj);
+			if (ret)
+				return ret;
+		}
+	}
 
-    return 0;
+	return 0;
 }
 
 /**
@@ -94,17 +93,16 @@ static int object_do_one_initcall(int level)
  */
 int object_init(void)
 {
-    int level;
-    int ret;
+	int level;
+	int ret;
 
-    for (level = 0; level < OBJECT_LEVELS_NUM; level += 2)
-    {
-        ret = object_do_one_initcall(level);
-        if (ret)
-            return ret;
-    }
+	for (level = 0; level < OBJECT_LEVELS_NUM; level += 2) {
+		ret = object_do_one_initcall(level);
+		if (ret)
+			return ret;
+	}
 
-    return 0;
+	return 0;
 }
 
 /**
@@ -116,20 +114,19 @@ int object_init(void)
  */
 static int object_do_one_deinitcall(int level)
 {
-    object* obj;
-    int ret;
+	object *obj;
+	int ret;
 
-    for (obj = object_levels[level]; obj < object_levels[level + 1]; obj++)
-    {
-        if (obj && obj->shutdown)
-        {
-            ret = obj->shutdown(obj);
-            if (ret)
-                return ret;
-        }
-    }
+	for (obj = object_levels[level]; obj < object_levels[level + 1];
+	     obj++) {
+		if (obj && obj->shutdown) {
+			ret = obj->shutdown(obj);
+			if (ret)
+				return ret;
+		}
+	}
 
-    return 0;
+	return 0;
 }
 
 /**
@@ -141,17 +138,16 @@ static int object_do_one_deinitcall(int level)
  */
 int object_deinit(void)
 {
-    int level;
-    int ret;
+	int level;
+	int ret;
 
-    for (level = OBJECT_LEVELS_NUM - 2; level >= 0; level -= 2)
-    {
-        ret = object_do_one_deinitcall(level);
-        if (ret)
-            return ret;
-    }
+	for (level = OBJECT_LEVELS_NUM - 2; level >= 0; level -= 2) {
+		ret = object_do_one_deinitcall(level);
+		if (ret)
+			return ret;
+	}
 
-    return 0;
+	return 0;
 }
 
 /**
@@ -164,20 +160,19 @@ int object_deinit(void)
  */
 static int object_do_one_suspendcall(int level, int suspend_level)
 {
-    object* obj;
-    int ret;
+	object *obj;
+	int ret;
 
-    for (obj = object_levels[level]; obj < object_levels[level + 1]; obj++)
-    {
-        if (obj && obj->suspend)
-        {
-            ret = obj->suspend(obj, suspend_level);
-            if (ret)
-                return ret;
-        }
-    }
+	for (obj = object_levels[level]; obj < object_levels[level + 1];
+	     obj++) {
+		if (obj && obj->suspend) {
+			ret = obj->suspend(obj, suspend_level);
+			if (ret)
+				return ret;
+		}
+	}
 
-    return 0;
+	return 0;
 }
 
 /**
@@ -189,17 +184,16 @@ static int object_do_one_suspendcall(int level, int suspend_level)
  */
 int object_suspend(int suspend_level)
 {
-    int level;
-    int ret;
+	int level;
+	int ret;
 
-    for (level = OBJECT_LEVELS_NUM - 2; level >= 0; level -= 2)
-    {
-        ret = object_do_one_suspendcall(level, suspend_level);
-        if (ret)
-            return ret;
-    }
+	for (level = OBJECT_LEVELS_NUM - 2; level >= 0; level -= 2) {
+		ret = object_do_one_suspendcall(level, suspend_level);
+		if (ret)
+			return ret;
+	}
 
-    return 0;
+	return 0;
 }
 
 /**
@@ -212,20 +206,19 @@ int object_suspend(int suspend_level)
  */
 static int object_do_one_resumecall(int level, int resume_level)
 {
-    object* obj;
-    int ret;
+	object *obj;
+	int ret;
 
-    for (obj = object_levels[level]; obj < object_levels[level + 1]; obj++)
-    {
-        if (obj && obj->resume)
-        {
-            ret = obj->resume(obj, resume_level);
-            if (ret)
-                return ret;
-        }
-    }
+	for (obj = object_levels[level]; obj < object_levels[level + 1];
+	     obj++) {
+		if (obj && obj->resume) {
+			ret = obj->resume(obj, resume_level);
+			if (ret)
+				return ret;
+		}
+	}
 
-    return 0;
+	return 0;
 }
 
 /**
@@ -237,17 +230,16 @@ static int object_do_one_resumecall(int level, int resume_level)
  */
 int object_resume(int resume_level)
 {
-    int level;
-    int ret;
+	int level;
+	int ret;
 
-    for (level = 0; level < OBJECT_LEVELS_NUM; level += 2)
-    {
-        ret = object_do_one_resumecall(level, resume_level);
-        if (ret)
-            return ret;
-    }
+	for (level = 0; level < OBJECT_LEVELS_NUM; level += 2) {
+		ret = object_do_one_resumecall(level, resume_level);
+		if (ret)
+			return ret;
+	}
 
-    return 0;
+	return 0;
 }
 
 /**
@@ -257,26 +249,21 @@ int object_resume(int resume_level)
  *
  * @retval  None
  */
-object* _object_get_binding(const char* const name)
+object *_object_get_binding(const char *const name)
 {
-    int level;
-    object* obj;
-    object* start;
-    object* end;
+	int level;
+	object *obj;
+	object *start;
+	object *end;
 
-    for (level = 0; level < OBJECT_LEVELS_NUM; level += 2)
-    {
-        start = object_levels[level];
-        end = object_levels[level + 1];
+	for (level = 0; level < OBJECT_LEVELS_NUM; level += 2) {
+		start = object_levels[level];
+		end = object_levels[level + 1];
 
-        for (obj = start; obj < end; obj++)
-        {
-            if (obj && obj->object_intf && !strcmp(name, obj->name))
-            {
-                return obj;
-            }
-        }
-    }
+		for (obj = start; obj < end; obj++)
+			if (obj && obj->object_intf && !strcmp(name, obj->name))
+				return obj;
+	}
 
-    return NULL;
+	return NULL;
 }

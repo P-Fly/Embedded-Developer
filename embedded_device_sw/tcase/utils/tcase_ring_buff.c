@@ -30,7 +30,7 @@
  */
 static int tcase_suit_initialize(void)
 {
-    return 0;
+	return 0;
 }
 
 /**
@@ -42,7 +42,7 @@ static int tcase_suit_initialize(void)
  */
 static int tcase_suit_cleanup(void)
 {
-    return 0;
+	return 0;
 }
 
 /**
@@ -54,41 +54,41 @@ static int tcase_suit_cleanup(void)
  */
 static void tcace_ring_buff(void)
 {
-    ring_buff_t ring;
-    char buffer[10];
-    char value;
-    int i;
-    int ret;
+	ring_buff_t ring;
+	char buffer[10];
+	char value;
+	int i;
+	int ret;
 
-    ret = ring_buffer_init(&ring, buffer, sizeof(buffer)/sizeof(buffer[0]));
-    TUNIT_TEST(ret == 0);
-    TUNIT_TEST(is_empty(&ring));
+	ret =
+		ring_buffer_init(&ring, buffer,
+				 sizeof(buffer) / sizeof(buffer[0]));
+	TUNIT_TEST(ret == 0);
+	TUNIT_TEST(is_empty(&ring));
 
-    for (i = 0; i < sizeof(buffer)/sizeof(buffer[0]); i++)
-    {
-        ret = ring_buffer_write(&ring, i);
-        TUNIT_TEST(ret == 0);
-    }
-    TUNIT_TEST(is_full(&ring));
+	for (i = 0; i < sizeof(buffer) / sizeof(buffer[0]); i++) {
+		ret = ring_buffer_write(&ring, i);
+		TUNIT_TEST(ret == 0);
+	}
+	TUNIT_TEST(is_full(&ring));
 
-    ret = ring_buffer_write(&ring, i);
-    TUNIT_TEST(ret == -EFULL);
+	ret = ring_buffer_write(&ring, i);
+	TUNIT_TEST(ret == -EFULL);
 
-    for (i = 0; i < sizeof(buffer)/sizeof(buffer[0]); i++)
-    {
-        ret = ring_buffer_read(&ring, &value);
-        TUNIT_TEST(ret == 0);
-        TUNIT_TEST(value == i);
-    }
-    TUNIT_TEST(is_empty(&ring));
+	for (i = 0; i < sizeof(buffer) / sizeof(buffer[0]); i++) {
+		ret = ring_buffer_read(&ring, &value);
+		TUNIT_TEST(ret == 0);
+		TUNIT_TEST(value == i);
+	}
+	TUNIT_TEST(is_empty(&ring));
 
-    ret = ring_buffer_read(&ring, &value);
-    TUNIT_TEST(ret == -EEMPTY);
+	ret = ring_buffer_read(&ring, &value);
+	TUNIT_TEST(ret == -EEMPTY);
 }
 
 define_tunit_suit(CONFIG_TUNIT_RING_BUFF_SUIT_NAME,
-    tcase_suit_initialize, tcase_suit_cleanup);
+		  tcase_suit_initialize, tcase_suit_cleanup);
 define_tunit_case(CONFIG_TUNIT_RING_BUFF_SUIT_NAME,
-    tcace_ring_buff, tcace_ring_buff);
+		  tcace_ring_buff, tcace_ring_buff);
 
 #endif /* CONFIG_TUNIT_RING_BUFF_SUIT_NAME */

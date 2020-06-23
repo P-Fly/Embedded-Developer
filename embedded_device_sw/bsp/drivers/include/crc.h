@@ -51,23 +51,21 @@
  *      Input Format        [ 2 : 3 ]
  *      RESERVED            [ 4 : 31 ] - Undefined or device-specific usage.
  */
-typedef struct
-{
-    unsigned int initial_value;
-    unsigned int polynomial;
-    unsigned int configs;
+typedef struct {
+	unsigned int	initial_value;
+	unsigned int	polynomial;
+	unsigned int	configs;
 } crc_config_t;
 
 /**
  * @brief   CRC interface definitions.
  */
-typedef struct
-{
-    int (*configure)(const object* obj, const crc_config_t* config);
-    int (*calculate)(const object* obj,
-        const void* buf, int len, unsigned int* crc);
-    int (*accumulate)(const object* obj,
-        const void* buf, int len, unsigned int* crc);
+typedef struct {
+	int (*configure)(const object *obj, const crc_config_t *config);
+	int (*calculate)(const object *obj, const void *buf, int len,
+			 unsigned int *crc);
+	int (*accumulate)(const object *obj, const void *buf, int len,
+			  unsigned int *crc);
 } crc_intf_t;
 
 /**
@@ -78,19 +76,19 @@ typedef struct
  *
  * @retval  Returns 0 on success, negative error code otherwise.
  */
-static inline int crc_configure(const object* obj, const crc_config_t* config)
+static inline int crc_configure(const object *obj, const crc_config_t *config)
 {
-    crc_intf_t* intf;
+	crc_intf_t *intf;
 
-    if (!obj)
-        return -EINVAL;
+	if (!obj)
+		return -EINVAL;
 
-    intf = (crc_intf_t*)obj->object_intf;
-    if ((intf == NULL)
-        || (intf->configure == NULL))
-        return -ENOSUPPORT;
+	intf = (crc_intf_t *)obj->object_intf;
+	if ((intf == NULL)
+	    || (intf->configure == NULL))
+		return -ENOSUPPORT;
 
-    return intf->configure(obj, config);
+	return intf->configure(obj, config);
 }
 
 /**
@@ -103,24 +101,24 @@ static inline int crc_configure(const object* obj, const crc_config_t* config)
  *
  * @retval  Returns 0 on success, negative error code otherwise.
  */
-static int crc_calculate(const object* obj,
-    const void* buf, int len, unsigned int* crc)
+static int crc_calculate(const object *obj,
+			 const void *buf, int len, unsigned int *crc)
 {
-    crc_intf_t* intf;
+	crc_intf_t *intf;
 
-    if (!obj)
-        return -EINVAL;
+	if (!obj)
+		return -EINVAL;
 
-    intf = (crc_intf_t*)obj->object_intf;
-    if ((intf == NULL)
-        || (intf->calculate == NULL))
-        return -ENOSUPPORT;
+	intf = (crc_intf_t *)obj->object_intf;
+	if ((intf == NULL)
+	    || (intf->calculate == NULL))
+		return -ENOSUPPORT;
 
-    return intf->calculate(obj, buf, len, crc);
+	return intf->calculate(obj, buf, len, crc);
 }
 
 /**
- * @brief   Compute the CRC value of an data buffer, 
+ * @brief   Compute the CRC value of an data buffer,
  *          starting with the previously computed CRC as initialization value.
  *
  * @param   obj Pointer to the CRC object handle.
@@ -130,20 +128,20 @@ static int crc_calculate(const object* obj,
  *
  * @retval  Returns 0 on success, negative error code otherwise.
  */
-static int crc_accumulate(const object* obj,
-    const void* buf, int len, unsigned int* crc)
+static int crc_accumulate(const object *obj,
+			  const void *buf, int len, unsigned int *crc)
 {
-    crc_intf_t* intf;
+	crc_intf_t *intf;
 
-    if (!obj)
-        return -EINVAL;
+	if (!obj)
+		return -EINVAL;
 
-    intf = (crc_intf_t*)obj->object_intf;
-    if ((intf == NULL)
-        || (intf->accumulate == NULL))
-        return -ENOSUPPORT;
+	intf = (crc_intf_t *)obj->object_intf;
+	if ((intf == NULL)
+	    || (intf->accumulate == NULL))
+		return -ENOSUPPORT;
 
-    return intf->accumulate(obj, buf, len, crc);
+	return intf->accumulate(obj, buf, len, crc);
 }
 
 #endif /* __CRC_H__ */

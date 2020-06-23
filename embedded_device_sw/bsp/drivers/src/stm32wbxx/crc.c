@@ -27,9 +27,8 @@
 /**
  * @brief   CRC handle definition.
  */
-typedef struct
-{
-    CRC_HandleTypeDef crc;
+typedef struct {
+	CRC_HandleTypeDef crc;
 } stm32wbxx_crc_handle_t;
 
 /**
@@ -40,72 +39,70 @@ typedef struct
  *
  * @retval  Returns 0 on success, negative error code otherwise.
  */
-static int stm32wbxx_crc_configure(const object* obj, const crc_config_t* config)
+static int stm32wbxx_crc_configure(const object *	obj,
+				   const crc_config_t * config)
 {
-    stm32wbxx_crc_handle_t* handle = (stm32wbxx_crc_handle_t*)obj->object_data;
+	stm32wbxx_crc_handle_t *handle =
+		(stm32wbxx_crc_handle_t *)obj->object_data;
 
-    if (!handle)
-        return -EINVAL;
+	if (!handle)
+		return -EINVAL;
 
-    if (!config)
-        return -EINVAL;
+	if (!config)
+		return -EINVAL;
 
-    if (config->polynomial == CRC_CONFIG_POLYNOMIAL_DEFAULT)
-    {
-        handle->crc.Init.DefaultPolynomialUse = DEFAULT_POLYNOMIAL_ENABLE;
-    }
-    else
-    {
-        handle->crc.Init.DefaultPolynomialUse = DEFAULT_POLYNOMIAL_DISABLE;
-        handle->crc.Init.GeneratingPolynomial = config->polynomial;
-    }
+	if (config->polynomial == CRC_CONFIG_POLYNOMIAL_DEFAULT) {
+		handle->crc.Init.DefaultPolynomialUse =
+			DEFAULT_POLYNOMIAL_ENABLE;
+	} else {
+		handle->crc.Init.DefaultPolynomialUse =
+			DEFAULT_POLYNOMIAL_DISABLE;
+		handle->crc.Init.GeneratingPolynomial = config->polynomial;
+	}
 
-    handle->crc.Init.DefaultInitValueUse = DEFAULT_INIT_VALUE_DISABLE;
-    handle->crc.Init.InitValue = config->initial_value;
-    handle->crc.Init.InputDataInversionMode = CRC_INPUTDATA_INVERSION_NONE;
-    handle->crc.Init.OutputDataInversionMode = CRC_OUTPUTDATA_INVERSION_DISABLE;
+	handle->crc.Init.DefaultInitValueUse = DEFAULT_INIT_VALUE_DISABLE;
+	handle->crc.Init.InitValue = config->initial_value;
+	handle->crc.Init.InputDataInversionMode = CRC_INPUTDATA_INVERSION_NONE;
+	handle->crc.Init.OutputDataInversionMode =
+		CRC_OUTPUTDATA_INVERSION_DISABLE;
 
-    /* Set Polynomial Length */
-    switch (CRC_CONFIG_POLYNOMIAL_LENGTH_MASK(config->configs))
-    {
-    case CRC_CONFIG_POLYNOMIAL_LENGTH_32B:
-        handle->crc.Init.CRCLength = CRC_POLYLENGTH_32B;
-        break;
-    case CRC_CONFIG_POLYNOMIAL_LENGTH_16B:
-        handle->crc.Init.CRCLength = CRC_POLYLENGTH_16B;
-        break;
-    case CRC_CONFIG_POLYNOMIAL_LENGTH_8B:
-        handle->crc.Init.CRCLength = CRC_POLYLENGTH_8B;
-        break;
-    case CRC_CONFIG_POLYNOMIAL_LENGTH_7B:
-        handle->crc.Init.CRCLength = CRC_POLYLENGTH_7B;
-        break;
-    default:
-        return -EINVAL;
-    }
+	/* Set Polynomial Length */
+	switch (CRC_CONFIG_POLYNOMIAL_LENGTH_MASK(config->configs)) {
+	case CRC_CONFIG_POLYNOMIAL_LENGTH_32B:
+		handle->crc.Init.CRCLength = CRC_POLYLENGTH_32B;
+		break;
+	case CRC_CONFIG_POLYNOMIAL_LENGTH_16B:
+		handle->crc.Init.CRCLength = CRC_POLYLENGTH_16B;
+		break;
+	case CRC_CONFIG_POLYNOMIAL_LENGTH_8B:
+		handle->crc.Init.CRCLength = CRC_POLYLENGTH_8B;
+		break;
+	case CRC_CONFIG_POLYNOMIAL_LENGTH_7B:
+		handle->crc.Init.CRCLength = CRC_POLYLENGTH_7B;
+		break;
+	default:
+		return -EINVAL;
+	}
 
-    /* Set Input Format */
-    switch (CRC_CONFIG_INPUT_MASK(config->configs))
-    {
-    case CRC_CONFIG_INPUT_32B:
-        handle->crc.InputDataFormat = CRC_INPUTDATA_FORMAT_WORDS;
-        break;
-    case CRC_CONFIG_INPUT_16B:
-        handle->crc.InputDataFormat = CRC_INPUTDATA_FORMAT_HALFWORDS;
-        break;
-    case CRC_CONFIG_INPUT_8B:
-        handle->crc.InputDataFormat = CRC_INPUTDATA_FORMAT_BYTES;
-        break;
-    default:
-        return -EINVAL;
-    }
+	/* Set Input Format */
+	switch (CRC_CONFIG_INPUT_MASK(config->configs)) {
+	case CRC_CONFIG_INPUT_32B:
+		handle->crc.InputDataFormat = CRC_INPUTDATA_FORMAT_WORDS;
+		break;
+	case CRC_CONFIG_INPUT_16B:
+		handle->crc.InputDataFormat = CRC_INPUTDATA_FORMAT_HALFWORDS;
+		break;
+	case CRC_CONFIG_INPUT_8B:
+		handle->crc.InputDataFormat = CRC_INPUTDATA_FORMAT_BYTES;
+		break;
+	default:
+		return -EINVAL;
+	}
 
-    if (HAL_CRC_Init(&handle->crc) != HAL_OK)
-    {
-        return -EIO;
-    }
+	if (HAL_CRC_Init(&handle->crc) != HAL_OK)
+		return -EIO;
 
-    return 0;
+	return 0;
 }
 
 /**
@@ -118,30 +115,31 @@ static int stm32wbxx_crc_configure(const object* obj, const crc_config_t* config
  *
  * @retval  Returns 0 on success, negative error code otherwise.
  */
-static int stm32wbxx_crc_calculate(const object* obj,
-    const void* buf, int len, unsigned int* crc)
+static int stm32wbxx_crc_calculate(const object *obj,
+				   const void *buf, int len, unsigned int *crc)
 {
-    stm32wbxx_crc_handle_t* handle = (stm32wbxx_crc_handle_t*)obj->object_data;
+	stm32wbxx_crc_handle_t *handle =
+		(stm32wbxx_crc_handle_t *)obj->object_data;
 
-    if (!handle)
-        return -EINVAL;
+	if (!handle)
+		return -EINVAL;
 
-    if (!buf)
-        return -EINVAL;
+	if (!buf)
+		return -EINVAL;
 
-    if (len < 0)
-        return -EINVAL;
+	if (len < 0)
+		return -EINVAL;
 
-    if (!crc)
-        return -EINVAL;
+	if (!crc)
+		return -EINVAL;
 
-    *crc = HAL_CRC_Calculate(&handle->crc, (uint32_t*)buf, len);
+	*crc = HAL_CRC_Calculate(&handle->crc, (uint32_t *)buf, len);
 
-    return 0;
+	return 0;
 }
 
 /**
- * @brief   Compute the CRC value of an data buffer, 
+ * @brief   Compute the CRC value of an data buffer,
  *          starting with the previously computed CRC as initialization value.
  *
  * @param   obj Pointer to the CRC object handle.
@@ -151,42 +149,43 @@ static int stm32wbxx_crc_calculate(const object* obj,
  *
  * @retval  Returns 0 on success, negative error code otherwise.
  */
-static int stm32wbxx_crc_accumulate(const object* obj,
-    const void* buf, int len, unsigned int* crc)
+static int stm32wbxx_crc_accumulate(const object *obj,
+				    const void *buf, int len, unsigned int *crc)
 {
-    stm32wbxx_crc_handle_t* handle = (stm32wbxx_crc_handle_t*)obj->object_data;
+	stm32wbxx_crc_handle_t *handle =
+		(stm32wbxx_crc_handle_t *)obj->object_data;
 
-    if (!handle)
-        return -EINVAL;
+	if (!handle)
+		return -EINVAL;
 
-    if (!buf)
-        return -EINVAL;
+	if (!buf)
+		return -EINVAL;
 
-    if (len < 0)
-        return -EINVAL;
+	if (len < 0)
+		return -EINVAL;
 
-    if (!crc)
-        return -EINVAL;
+	if (!crc)
+		return -EINVAL;
 
-    *crc = HAL_CRC_Accumulate(&handle->crc, (uint32_t*)buf, len);
+	*crc = HAL_CRC_Accumulate(&handle->crc, (uint32_t *)buf, len);
 
-    return 0;
+	return 0;
 }
 
 static crc_intf_t crc_intf =
 {
-    .configure = stm32wbxx_crc_configure,
-    .calculate = stm32wbxx_crc_calculate,
-    .accumulate = stm32wbxx_crc_accumulate,
+	.configure	= stm32wbxx_crc_configure,
+	.calculate	= stm32wbxx_crc_calculate,
+	.accumulate	= stm32wbxx_crc_accumulate,
 };
 
 static stm32wbxx_crc_handle_t crc_handle;
 
 static crc_config_t crc_config =
 {
-    .initial_value = CONFIG_CRC_HW_INITIAL_VALUE,
-    .polynomial= CONFIG_CRC_HW_POLYNOMIAL,
-    .configs = CONFIG_CRC_HW_CONFIGS,
+	.initial_value	= CONFIG_CRC_HW_INITIAL_VALUE,
+	.polynomial	= CONFIG_CRC_HW_POLYNOMIAL,
+	.configs	= CONFIG_CRC_HW_CONFIGS,
 };
 
 /**
@@ -196,20 +195,21 @@ static crc_config_t crc_config =
  *
  * @retval  Returns 0 on success, negative error code otherwise.
  */
-static int stm32wbxx_crc_probe(const object* obj)
+static int stm32wbxx_crc_probe(const object *obj)
 {
-    stm32wbxx_crc_handle_t* handle = (stm32wbxx_crc_handle_t*)obj->object_data;
-    int ret;
+	stm32wbxx_crc_handle_t *handle =
+		(stm32wbxx_crc_handle_t *)obj->object_data;
+	int ret;
 
-    (void)memset(handle, 0, sizeof(stm32wbxx_crc_handle_t));
+	(void)memset(handle, 0, sizeof(stm32wbxx_crc_handle_t));
 
-    handle->crc.Instance = CRC;
+	handle->crc.Instance = CRC;
 
-    ret = crc_configure(obj, obj->object_config);
-    if (ret)
-        return ret;
+	ret = crc_configure(obj, obj->object_config);
+	if (ret)
+		return ret;
 
-    return 0;
+	return 0;
 }
 
 /**
@@ -219,21 +219,20 @@ static int stm32wbxx_crc_probe(const object* obj)
  *
  * @retval  Returns 0 on success, negative error code otherwise.
  */
-static int stm32wbxx_crc_shutdown(const object* obj)
+static int stm32wbxx_crc_shutdown(const object *obj)
 {
-    stm32wbxx_crc_handle_t* handle = (stm32wbxx_crc_handle_t*)obj->object_data;
+	stm32wbxx_crc_handle_t *handle =
+		(stm32wbxx_crc_handle_t *)obj->object_data;
 
-    if (HAL_CRC_DeInit(&handle->crc) != HAL_OK)
-    {
-        return -EIO;
-    }
+	if (HAL_CRC_DeInit(&handle->crc) != HAL_OK)
+		return -EIO;
 
-    return 0;
+	return 0;
 }
 
 module_driver(CONFIG_CRC_NAME,
-    stm32wbxx_crc_probe,
-    stm32wbxx_crc_shutdown,
-    &crc_intf, &crc_handle, &crc_config);
+	      stm32wbxx_crc_probe,
+	      stm32wbxx_crc_shutdown,
+	      &crc_intf, &crc_handle, &crc_config);
 
 #endif

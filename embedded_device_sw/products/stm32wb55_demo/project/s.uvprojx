@@ -184,6 +184,7 @@
             <hadXRAM>0</hadXRAM>
             <uocXRam>0</uocXRam>
             <RvdsVP>2</RvdsVP>
+            <RvdsMve>0</RvdsMve>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -915,11 +916,6 @@
               <FileName>hardware.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\src\hardware.c</FilePath>
-            </File>
-            <File>
-              <FileName>application_demo.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\src\application_demo.c</FilePath>
             </File>
           </Files>
         </Group>

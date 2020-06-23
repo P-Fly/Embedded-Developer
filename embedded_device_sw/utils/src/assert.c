@@ -39,20 +39,16 @@
  *
  * @retval  Pointer to the file name.
  */
-static const char* get_file_name(const char* fullpath)
+static const char *get_file_name(const char *fullpath)
 {
-    const char* ret = fullpath;
+	const char *ret = fullpath;
 
-    if (strrchr(fullpath, '\\') != NULL)
-    {
-        ret = strrchr(fullpath, '\\') + 1;
-    }
-    else if (strrchr(fullpath, '/') != NULL)
-    {
-        ret = strrchr(fullpath, '/') + 1;
-    }
+	if (strrchr(fullpath, '\\') != NULL)
+		ret = strrchr(fullpath, '\\') + 1;
+	else if (strrchr(fullpath, '/') != NULL)
+		ret = strrchr(fullpath, '/') + 1;
 
-    return ret;
+	return ret;
 }
 
 /**
@@ -64,9 +60,9 @@ static const char* get_file_name(const char* fullpath)
  */
 static void abort(void)
 {
-    osThreadSuspendAll();
+	osThreadSuspendAll();
 
-    for (;;);
+	for (;;);
 }
 
 /**
@@ -89,24 +85,23 @@ static void abort(void)
  *      _AEABI_PORTABILITY_LEVEL is defined and not 0.
  */
 __attribute__((noreturn))
-void __aeabi_assert(const char* expr, const char* file, int line)
+void __aeabi_assert(const char *expr, const char *file, int line)
 {
-    char str[12], *p;
+	char str[12], *p;
 
-    p = str + sizeof(str);
-    *--p = '\0';
-    *--p = '\n';
+	p = str + sizeof(str);
+	*--p = '\0';
+	*--p = '\n';
 
-    while (line > 0)
-    {
-        *--p = '0' + (line % 10);
-        line /= 10;
-    }
+	while (line > 0) {
+		*--p = '0' + (line % 10);
+		line /= 10;
+	}
 
-    printf("assertion failed: %s, file %s, line %s\r\n",
-        expr, get_file_name(file), p);
+	printf("assertion failed: %s, file %s, line %s\r\n",
+	       expr, get_file_name(file), p);
 
-    abort();
+	abort();
 }
 
 #endif

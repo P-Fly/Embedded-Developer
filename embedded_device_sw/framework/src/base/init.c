@@ -29,10 +29,10 @@
  */
 __weak void hardware_early_startup(void)
 {
-    /**
-     * This function should not be modified, when the callback is needed,
-     * please override it on product layer.
-     */
+	/**
+	 * This function should not be modified, when the callback is needed,
+	 * please override it on product layer.
+	 */
 }
 
 /**
@@ -44,13 +44,13 @@ __weak void hardware_early_startup(void)
  */
 __weak void hardware_late_startup(void)
 {
-    /**
-     * This function should not be modified, when the callback is needed,
-     * please override it on product layer.
-     */
+	/**
+	 * This function should not be modified, when the callback is needed,
+	 * please override it on product layer.
+	 */
 }
 
-static void init_thread(void const* argument);
+static void init_thread(void const *argument);
 osThreadDef(init, init_thread, osPriorityRealtime, 0, 2048);
 
 /**
@@ -60,24 +60,24 @@ osThreadDef(init, init_thread, osPriorityRealtime, 0, 2048);
  *
  * @retval  None.
  */
-static void init_thread(void const* argument)
+static void init_thread(void const *argument)
 {
-    (void)argument;
+	(void)argument;
 
-    (void)object_init();
+	(void)object_init();
 
-    hardware_late_startup();
+	hardware_late_startup();
 
-    osThreadSuspend(NULL);
+	osThreadSuspend(NULL);
 }
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
-    hardware_early_startup();
+	hardware_early_startup();
 
-    osThreadCreate(osThread(init), NULL);
+	osThreadCreate(osThread(init), NULL);
 
-    osKernelStart();
+	osKernelStart();
 
-    return 0;
+	return 0;
 }

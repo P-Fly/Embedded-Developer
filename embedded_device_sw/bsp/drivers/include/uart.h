@@ -59,20 +59,18 @@
  *      Transfer Mode   [ 6 : 7 ]
  *      RESERVED        [ 8 : 31 ] - Undefined or device-specific usage.
  */
-typedef struct
-{
-    unsigned int baudrate;
-    unsigned int configs;
+typedef struct {
+	unsigned int	baudrate;
+	unsigned int	configs;
 } uart_config_t;
 
 /**
  * @brief   Uart interface definitions.
  */
-typedef struct
-{
-    int (*configure)(const object* obj, const uart_config_t* config);
-    int (*write)(const object* obj, const void* tx_buf, int tx_len);
-    int (*read)(const object* obj, void* rx_buf, int rx_len);
+typedef struct {
+	int (*configure)(const object *obj, const uart_config_t *config);
+	int (*write)(const object *obj, const void *tx_buf, int tx_len);
+	int (*read)(const object *obj, void *rx_buf, int rx_len);
 } uart_intf_t;
 
 /**
@@ -83,19 +81,19 @@ typedef struct
  *
  * @retval  Returns 0 on success, negative error code otherwise.
  */
-static inline int uart_configure(const object* obj, const uart_config_t* config)
+static inline int uart_configure(const object *obj, const uart_config_t *config)
 {
-    uart_intf_t* intf;
+	uart_intf_t *intf;
 
-    if (!obj)
-        return -EINVAL;
+	if (!obj)
+		return -EINVAL;
 
-    intf = (uart_intf_t*)obj->object_intf;
-    if ((intf == NULL)
-        || (intf->configure == NULL))
-        return -ENOSUPPORT;
+	intf = (uart_intf_t *)obj->object_intf;
+	if ((intf == NULL)
+	    || (intf->configure == NULL))
+		return -ENOSUPPORT;
 
-    return intf->configure(obj, config);
+	return intf->configure(obj, config);
 }
 
 /**
@@ -108,19 +106,19 @@ static inline int uart_configure(const object* obj, const uart_config_t* config)
  * @retval  The number of data bytes write to the slave on success,
  *          negative error code otherwise.
  */
-static inline int uart_write(const object* obj, const void* tx_buf, int tx_len)
+static inline int uart_write(const object *obj, const void *tx_buf, int tx_len)
 {
-    uart_intf_t* intf;
+	uart_intf_t *intf;
 
-    if (!obj)
-        return -EINVAL;
+	if (!obj)
+		return -EINVAL;
 
-    intf = (uart_intf_t*)obj->object_intf;
-    if ((intf == NULL)
-        || (intf->write == NULL))
-        return -ENOSUPPORT;
+	intf = (uart_intf_t *)obj->object_intf;
+	if ((intf == NULL)
+	    || (intf->write == NULL))
+		return -ENOSUPPORT;
 
-    return intf->write(obj, tx_buf, tx_len);
+	return intf->write(obj, tx_buf, tx_len);
 }
 
 /**
@@ -133,19 +131,19 @@ static inline int uart_write(const object* obj, const void* tx_buf, int tx_len)
  * @retval  The number of data bytes read from the slave on success,
  *          negative error code otherwise.
  */
-static inline int uart_read(const object* obj, void* rx_buf, int rx_len)
+static inline int uart_read(const object *obj, void *rx_buf, int rx_len)
 {
-    uart_intf_t* intf;
+	uart_intf_t *intf;
 
-    if (!obj)
-        return -EINVAL;
+	if (!obj)
+		return -EINVAL;
 
-    intf = (uart_intf_t*)obj->object_intf;
-    if ((intf == NULL)
-        || (intf->read == NULL))
-        return -ENOSUPPORT;
+	intf = (uart_intf_t *)obj->object_intf;
+	if ((intf == NULL)
+	    || (intf->read == NULL))
+		return -ENOSUPPORT;
 
-    return intf->read(obj, rx_buf, rx_len);
+	return intf->read(obj, rx_buf, rx_len);
 }
 
 #endif /* __UART_H__ */

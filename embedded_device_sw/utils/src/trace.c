@@ -28,12 +28,11 @@
 /**
  * @brief   Trace handle definition.
  */
-typedef struct
-{
-    object* port;
+typedef struct {
+	object *port;
 } trace_handle_t;
 
-trace_handle_t trace_handle;
+static trace_handle_t trace_handle;
 
 /**
  * These are different compilers for ARM processors,
@@ -42,25 +41,25 @@ trace_handle_t trace_handle;
  */
 #if defined(__CC_ARM)
 
-int fputc(int ch, FILE* f)
+int fputc(int ch, FILE *f)
 {
-    char tempch = ch;
-    int ret;
+	char tempch = ch;
+	int ret;
 
-    (void)f;
+	(void)f;
 
-    /**
-     * Critical protection is not required,
-     * due to this handle is not modified at runtime.
-     */
-    if (!trace_handle.port)
-        return -EIO;
+	/**
+	 * Critical protection is not required,
+	 * due to this handle is not modified at runtime.
+	 */
+	if (!trace_handle.port)
+		return -EIO;
 
-    ret = uart_write(trace_handle.port, &tempch, 1);
-    if (ret != 1)
-        return -EIO;
+	ret = uart_write(trace_handle.port, &tempch, 1);
+	if (ret != 1)
+		return -EIO;
 
-    return ch;
+	return ch;
 }
 
 #elif defined(__GNUC__)
@@ -92,17 +91,17 @@ int fputc(int ch, FILE* f)
  *
  * @retval  Returns 0 on success, negative error code otherwise.
  */
-static int trace_probe(const object* obj)
+static int trace_probe(const object *obj)
 {
-    trace_handle_t* handle = (trace_handle_t*)obj->object_data;
+	trace_handle_t *handle = (trace_handle_t *)obj->object_data;
 
-    (void)memset(handle, 0, sizeof(trace_handle_t));
+	(void)memset(handle, 0, sizeof(trace_handle_t));
 
-    handle->port = object_get_binding(CONFIG_TRACE_PORT_NAME);
-    if (!handle->port)
-        return -ENXIO;
+	handle->port = object_get_binding(CONFIG_TRACE_PORT_NAME);
+	if (!handle->port)
+		return -ENXIO;
 
-    return 0;
+	return 0;
 }
 
 /**
@@ -112,16 +111,16 @@ static int trace_probe(const object* obj)
  *
  * @retval  Returns 0 on success, negative error code otherwise.
  */
-static int trace_shutdown(const object* obj)
+static int trace_shutdown(const object *obj)
 {
-    (void)obj;
+	(void)obj;
 
-    return 0;
+	return 0;
 }
 
 module_early_driver(CONFIG_TRACE_NAME,
-    trace_probe,
-    trace_shutdown,
-    NULL, &trace_handle, NULL);
+		    trace_probe,
+		    trace_shutdown,
+		    NULL, &trace_handle, NULL);
 
 #endif

@@ -40,22 +40,21 @@ typedef int (*tunit_suit_cleanup_fn)(void);
 /**
  * @brief   Test Suit structure.
  */
-typedef struct _tunit_suit
-{
-    char* suit_name;
-    tunit_suit_initialize_fn initialize;
-    tunit_suit_cleanup_fn cleanup;
+typedef struct _tunit_suit {
+	char *				suit_name;
+	tunit_suit_initialize_fn	initialize;
+	tunit_suit_cleanup_fn		cleanup;
 } tunit_suit;
 
-#define __define_tunit_suit(_suit_name, _initialize, _cleanup)      \
-    static tunit_suit __tunit_suit_def_##_suit_name                 \
-    __attribute__((used, section("tunit_suit"))) = {                \
-        .suit_name = STRINGIFY(_suit_name),                         \
-        .initialize = (_initialize),                                \
-        .cleanup = (_cleanup) }
+#define __define_tunit_suit(_suit_name, _initialize, _cleanup) \
+	static tunit_suit __tunit_suit_def_ ## _suit_name \
+	__attribute__((used, section("tunit_suit"))) = { \
+		.suit_name	= STRINGIFY(_suit_name), \
+		.initialize	= (_initialize), \
+		.cleanup	= (_cleanup) }
 
-#define define_tunit_suit(name, initialize, cleanup)                \
-    __define_tunit_suit(name, initialize, cleanup)
+#define define_tunit_suit(name, initialize, cleanup) \
+	__define_tunit_suit(name, initialize, cleanup)
 
 /**
  * @brief   Test Case interfaces.
@@ -65,22 +64,21 @@ typedef void (*tunit_case_fn)(void);
 /**
  * @brief   Test Case structure.
  */
-typedef struct _tunit_case
-{
-    char* suit_name;
-    char* case_name;
-    tunit_case_fn case_func;
+typedef struct _tunit_case {
+	char *		suit_name;
+	char *		case_name;
+	tunit_case_fn	case_func;
 } tunit_case;
 
-#define __define_tunit_case(_suit_name, _case_name, _case_func)     \
-    static tunit_case __tunit_case_def_##_suit_name##_##_case_name  \
-    __attribute__((used, section("tunit_case"))) = {                \
-        .suit_name = STRINGIFY(_suit_name),                         \
-        .case_name = STRINGIFY(_case_name),                         \
-        .case_func = (_case_func) }
+#define __define_tunit_case(_suit_name, _case_name, _case_func) \
+	static tunit_case __tunit_case_def_ ## _suit_name ## _ ## _case_name \
+	__attribute__((used, section("tunit_case"))) = { \
+		.suit_name	= STRINGIFY(_suit_name), \
+		.case_name	= STRINGIFY(_case_name), \
+		.case_func	= (_case_func) }
 
-#define define_tunit_case(_suit_name, _case_name, _case_func)       \
-    __define_tunit_case(_suit_name, _case_name, _case_func)
+#define define_tunit_case(_suit_name, _case_name, _case_func) \
+	__define_tunit_case(_suit_name, _case_name, _case_func)
 
 #define TUNIT_TEST(value) CU_TEST(value)
 #define TUNIT_TEST_FATAL(value) CU_TEST_FATAL(value)
