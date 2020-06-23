@@ -145,8 +145,8 @@ static void tcace_crc_accumulate(void)
 define_tunit_suit(CONFIG_TUNIT_CRC_SUIT_NAME,
 		  tcase_suit_initialize, tcase_suit_cleanup);
 define_tunit_case(CONFIG_TUNIT_CRC_SUIT_NAME,
-		  tcace_crc_calculate, tcace_crc_calculate);
+		  "CRC calculate test", tcace_crc_calculate);
 define_tunit_case(CONFIG_TUNIT_CRC_SUIT_NAME,
-		  tcace_crc_accumulate, tcace_crc_accumulate);
+		  "CRC accumulate test", tcace_crc_accumulate);
 
 #endif /* CONFIG_TUNIT_CRC_SUIT_NAME */

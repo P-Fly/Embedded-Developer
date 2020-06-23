@@ -71,10 +71,10 @@ typedef struct _tunit_case {
 } tunit_case;
 
 #define __define_tunit_case(_suit_name, _case_name, _case_func) \
-	static tunit_case __tunit_case_def_ ## _suit_name ## _ ## _case_name \
+	static tunit_case __tunit_case_def_ ## _suit_name ## _ ## _case_func \
 	__attribute__((used, section("tunit_case"))) = { \
 		.suit_name	= STRINGIFY(_suit_name), \
-		.case_name	= STRINGIFY(_case_name), \
+		.case_name	= (_case_name), \
 		.case_func	= (_case_func) }
 
 #define define_tunit_case(_suit_name, _case_name, _case_func) \

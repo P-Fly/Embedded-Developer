@@ -89,6 +89,6 @@ static void tcace_ring_buff(void)
 define_tunit_suit(CONFIG_TUNIT_RING_BUFF_SUIT_NAME,
 		  tcase_suit_initialize, tcase_suit_cleanup);
 define_tunit_case(CONFIG_TUNIT_RING_BUFF_SUIT_NAME,
-		  tcace_ring_buff, tcace_ring_buff);
+		  "Ring buff init/read/write test", tcace_ring_buff);
 
 #endif /* CONFIG_TUNIT_RING_BUFF_SUIT_NAME */

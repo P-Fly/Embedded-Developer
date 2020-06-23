@@ -65,7 +65,7 @@ static void tcase_testcase(void)
 define_tunit_suit(CONFIG_TUNIT_TUNIT_SUIT_NAME,
 		  tcase_suit_initialize, tcase_suit_cleanup);
 define_tunit_case(CONFIG_TUNIT_TUNIT_SUIT_NAME,
-		  tcase_testcase, tcase_testcase);
+		  "Tunit basic test", tcase_testcase);
 
 extern tunit_suit tunit_suit$$Base[];
 extern tunit_suit tunit_suit$$Limit[];
