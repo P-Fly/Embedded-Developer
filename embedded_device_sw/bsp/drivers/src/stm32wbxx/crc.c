@@ -17,8 +17,6 @@
  */
 
 #include <string.h>
-#include "object.h"
-#include "err.h"
 #include "stm32wbxx_hal.h"
 #include "crc.h"
 
