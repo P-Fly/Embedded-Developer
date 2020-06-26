@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>
 #include "cmsis_os2.h"
 #include "object.h"
 #include "err.h"
+#include "log.h"
 
 /**
  * @brief   Startup hardware early.
@@ -79,15 +79,15 @@ static void init_thread(void *argument)
 
 	(void)object_init();
 
-	printf("All object initialized.\r\n");
+	pr_info("All object initialized.");
 
 	hardware_late_startup();
 
 	stat = osThreadSuspend(osThreadGetId());
 	if (stat != osOK)
-		printf("Suspend %s thread failed, stat = %d.\r\n",
-		       osThreadGetName(osThreadGetId()),
-		       stat);
+		pr_error("Suspend %s thread failed, stat = %d.",
+			 osThreadGetName(osThreadGetId()),
+			 stat);
 }
 
 __attribute__((noreturn))
@@ -100,17 +100,17 @@ int main(int argc, char *argv[])
 
 	stat = osKernelInitialize();
 	if (stat != osOK)
-		printf("Kernel initialize failed, stat = %d.\r\n", stat);
+		pr_error("Kernel initialize failed, stat = %d.", stat);
 
 	thread_id = osThreadNew(init_thread, NULL, &init_attr);
 	if (!thread_id)
-		printf("Create %s thread failed.\r\n", init_attr.name);
+		pr_error("Create %s thread failed.", init_attr.name);
 	else
-		printf("Create %s thread succeed.\r\n", init_attr.name);
+		pr_info("Create %s thread succeed.", init_attr.name);
 
 	stat = osKernelStart();
 	if (stat != osOK)
-		printf("Kernel start failed, stat = %d.\r\n", stat);
+		pr_error("Kernel start failed, stat = %d.", stat);
 
 	/* The program is undefined, if the code reaches this point. */
 	while (1);

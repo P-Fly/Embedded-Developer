@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>
 #include <string.h>
 #include "cmsis_os2.h"
 #include "object.h"
 #include "err.h"
+#include "log.h"
 #include "CUnit.h"
 #include "Basic.h"
 #include "tunit.h"
@@ -176,7 +176,7 @@ static void tunit_thread(void *argument)
 	for (;;) {
 		stat = osThreadSuspend(handle->thread_id);
 		if (stat != osOK)
-			printf("Suspend %s thread failed, stat = %d.\r\n",
+			pr_error("Suspend %s thread failed, stat = %d.\r\n",
 			       osThreadGetName(handle->thread_id),
 			       stat);
 	}
@@ -197,9 +197,9 @@ static int tunit_probe(const object *obj)
 
 	handle->thread_id = osThreadNew(tunit_thread, handle, &tunit_attr);
 	if (!handle->thread_id)
-		printf("Create %s thread failed.\r\n", tunit_attr.name);
+		pr_error("Create %s thread failed.", tunit_attr.name);
 	else
-		printf("Create %s thread succeed.\r\n", tunit_attr.name);
+		pr_info("Create %s thread succeed.", tunit_attr.name);
 
 	return 0;
 }
@@ -219,11 +219,11 @@ static int tunit_shutdown(const object *obj)
 	if (handle->thread_id) {
 		stat = osThreadTerminate(handle->thread_id);
 		if (stat != osOK)
-			printf("Terminate %s thread failed, stat = %d.\r\n",
+			pr_error("Terminate %s thread failed, stat = %d.",
 			       osThreadGetName(handle->thread_id),
 			       stat);
 		else
-			printf("Terminate %s thread succeed.\r\n",
+			pr_info("Terminate %s thread succeed.",
 			       osThreadGetName(handle->thread_id));
 	}
 

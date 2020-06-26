@@ -41,14 +41,14 @@ typedef int (*resume)(const object *obj, int level);
 typedef struct _object {
 	const char *	name;
 
-	probe			probe;          /* Power on */
-	shutdown		shutdown;       /* Power off */
-	suspend			suspend;        /* Suspend */
-	resume			resume;         /* Resume */
+	probe		probe;                  /* Power on */
+	shutdown	shutdown;               /* Power off */
+	suspend		suspend;                /* Suspend */
+	resume		resume;                 /* Resume */
 
-	void *			object_intf;    /* Object API */
-	void *			object_data;    /* Runtime instance */
-	void *			object_config;  /* User config */
+	void *		object_intf;            /* Object API */
+	void *		object_data;            /* Runtime instance */
+	void *		object_config;          /* User config */
 } object;
 
 /**
