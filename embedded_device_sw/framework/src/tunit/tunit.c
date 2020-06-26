@@ -16,8 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <stdio.h>
 #include <string.h>
-#include "cmsis_os.h"
+#include "cmsis_os2.h"
 #include "object.h"
 #include "err.h"
 #include "CUnit.h"
@@ -25,6 +26,15 @@
 #include "tunit.h"
 
 #ifdef CONFIG_TUNIT_ENABLE
+
+/**
+ * @brief   tunit handle definition.
+ */
+typedef struct {
+	osThreadId_t thread_id;
+} tunit_handle_t;
+
+static tunit_handle_t tunit_handle;
 
 /**
  * @brief   Suite initialization function.
@@ -127,8 +137,18 @@ static int tunit_register_all_suit_and_case(void)
 	return 0;
 }
 
-static void tunit_thread(void const *argument);
-osThreadDef(tunit, tunit_thread, osPriorityNormal, 0, 2048);
+/**
+ * @brief   Attributes structure for tunit thread.
+ */
+const osThreadAttr_t tunit_attr = {
+	.name		= "tunit",
+	.attr_bits	= osThreadDetached,
+	.cb_mem		= NULL,
+	.cb_size	= 0,
+	.stack_mem	= NULL,
+	.stack_size	= 256,
+	.priority	= osPriorityNormal,
+};
 
 /**
  * @brief   A unit testing application, depend on CUnit module.
@@ -137,9 +157,11 @@ osThreadDef(tunit, tunit_thread, osPriorityNormal, 0, 2048);
  *
  * @retval  None.
  */
-static void tunit_thread(void const *argument)
+static void tunit_thread(void *argument)
 {
-	(void)argument;
+	osStatus_t stat;
+
+	tunit_handle_t *handle = (tunit_handle_t *)argument;
 
 	CU_initialize_registry();
 
@@ -151,18 +173,14 @@ static void tunit_thread(void const *argument)
 
 	CU_cleanup_registry();
 
-	for (;;)
-		osThreadSuspend(NULL);
+	for (;;) {
+		stat = osThreadSuspend(handle->thread_id);
+		if (stat != osOK)
+			printf("Suspend %s thread failed, stat = %d.\r\n",
+			       osThreadGetName(handle->thread_id),
+			       stat);
+	}
 }
-
-/**
- * @brief   tunit handle definition.
- */
-typedef struct {
-	osThreadId thread_id;
-} tunit_handle_t;
-
-static tunit_handle_t tunit_handle;
 
 /**
  * @brief   Probe the tunit module.
@@ -177,7 +195,11 @@ static int tunit_probe(const object *obj)
 
 	(void)memset(handle, 0, sizeof(tunit_handle_t));
 
-	handle->thread_id = osThreadCreate(osThread(tunit), NULL);
+	handle->thread_id = osThreadNew(tunit_thread, handle, &tunit_attr);
+	if (!handle->thread_id)
+		printf("Create %s thread failed.\r\n", tunit_attr.name);
+	else
+		printf("Create %s thread succeed.\r\n", tunit_attr.name);
 
 	return 0;
 }
@@ -192,9 +214,18 @@ static int tunit_probe(const object *obj)
 static int tunit_shutdown(const object *obj)
 {
 	tunit_handle_t *handle = (tunit_handle_t *)obj->object_data;
+	osStatus_t stat;
 
-	if (handle->thread_id)
-		osThreadTerminate(handle->thread_id);
+	if (handle->thread_id) {
+		stat = osThreadTerminate(handle->thread_id);
+		if (stat != osOK)
+			printf("Terminate %s thread failed, stat = %d.\r\n",
+			       osThreadGetName(handle->thread_id),
+			       stat);
+		else
+			printf("Terminate %s thread succeed.\r\n",
+			       osThreadGetName(handle->thread_id));
+	}
 
 	return 0;
 }

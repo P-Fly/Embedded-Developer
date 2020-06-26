@@ -184,7 +184,6 @@
             <hadXRAM>0</hadXRAM>
             <uocXRam>0</uocXRam>
             <RvdsVP>2</RvdsVP>
-            <RvdsMve>0</RvdsMve>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -338,7 +337,7 @@
               <MiscControls></MiscControls>
               <Define>CORE_CM4,STM32WB,STM32WB55xx,USE_HAL_DRIVER,__ASSERT_MSG</Define>
               <Undefine></Undefine>
-              <IncludePath>..\conf;..\include;..\..\..\bsp\arch\arm\cortex_m\cmsis\core\include;..\..\..\bsp\arch\arm\cortex_m\cmsis\device\stm32wb55\include;..\..\..\bsp\drivers\include;..\..\..\bsp\drivers\lib\stm32wbxx\include;..\..\..\framework\include;..\..\..\middlewares\external\freertos\CMSIS_RTOS;..\..\..\middlewares\external\freertos\include;..\..\..\middlewares\external\freertos\portable\RVDS\ARM_CM4F;..\..\..\middlewares\external\cunit\include;..\..\..\utils\include</IncludePath>
+              <IncludePath>..\conf;..\include;..\..\..\bsp\arch\arm\cortex_m\cmsis\core\include;..\..\..\bsp\arch\arm\cortex_m\cmsis\device\stm32wb55\include;..\..\..\bsp\drivers\include;..\..\..\bsp\drivers\lib\stm32wbxx\include;..\..\..\framework\include;..\..\..\middlewares\external\freertos\CMSIS_RTOS_V2;..\..\..\middlewares\external\freertos\include;..\..\..\middlewares\external\freertos\portable\RVDS\ARM_CM4F;..\..\..\middlewares\external\cunit\include;..\..\..\utils\include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -808,9 +807,9 @@
               <FilePath>..\..\..\middlewares\external\freertos\portable\RVDS\ARM_CM4F\port.c</FilePath>
             </File>
             <File>
-              <FileName>cmsis_os.c</FileName>
+              <FileName>cmsis_os2.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\middlewares\external\freertos\CMSIS_RTOS\cmsis_os.c</FilePath>
+              <FilePath>..\..\..\middlewares\external\freertos\CMSIS_RTOS_V2\cmsis_os2.c</FilePath>
             </File>
           </Files>
         </Group>

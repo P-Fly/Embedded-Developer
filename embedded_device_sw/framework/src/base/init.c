@@ -16,7 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "cmsis_os.h"
+#include <stdio.h>
+#include "cmsis_os2.h"
 #include "object.h"
 #include "err.h"
 
@@ -50,8 +51,18 @@ __weak void hardware_late_startup(void)
 	 */
 }
 
-static void init_thread(void const *argument);
-osThreadDef(init, init_thread, osPriorityRealtime, 0, 2048);
+/**
+ * @brief   Attributes structure for init thread.
+ */
+const osThreadAttr_t init_attr = {
+	.name		= "init",
+	.attr_bits	= osThreadDetached,
+	.cb_mem		= NULL,
+	.cb_size	= 0,
+	.stack_mem	= NULL,
+	.stack_size	= 256,
+	.priority	= osPriorityRealtime,
+};
 
 /**
  * @brief   Initialize thread, include all drivers, services, applications etc.
@@ -60,24 +71,47 @@ osThreadDef(init, init_thread, osPriorityRealtime, 0, 2048);
  *
  * @retval  None.
  */
-static void init_thread(void const *argument)
+static void init_thread(void *argument)
 {
+	osStatus_t stat;
+
 	(void)argument;
 
 	(void)object_init();
 
+	printf("All object initialized.\r\n");
+
 	hardware_late_startup();
 
-	osThreadSuspend(NULL);
+	stat = osThreadSuspend(osThreadGetId());
+	if (stat != osOK)
+		printf("Suspend %s thread failed, stat = %d.\r\n",
+		       osThreadGetName(osThreadGetId()),
+		       stat);
 }
 
+__attribute__((noreturn))
 int main(int argc, char *argv[])
 {
+	osThreadId_t thread_id;
+	osStatus_t stat;
+
 	hardware_early_startup();
 
-	osThreadCreate(osThread(init), NULL);
+	stat = osKernelInitialize();
+	if (stat != osOK)
+		printf("Kernel initialize failed, stat = %d.\r\n", stat);
 
-	osKernelStart();
+	thread_id = osThreadNew(init_thread, NULL, &init_attr);
+	if (!thread_id)
+		printf("Create %s thread failed.\r\n", init_attr.name);
+	else
+		printf("Create %s thread succeed.\r\n", init_attr.name);
 
-	return 0;
+	stat = osKernelStart();
+	if (stat != osOK)
+		printf("Kernel start failed, stat = %d.\r\n", stat);
+
+	/* The program is undefined, if the code reaches this point. */
+	while (1);
 }

@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "cmsis_os.h"
 #include "object.h"
 #include "err.h"
 #include "stm32wbxx_hal.h"

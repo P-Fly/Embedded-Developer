@@ -19,7 +19,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
-#include "cmsis_os.h"
+#include "cmsis_os2.h"
 #include "object.h"
 #include "err.h"
 #include "utils_conf.h"
@@ -60,7 +60,7 @@ static const char *get_file_name(const char *fullpath)
  */
 static void abort(void)
 {
-	osThreadSuspendAll();
+	osKernelLock();
 
 	for (;;);
 }
