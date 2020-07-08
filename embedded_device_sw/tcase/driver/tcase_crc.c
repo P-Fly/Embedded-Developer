@@ -79,7 +79,7 @@ static const unsigned int expected_crc_32B = 0x379E9F06;
  */
 static void tcace_crc_calculate(void)
 {
-	object *obj;
+	const object *obj;
 	crc_config_t config;
 	unsigned int crc;
 	int ret;
@@ -112,7 +112,7 @@ static void tcace_crc_calculate(void)
  */
 static void tcace_crc_accumulate(void)
 {
-	object *obj;
+	const object *obj;
 	crc_config_t config;
 	unsigned int crc;
 	int ret;
@@ -143,10 +143,16 @@ static void tcace_crc_accumulate(void)
 }
 
 define_tunit_suit(CONFIG_TUNIT_CRC_SUIT_NAME,
-		  tcase_suit_initialize, tcase_suit_cleanup);
+		  CONFIG_TUNIT_CRC_SUIT_LABEL,
+		  tcase_suit_initialize,
+		  tcase_suit_cleanup);
 define_tunit_case(CONFIG_TUNIT_CRC_SUIT_NAME,
-		  "CRC calculate test", tcace_crc_calculate);
+		  CONFIG_TUNIT_CRC_SUIT_LABEL,
+		  "CRC calculate test",
+		  tcace_crc_calculate);
 define_tunit_case(CONFIG_TUNIT_CRC_SUIT_NAME,
-		  "CRC accumulate test", tcace_crc_accumulate);
+		  CONFIG_TUNIT_CRC_SUIT_LABEL,
+		  "CRC accumulate test",
+		  tcace_crc_accumulate);
 
 #endif /* CONFIG_TUNIT_CRC_SUIT_NAME */

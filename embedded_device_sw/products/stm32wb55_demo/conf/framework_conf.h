@@ -16,16 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __UTILS_CONF_H__
-#define __UTILS_CONF_H__
+#ifndef __SERVICE_CONF_H__
+#define __SERVICE_CONF_H__
 
-#define CONFIG_TRACE_ENABLE
-#if defined(CONFIG_TRACE_ENABLE)
-#define CONFIG_TRACE_NAME "trace module"
-#define CONFIG_TRACE_LABEL trace_module
-#define CONFIG_TRACE_PORT_NAME CONFIG_UART1_NAME
-#endif
+#define CONFIG_MSG_ID_SERVICE_EVT_BASE 0x4000
+#define CONFIG_MSG_ID_SERVICE_REQ_BASE 0x8000
+#define CONFIG_MSG_ID_SERVICE_RSP_BASE 0xC000
 
-#define CONFIG_ASSERT_ENABLE
+#define CONFIG_MSG_SEND_BLOCK_TIMEOUT_MS 20
 
-#endif /* __UTILS_CONF_H__ */
+#define CONFIG_INIT_THREAD_NAME "init thread"
+#define CONFIG_INIT_THREAD_STACK_SIZE 2048
+#define CONFIG_INIT_THREAD_PRIORITY osPriorityRealtime
+
+#define CONFIG_SERVICE_DEFAULT_THREAD_NAME "default service thread"
+#define CONFIG_SERVICE_DEFAULT_THREAD_STACK_SIZE 2048
+#define CONFIG_SERVICE_DEFAULT_THREAD_PRIORITY osPriorityNormal
+
+#define CONFIG_SERVICE_DEFAULT_QUEUE_NAME "default service queue"
+#define CONFIG_SERVICE_DEFAULT_QUEUE_LENGTH 10
+
+#endif /* __SERVICE_CONF_H__ */

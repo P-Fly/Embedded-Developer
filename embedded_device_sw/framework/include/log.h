@@ -21,21 +21,26 @@
 
 #include <stdio.h>
 
+#define RED_LABEL    "\033[47;31m"
+#define NORMAL_LABEL "\033[0m"
+
 /**
  * Log an error message.
  */
-#define pr_error(format, ...) printf("[ERR][%s][%d] " format "\r\n", \
-				     __FUNCTION__, \
-				     __LINE__, \
-				     ## __VA_ARGS__)
+#define pr_error(format, ...) printf( \
+		RED_LABEL "[ERR][%s][%d] " format "\r\n" NORMAL_LABEL, \
+		__FUNCTION__, \
+		__LINE__, \
+		## __VA_ARGS__)
 
 /**
  * Log a warning message.
  */
-#define pr_warning(format, ...) printf("[WARN][%s][%d] " format "\r\n", \
-				       __FUNCTION__, \
-				       __LINE__, \
-				       ## __VA_ARGS__)
+#define pr_warning(format, ...) printf( \
+		RED_LABEL "[WARN][%s][%d] " format "\r\n" NORMAL_LABEL, \
+		__FUNCTION__, \
+		__LINE__, \
+		## __VA_ARGS__)
 
 /**
  * Log an info message.

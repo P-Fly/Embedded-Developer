@@ -20,6 +20,7 @@
 #include "object.h"
 #include "err.h"
 #include "log.h"
+#include "framework_conf.h"
 
 /**
  * @brief   Startup hardware early.
@@ -55,13 +56,13 @@ __weak void hardware_late_startup(void)
  * @brief   Attributes structure for init thread.
  */
 const osThreadAttr_t init_attr = {
-	.name		= "init",
+	.name		= CONFIG_INIT_THREAD_NAME,
 	.attr_bits	= osThreadDetached,
 	.cb_mem		= NULL,
 	.cb_size	= 0,
 	.stack_mem	= NULL,
-	.stack_size	= 256,
-	.priority	= osPriorityRealtime,
+	.stack_size	= CONFIG_INIT_THREAD_STACK_SIZE,
+	.priority	= CONFIG_INIT_THREAD_PRIORITY,
 };
 
 /**
@@ -79,13 +80,13 @@ static void init_thread(void *argument)
 
 	(void)object_init();
 
-	pr_info("All object initialized.");
+	pr_info("All objects initialized.");
 
 	hardware_late_startup();
 
 	stat = osThreadSuspend(osThreadGetId());
 	if (stat != osOK)
-		pr_error("Suspend %s thread failed, stat = %d.",
+		pr_error("Suspend thread <%s> failed, stat = %d.",
 			 osThreadGetName(osThreadGetId()),
 			 stat);
 }
@@ -104,9 +105,9 @@ int main(int argc, char *argv[])
 
 	thread_id = osThreadNew(init_thread, NULL, &init_attr);
 	if (!thread_id)
-		pr_error("Create %s thread failed.", init_attr.name);
+		pr_error("Create thread <%s> failed.", init_attr.name);
 	else
-		pr_info("Create %s thread succeed.", init_attr.name);
+		pr_info("Create thread <%s> succeed.", init_attr.name);
 
 	stat = osKernelStart();
 	if (stat != osOK)

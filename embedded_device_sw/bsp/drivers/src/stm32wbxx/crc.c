@@ -19,6 +19,7 @@
 #include <string.h>
 #include "stm32wbxx_hal.h"
 #include "crc.h"
+#include "log.h"
 
 #if defined(CONFIG_CRC_ENABLE)
 
@@ -207,6 +208,8 @@ static int stm32wbxx_crc_probe(const object *obj)
 	if (ret)
 		return ret;
 
+	pr_info("Object <%s> probe succeed.", obj->name);
+
 	return 0;
 }
 
@@ -225,10 +228,13 @@ static int stm32wbxx_crc_shutdown(const object *obj)
 	if (HAL_CRC_DeInit(&handle->crc) != HAL_OK)
 		return -EIO;
 
+	pr_info("Object <%s> shutdown succeed.", obj->name);
+
 	return 0;
 }
 
 module_driver(CONFIG_CRC_NAME,
+	      CONFIG_CRC_LABEL,
 	      stm32wbxx_crc_probe,
 	      stm32wbxx_crc_shutdown,
 	      &crc_intf, &crc_handle, &crc_config);

@@ -21,9 +21,6 @@
 
 #include <stddef.h>
 
-#define _STRINGIFY(x) #x
-#define STRINGIFY(s) _STRINGIFY(s)
-
 struct _object;
 typedef struct _object object;
 
@@ -64,11 +61,19 @@ typedef struct _object {
  * and remove that completely, so the objects sections have to be marked
  * as 'used' in the linker attribute.
  */
-#define __define_object(object_name, probe_fn, shutdown_fn, suspend_fn, \
-			resume_fn, intf, runtime, config, id) \
-	static object __object_def_ ## id ## _ ## object_name \
+#define __define_object(object_name, \
+			object_label, \
+			probe_fn, \
+			shutdown_fn, \
+			suspend_fn, \
+			resume_fn, \
+			intf, \
+			runtime, \
+			config, \
+			id) \
+	static const object __object_def_ ## id ## _ ## object_label \
 	__attribute__((used, section("module_object_" #id))) = { \
-		.name		= STRINGIFY(object_name), \
+		.name		= (object_name), \
 		.probe		= (probe_fn), \
 		.shutdown	= (shutdown_fn), \
 		.suspend	= (suspend_fn), \
@@ -77,33 +82,38 @@ typedef struct _object {
 		.object_data	= (runtime), \
 		.object_config	= (config) }
 
-#define module_pre(name, probe, shutdown, intf, runtime, config) \
-	__define_object(name, probe, shutdown, NULL, NULL, \
+#define module_pre(name, label, probe, shutdown, intf, runtime, config) \
+	__define_object(name, label, probe, shutdown, NULL, NULL, \
 			intf, runtime, config, 0)
-#define module_core(name, probe, shutdown, intf, runtime, config) \
-	__define_object(name, probe, shutdown, NULL, NULL, \
+#define module_core(name, label, probe, shutdown, intf, runtime, config) \
+	__define_object(name, label, probe, shutdown, NULL, NULL, \
 			intf, runtime, config, 1)
-#define module_early_driver(name, probe, shutdown, intf, runtime, config) \
-	__define_object(name, probe, shutdown, NULL, NULL, \
+#define module_early_driver(name, label, probe, shutdown, intf, runtime, config) \
+	__define_object(name, label, probe, shutdown, NULL, NULL, \
 			intf, runtime, config, 2)
-#define module_driver(name, probe, shutdown, intf, runtime, config) \
-	__define_object(name, probe, shutdown, NULL, NULL, \
+#define module_driver(name, label, probe, shutdown, intf, runtime, config) \
+	__define_object(name, label, probe, shutdown, NULL, NULL, \
 			intf, runtime, config, 3)
-#define module_service_manager(name, probe, shutdown, intf, runtime, config) \
-	__define_object(name, probe, shutdown, NULL, NULL, \
+#define module_service_manager(name, \
+			       label, \
+			       probe, \
+			       shutdown, \
+			       intf, \
+			       runtime, \
+			       config) \
+	__define_object(name, label, probe, shutdown, NULL, NULL, \
 			intf, runtime, config, 4)
-#define module_service(name, probe, shutdown, intf, runtime, config) \
-	__define_object(name, probe, shutdown, NULL, NULL, \
+#define module_service(name, label, probe, shutdown, intf, runtime, config) \
+	__define_object(name, label, probe, shutdown, NULL, NULL, \
 			intf, runtime, config, 5)
-#define module_application(name, probe, shutdown, intf, runtime, config) \
-	__define_object(name, probe, shutdown, NULL, NULL, \
+#define module_application(name, label, probe, shutdown, intf, runtime, config) \
+	__define_object(name, label, probe, shutdown, NULL, NULL, \
 			intf, runtime, config, 6)
 
 extern int object_init(void);
 extern int object_deinit(void);
 extern int object_suspend(int level);
 extern int object_resume(int level);
-extern object *_object_get_binding(const char *const name);
-#define object_get_binding(name) _object_get_binding(STRINGIFY(name))
+extern const object *object_get_binding(const char *const name);
 
 #endif /* __OBJECT_H__ */

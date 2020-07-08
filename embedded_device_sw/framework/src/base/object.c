@@ -245,11 +245,11 @@ int object_resume(int resume_level)
 /**
  * @brief   Get the object handle.
  *
- * @param   name Object name
+ * @param   name Object name.
  *
- * @retval  None
+ * @retval  Object handle for reference or NULL in case of error.
  */
-object *_object_get_binding(const char *const name)
+const object *object_get_binding(const char *const name)
 {
 	int level;
 	object *obj;

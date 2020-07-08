@@ -21,11 +21,29 @@
 
 #define CONFIG_TUNIT_ENABLE
 #if defined(CONFIG_TUNIT_ENABLE)
-#define CONFIG_TUNIT_NAME TUNIT_MODULE
+#define CONFIG_TUNIT_NAME "tunit application"
+#define CONFIG_TUNIT_LABEL tunit_application
 
-#define CONFIG_TUNIT_TUNIT_SUIT_NAME TUNIT_SUIT
-#define CONFIG_TUNIT_RING_BUFF_SUIT_NAME RING_BUFF_SUIT
-#define CONFIG_TUNIT_CRC_SUIT_NAME CRC_SUIT
+#define CONFIG_TUNIT_THREAD_NAME "tunit thread"
+#define CONFIG_TUNIT_THREAD_STACK_SIZE 2048
+#define CONFIG_TUNIT_THREAD_PRIORITY osPriorityNormal
+
+#define CONFIG_TUNIT_TUNIT_SUIT_NAME "tunit test suite"
+#define CONFIG_TUNIT_TUNIT_SUIT_LABEL tunit_suite
+#define CONFIG_TUNIT_RING_BUFF_SUIT_NAME "ring buff test suite"
+#define CONFIG_TUNIT_RING_BUFF_SUIT_LABEL ring_buff_suite
+#define CONFIG_TUNIT_CRC_SUIT_NAME "crc test suite"
+#define CONFIG_TUNIT_CRC_SUIT_LABEL crc_suite
+#define CONFIG_TUNIT_SERVICE_SUIT_NAME "service test suite"
+#define CONFIG_TUNIT_SERVICE_SUIT_LABEL service_suite
+#if defined(CONFIG_TUNIT_SERVICE_SUIT_NAME)
+#define CONFIG_TUNIT_SERVICE_FOO_NAME "foo service"
+#define CONFIG_TUNIT_SERVICE_FOO_LABEL foo_service
+#define CONFIG_TUNIT_SERVICE_BAR_NAME "bar service"
+#define CONFIG_TUNIT_SERVICE_BAR_LABEL bar_service
+#define CONFIG_TUNIT_SERVICE_BAZ_NAME "baz service"
+#define CONFIG_TUNIT_SERVICE_BAZ_LABEL baz_service
+#endif
 #endif
 
 #endif /* __TUNIT_CONF_H__ */

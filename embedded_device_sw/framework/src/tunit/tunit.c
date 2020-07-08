@@ -73,14 +73,18 @@ static void tcase_testcase(void)
 }
 
 define_tunit_suit(CONFIG_TUNIT_TUNIT_SUIT_NAME,
-		  tcase_suit_initialize, tcase_suit_cleanup);
+		  CONFIG_TUNIT_TUNIT_SUIT_LABEL,
+		  tcase_suit_initialize,
+		  tcase_suit_cleanup);
 define_tunit_case(CONFIG_TUNIT_TUNIT_SUIT_NAME,
-		  "Tunit basic test", tcase_testcase);
+		  CONFIG_TUNIT_TUNIT_SUIT_LABEL,
+		  "Tunit basic test",
+		  tcase_testcase);
 
-extern tunit_suit tunit_suit$$Base[];
-extern tunit_suit tunit_suit$$Limit[];
-extern tunit_case tunit_case$$Base[];
-extern tunit_case tunit_case$$Limit[];
+extern tunit_suit_t tunit_suit$$Base[];
+extern tunit_suit_t tunit_suit$$Limit[];
+extern tunit_case_t tunit_case$$Base[];
+extern tunit_case_t tunit_case$$Limit[];
 
 /**
  * @brief   Register new case sets and add to the specified suite.
@@ -93,7 +97,7 @@ extern tunit_case tunit_case$$Limit[];
 static int tunit_register_case_sets(const CU_pSuite	csuit,
 				    const char *	suit_name)
 {
-	tunit_case *tcase;
+	tunit_case_t *tcase;
 	CU_pTest ret;
 
 	for (tcase = tunit_case$$Base; tcase < tunit_case$$Limit; tcase++) {
@@ -119,7 +123,7 @@ static int tunit_register_case_sets(const CU_pSuite	csuit,
 static int tunit_register_all_suit_and_case(void)
 {
 	CU_pSuite csuit;
-	tunit_suit *tsuit;
+	tunit_suit_t *tsuit;
 	int ret;
 
 	for (tsuit = tunit_suit$$Base; tsuit < tunit_suit$$Limit; tsuit++) {
@@ -141,13 +145,13 @@ static int tunit_register_all_suit_and_case(void)
  * @brief   Attributes structure for tunit thread.
  */
 const osThreadAttr_t tunit_attr = {
-	.name		= "tunit",
+	.name		= CONFIG_TUNIT_THREAD_NAME,
 	.attr_bits	= osThreadDetached,
 	.cb_mem		= NULL,
 	.cb_size	= 0,
 	.stack_mem	= NULL,
-	.stack_size	= 256,
-	.priority	= osPriorityNormal,
+	.stack_size	= CONFIG_TUNIT_THREAD_STACK_SIZE,
+	.priority	= CONFIG_TUNIT_THREAD_PRIORITY,
 };
 
 /**
@@ -176,9 +180,9 @@ static void tunit_thread(void *argument)
 	for (;;) {
 		stat = osThreadSuspend(handle->thread_id);
 		if (stat != osOK)
-			pr_error("Suspend %s thread failed, stat = %d.\r\n",
-			       osThreadGetName(handle->thread_id),
-			       stat);
+			pr_error("Suspend thread <%s> failed, stat = %d.",
+				 osThreadGetName(handle->thread_id),
+				 stat);
 	}
 }
 
@@ -197,9 +201,11 @@ static int tunit_probe(const object *obj)
 
 	handle->thread_id = osThreadNew(tunit_thread, handle, &tunit_attr);
 	if (!handle->thread_id)
-		pr_error("Create %s thread failed.", tunit_attr.name);
+		pr_error("Create thread <%s> failed.", tunit_attr.name);
 	else
-		pr_info("Create %s thread succeed.", tunit_attr.name);
+		pr_info("Create thread <%s> succeed.", tunit_attr.name);
+
+	pr_info("Object <%s> probe succeed.", obj->name);
 
 	return 0;
 }
@@ -219,18 +225,21 @@ static int tunit_shutdown(const object *obj)
 	if (handle->thread_id) {
 		stat = osThreadTerminate(handle->thread_id);
 		if (stat != osOK)
-			pr_error("Terminate %s thread failed, stat = %d.",
-			       osThreadGetName(handle->thread_id),
-			       stat);
+			pr_error("Terminate thread <%s> failed, stat = %d.",
+				 osThreadGetName(handle->thread_id),
+				 stat);
 		else
-			pr_info("Terminate %s thread succeed.",
-			       osThreadGetName(handle->thread_id));
+			pr_info("Terminate thread <%s> succeed.",
+				osThreadGetName(handle->thread_id));
 	}
+
+	pr_info("Object <%s> shutdown succeed.", obj->name);
 
 	return 0;
 }
 
 module_application(CONFIG_TUNIT_NAME,
+		   CONFIG_TUNIT_LABEL,
 		   tunit_probe,
 		   tunit_shutdown,
 		   NULL, &tunit_handle, NULL);

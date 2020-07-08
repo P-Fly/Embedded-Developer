@@ -29,7 +29,7 @@
  * @brief   Trace handle definition.
  */
 typedef struct {
-	object *port;
+	const object *port;
 } trace_handle_t;
 
 static trace_handle_t trace_handle;
@@ -119,6 +119,7 @@ static int trace_shutdown(const object *obj)
 }
 
 module_early_driver(CONFIG_TRACE_NAME,
+		    CONFIG_TRACE_LABEL,
 		    trace_probe,
 		    trace_shutdown,
 		    NULL, &trace_handle, NULL);

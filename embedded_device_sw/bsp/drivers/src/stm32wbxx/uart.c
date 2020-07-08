@@ -392,6 +392,7 @@ static int stm32wbxx_uart1_shutdown(const object *obj)
 }
 
 module_early_driver(CONFIG_UART1_NAME,
+		    CONFIG_UART1_LABEL,
 		    stm32wbxx_uart1_probe,
 		    stm32wbxx_uart1_shutdown,
 		    &uart1_intf, &uart1_handle, &uart1_config);

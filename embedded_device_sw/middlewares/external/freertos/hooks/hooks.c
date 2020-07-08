@@ -16,16 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __UTILS_CONF_H__
-#define __UTILS_CONF_H__
+#include <stdio.h>
+#include <assert.h>
+#include "FreeRTOS.h"
+#include "task.h"
+#include "log.h"
 
-#define CONFIG_TRACE_ENABLE
-#if defined(CONFIG_TRACE_ENABLE)
-#define CONFIG_TRACE_NAME "trace module"
-#define CONFIG_TRACE_LABEL trace_module
-#define CONFIG_TRACE_PORT_NAME CONFIG_UART1_NAME
-#endif
+/**
+ * @brief   Function to malloc failed hook.
+ */
+void vApplicationMallocFailedHook(void)
+{
+	char *name = pcTaskGetName(xTaskGetCurrentTaskHandle());
 
-#define CONFIG_ASSERT_ENABLE
+	pr_error("Malloc failed at task <%s>.", name);
 
-#endif /* __UTILS_CONF_H__ */
+	assert(0);
+}
+
+/**
+ * @brief   Function to stack overflow hook.
+ */
+void vApplicationStackOverflowHook(TaskHandle_t xTask, signed char *pcTaskName)
+{
+	pr_error("Stack overflow at task <%s>.", pcTaskName);
+
+	assert(0);
+}

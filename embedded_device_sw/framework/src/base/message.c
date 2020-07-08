@@ -16,16 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __UTILS_CONF_H__
-#define __UTILS_CONF_H__
-
-#define CONFIG_TRACE_ENABLE
-#if defined(CONFIG_TRACE_ENABLE)
-#define CONFIG_TRACE_NAME "trace module"
-#define CONFIG_TRACE_LABEL trace_module
-#define CONFIG_TRACE_PORT_NAME CONFIG_UART1_NAME
-#endif
-
-#define CONFIG_ASSERT_ENABLE
-
-#endif /* __UTILS_CONF_H__ */
+#include <string.h>
+#include "cmsis_os2.h"
+#include "object.h"
+#include "err.h"
+#include "log.h"
+#include "message.h"
