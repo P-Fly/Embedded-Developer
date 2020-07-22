@@ -227,7 +227,6 @@ static int lm3s9xxx_uart_read(const object *obj,
 		(lm3s9xxx_uart_handle_t *)obj->object_data;
 	char *buff = (char *)rx_buf;
 	int i;
-	int ret;
 
 	if (!handle)
 		return -EINVAL;
@@ -240,13 +239,22 @@ static int lm3s9xxx_uart_read(const object *obj,
 
 #ifdef CONFIG_UART0_RX_RING_BUFF_SIZE
 	for (i = 0; i < rx_len; i++) {
+		int ret;
+
 		ret = ring_buffer_read(&handle->rx, &buff[i]);
 		if (ret)
 			break;
 	}
 #else
-	/* TBD: Not support*/
-#ERROR ("Not support");
+	for (i = 0; i < rx_len; i++) {
+		long value;
+
+		value = MAP_UARTCharGetNonBlocking(handle->uart_base);
+		if (-1 == value)
+			break;
+
+		buff[i] = (char)value;
+	}
 #endif
 
 	return i;
@@ -261,10 +269,14 @@ static int lm3s9xxx_uart_read(const object *obj,
  */
 static void lm3s9xxx_uart_irq_handler(lm3s9xxx_uart_handle_t *handle)
 {
+	unsigned long status;
 	int ret;
 	long value;
-    char ch;
-    unsigned long status;
+	char ch;
+
+	(void)ret;
+	(void)value;
+	(void)ch;
 
     /* Get the interrrupt status */
     status = MAP_UARTIntStatus(handle->uart_base, true);

@@ -394,21 +394,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>bsp\drivers\stm32wbxx</GroupName>
-          <Files>
-            <File>
-              <FileName>uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\src\stm32wbxx\uart.c</FilePath>
-            </File>
-            <File>
-              <FileName>crc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\src\stm32wbxx\crc.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>bsp\drivers\lib\stm32wbxx</GroupName>
           <Files>
             <File>
@@ -759,6 +744,31 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>bsp\drivers\stm32wbxx</GroupName>
+          <Files>
+            <File>
+              <FileName>stm32wbxx_crc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\drivers\src\stm32wbxx\stm32wbxx_crc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32wbxx_uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\drivers\src\stm32wbxx\stm32wbxx_uart.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>bsp\machine\st\p-nucleo-wb55_nucleo</GroupName>
+          <Files>
+            <File>
+              <FileName>hardware.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\machine\st\p-nucleo-wb55_nucleo\hardware.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>middlewares\external\freertos</GroupName>
           <Files>
             <File>
@@ -930,13 +940,6 @@
         </Group>
         <Group>
           <GroupName>products</GroupName>
-          <Files>
-            <File>
-              <FileName>hardware.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\src\hardware.c</FilePath>
-            </File>
-          </Files>
         </Group>
       </Groups>
     </Target>

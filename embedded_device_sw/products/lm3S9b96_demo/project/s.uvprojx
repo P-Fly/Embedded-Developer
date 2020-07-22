@@ -359,7 +359,7 @@
             </VariousControls>
           </Aads>
           <LDads>
-            <umfTarg>1</umfTarg>
+            <umfTarg>0</umfTarg>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
             <noStLib>0</noStLib>
@@ -368,7 +368,7 @@
             <TextAddressRange>0x00000000</TextAddressRange>
             <DataAddressRange>0x20000000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile>.\Objects\lm3s9b96_demo.sct</ScatterFile>
+            <ScatterFile>..\..\..\bsp\arch\arm\cortex_m\cmsis\device\lm3S9b96\src\arm\linker\lm3s9b96_flash_cm3.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc>--diag_suppress L6314W,L6330W</Misc>
@@ -385,16 +385,6 @@
               <FileName>Startup.s</FileName>
               <FileType>2</FileType>
               <FilePath>..\..\..\bsp\arch\arm\cortex_m\cmsis\device\lm3S9b96\src\arm\Startup.s</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>bsp\drivers\lm3s9xxx</GroupName>
-          <Files>
-            <File>
-              <FileName>lm3s9xxx_uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\src\lm3s9xxx\lm3s9xxx_uart.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -515,6 +505,16 @@
               <FileName>watchdog.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\bsp\drivers\lib\lm3s9xxx\driverlib\watchdog.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>bsp\drivers\lm3s9xxx</GroupName>
+          <Files>
+            <File>
+              <FileName>lm3s9xxx_uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\drivers\src\lm3s9xxx\lm3s9xxx_uart.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -690,11 +690,6 @@
               <FileName>tcase_ring_buff.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\tcase\utils\tcase_ring_buff.c</FilePath>
-            </File>
-            <File>
-              <FileName>tcase_crc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\tcase\driver\tcase_crc.c</FilePath>
             </File>
           </Files>
         </Group>

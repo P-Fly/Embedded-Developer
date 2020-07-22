@@ -32,8 +32,6 @@
 #define CONFIG_TUNIT_TUNIT_SUIT_LABEL tunit_suite
 #define CONFIG_TUNIT_RING_BUFF_SUIT_NAME "ring buff test suite"
 #define CONFIG_TUNIT_RING_BUFF_SUIT_LABEL ring_buff_suite
-#define CONFIG_TUNIT_CRC_SUIT_NAME "crc test suite"
-#define CONFIG_TUNIT_CRC_SUIT_LABEL crc_suite
 #define CONFIG_TUNIT_SERVICE_SUIT_NAME "service test suite"
 #define CONFIG_TUNIT_SERVICE_SUIT_LABEL service_suite
 #if defined(CONFIG_TUNIT_SERVICE_SUIT_NAME)
