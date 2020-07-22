@@ -41,16 +41,18 @@
 #define UARD_CONFIG_STOP_BITS_MASK(config)      ((config) & (0x03 << 3))
 
 /* Parity Mode */
-#define UART_CONFIG_PARITY_NONE                 (0 << 4)
-#define UART_CONFIG_PARITY_EVEN                 (1 << 4)
-#define UART_CONFIG_PARITY_ODD                  (2 << 4)
-#define UARD_CONFIG_PARITY_MASK(config)         ((config) & (0x03 << 4))
+#define UART_CONFIG_PARITY_NONE                 (0 << 5)
+#define UART_CONFIG_PARITY_EVEN                 (1 << 5)
+#define UART_CONFIG_PARITY_ODD                  (2 << 5)
+#define UART_CONFIG_PARITY_ONE					(3 << 5)
+#define UART_CONFIG_PARITY_ZERO					(4 << 5)
+#define UARD_CONFIG_PARITY_MASK(config)         ((config) & (0x07 << 5))
 
 /* Transfer Mode */
-#define UART_CONFIG_MODE_TX                     (0 << 6)
-#define UART_CONFIG_MODE_RX                     (1 << 6)
-#define UART_CONFIG_MODE_TX_RX                  (2 << 6)
-#define UARD_CONFIG_MODE_MASK(config)           ((config) & (0x03 << 6))
+#define UART_CONFIG_MODE_TX                     (0 << 8)
+#define UART_CONFIG_MODE_RX                     (1 << 8)
+#define UART_CONFIG_MODE_TX_RX                  (2 << 8)
+#define UARD_CONFIG_MODE_MASK(config)           ((config) & (0x03 << 8))
 
 /**
  * @brief   Uart configuration structure.
@@ -58,9 +60,9 @@
  * configs is a bit field with the following parts:
  *      Word Length     [ 0 : 2 ]
  *      Stop Bits       [ 3 : 4 ]
- *      Parity Mode     [ 4 : 5 ]
- *      Transfer Mode   [ 6 : 7 ]
- *      RESERVED        [ 8 : 31 ] - Undefined or device-specific usage.
+ *      Parity Mode     [ 5 : 7 ]
+ *      Transfer Mode   [ 8 : 9 ]
+ *      RESERVED        [ 10 : 31 ] - Undefined or device-specific usage.
  */
 typedef struct {
 	unsigned int	baudrate;

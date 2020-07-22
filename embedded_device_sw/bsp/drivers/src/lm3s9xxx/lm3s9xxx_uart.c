@@ -17,6 +17,8 @@
  */
 
 #include <string.h>
+#include "cmsis_os2.h"
+#include "FreeRTOS.h"
 #include "ring_buff.h"
 #include "drv_uart.h"
 
@@ -43,6 +45,7 @@ typedef struct {
 	ring_buff_t   rx;
 #endif
 	unsigned long uart_base;
+	unsigned long uart_interrupt;
 } lm3s9xxx_uart_handle_t;
 
 /**
@@ -53,8 +56,8 @@ typedef struct {
  *
  * @retval  Returns 0 on success, negative error code otherwise.
  */
-static int lm3s9xxx_uart_configure(const object *		obj,
-				    const uart_config_t *	config)
+static int lm3s9xxx_uart_configure(const object* obj,
+				    const uart_config_t* config)
 {
 	lm3s9xxx_uart_handle_t *handle =
 		(lm3s9xxx_uart_handle_t *)obj->object_data;
@@ -106,22 +109,36 @@ static int lm3s9xxx_uart_configure(const object *		obj,
 	case UART_CONFIG_PARITY_ODD:
 		parity = UART_CONFIG_PAR_ODD;
 		break;
+	case UART_CONFIG_PARITY_ONE:
+		parity = UART_CONFIG_PAR_ONE;
+		break;
+	case UART_CONFIG_PARITY_ZERO:
+		parity = UART_CONFIG_PAR_ZERO;
+		break;
 	default:
 		return -EINVAL;
 	}
 
-    /* Configure the UART for 115,200, 8-N-1 operation */
-    //MAP_UARTConfigSetExpClk(handle->uart_base, MAP_SysCtlClockGet(), baudrate, (word_length | stop_bits | parity));
-    MAP_UARTConfigSetExpClk(UART0_BASE, MAP_SysCtlClockGet(), 115200,
-                            (UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE |
-                             UART_CONFIG_PAR_NONE));
+	/* Disable the UART */
+	MAP_UARTDisable(handle->uart_base);
+
+    /* Configure the UART */
+    MAP_UARTConfigSetExpClk(handle->uart_base, MAP_SysCtlClockGet(), baudrate, (word_length | stop_bits | parity));
 
     /* Configure FIFO Level Select */
-    MAP_UARTFIFOLevelSet(handle->uart_base, UART_FIFO_TX1_8, UART_FIFO_RX7_8);
+    MAP_UARTFIFOLevelSet(handle->uart_base, UART_FIFO_TX7_8, UART_FIFO_RX7_8);
 
     /* Enable the UART interrupt */
-    MAP_IntEnable(INT_UART0);
-    MAP_UARTIntEnable(handle->uart_base, UART_INT_RX | UART_INT_RT | UART_INT_TX);
+#ifdef CONFIG_UART0_TX_RING_BUFF_SIZE
+	MAP_UARTIntEnable(handle->uart_base, UART_INT_TX);
+#endif
+#ifdef CONFIG_UART0_RX_RING_BUFF_SIZE
+	MAP_UARTIntEnable(handle->uart_base, UART_INT_RX | UART_INT_RT);
+#endif
+#if defined(CONFIG_UART0_TX_RING_BUFF_SIZE) || defined(CONFIG_UART0_RX_RING_BUFF_SIZE)
+	MAP_IntPrioritySet(handle->uart_interrupt, configLIBRARY_LOWEST_INTERRUPT_PRIORITY);
+    MAP_IntEnable(handle->uart_interrupt);
+#endif
 
     /* Enable the UART */
     MAP_UARTEnable(handle->uart_base);
@@ -146,8 +163,9 @@ static int lm3s9xxx_uart_write(const object *obj,
 		(lm3s9xxx_uart_handle_t *)obj->object_data;
 	char *buff = (char *)tx_buf;
 	int i;
+#ifdef CONFIG_UART0_TX_RING_BUFF_SIZE
 	int ret;
-    char ch;
+#endif
 
 	if (!handle)
 		return -EINVAL;
@@ -160,31 +178,33 @@ static int lm3s9xxx_uart_write(const object *obj,
 
 #ifdef CONFIG_UART0_TX_RING_BUFF_SIZE
 	for (i = 0; i < tx_len; i++) {
-        MAP_UARTCharPut(handle->uart_base, buff[i]);
-		//ret = ring_buffer_write(&handle->tx, buff[i]);
-		//if (ret)
-			//break;
+		ret = ring_buffer_write(&handle->tx, buff[i]);
+		if (ret)
+			break;
 	}
 
-//    MAP_IntDisable(handle->uart_base);
+	/*
+		When the data is written to the ring buffer,
+		we need to start sending and fill the hardware buffer.
+	*/
+    MAP_IntDisable(handle->uart_interrupt);
 
-    //while (MAP_UARTSpaceAvail(handle->uart_base))
-   //{
-    //    ret = ring_buffer_read(&handle->rx, &ch);
+    while (MAP_UARTSpaceAvail(handle->uart_base)) {
+		char ch;
 
-    //    if (ret)
-   //     {
-   //         break;
-   //     }
+		ret = ring_buffer_read(&handle->tx, &ch);
+		if (ret)
+			break;
 
-   //     MAP_UARTCharPutNonBlocking(handle->uart_base, ch);
-   // }
+		MAP_UARTCharPutNonBlocking(handle->uart_base, ch);
+	}
 
-//    MAP_IntEnable(handle->uart_base);
+    MAP_IntEnable(handle->uart_interrupt);
 
 #else
-	/* TBD: Not support*/
-#ERROR ("Not support");
+	for (i = 0; i < tx_len; i++) {
+		MAP_UARTCharPut(handle->uart_base, buff[i]);
+	}
 #endif
 
 	return i;
@@ -253,17 +273,13 @@ static void lm3s9xxx_uart_irq_handler(lm3s9xxx_uart_handle_t *handle)
     MAP_UARTIntClear(handle->uart_base, status);
 
 #ifdef CONFIG_UART0_TX_RING_BUFF_SIZE
-    /* Handle TX interrupt */
     if (status & UART_INT_TX)
     {
         do
         {
-            ret = ring_buffer_read(&handle->rx, &ch);
-
+            ret = ring_buffer_read(&handle->tx, &ch);
             if (ret)
-            {
                 break;
-            }
 
             MAP_UARTCharPutNonBlocking(handle->uart_base, ch);
         }
@@ -272,17 +288,13 @@ static void lm3s9xxx_uart_irq_handler(lm3s9xxx_uart_handle_t *handle)
 #endif
 
 #ifdef CONFIG_UART0_RX_RING_BUFF_SIZE
-    /* Handle RX interrupt */
     if (status & (UART_INT_RX | UART_INT_RT))
     {
         do
         {
             value = MAP_UARTCharGetNonBlocking(handle->uart_base);
-
             if (-1 == value)
-            {
                 break;
-            }
 
             ch = (char)value;
 
@@ -320,7 +332,7 @@ static uart_config_t uart0_config =
 };
 
 /**
- * @brief   This function handles USART1 Global Interrupt.
+ * @brief   This function handles USART0 Global Interrupt.
  *
  * @retval  None.
  */
@@ -345,6 +357,7 @@ static int lm3s9xxx_uart0_probe(const object *obj)
 	(void)memset(handle, 0, sizeof(lm3s9xxx_uart_handle_t));
 
     handle->uart_base = UART0_BASE;
+	handle->uart_interrupt = INT_UART0;
 
     /* Enable the UART0 and GPIO Port A */
     MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_UART0);
@@ -357,23 +370,9 @@ static int lm3s9xxx_uart0_probe(const object *obj)
     /* Set GPIO A0 and A1 as UART pins */
     MAP_GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
 
-    MAP_UARTConfigSetExpClk(UART0_BASE, MAP_SysCtlClockGet(), 115200,
-                            (UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE |
-                             UART_CONFIG_PAR_NONE));
-
-    /* Configure FIFO Level Select */
-    MAP_UARTFIFOLevelSet(UART0_BASE, UART_FIFO_TX1_8, UART_FIFO_RX7_8);
-
-    /* Enable the UART interrupt */
-    //MAP_IntEnable(INT_UART0);
-    //MAP_UARTIntEnable(handle->uart_base, UART_INT_RX | UART_INT_RT | UART_INT_TX);
-
-    /* Enable the UART */
-    MAP_UARTEnable(UART0_BASE);
-
-	//ret = uart_configure(obj, obj->object_config);
-	//if (ret)
-	//	return ret;
+	ret = uart_configure(obj, obj->object_config);
+	if (ret)
+		return ret;
 
 #ifdef CONFIG_UART0_TX_RING_BUFF_SIZE
 	ret =
@@ -405,6 +404,15 @@ static int lm3s9xxx_uart0_probe(const object *obj)
  */
 static int lm3s9xxx_uart0_shutdown(const object *obj)
 {
+	lm3s9xxx_uart_handle_t *handle =
+			(lm3s9xxx_uart_handle_t *)obj->object_data;
+
+	/* Disable the UART interrupt */
+	MAP_IntDisable(handle->uart_interrupt);
+
+	/* Disable the UART */
+	MAP_UARTDisable(handle->uart_base);
+
 	return 0;
 }
 
