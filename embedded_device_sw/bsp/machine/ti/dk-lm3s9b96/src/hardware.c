@@ -98,4 +98,3 @@ void hardware_late_startup(void)
     else
     pr_info("Create thread <%s> succeed.", loop_attr.name);
 }
-

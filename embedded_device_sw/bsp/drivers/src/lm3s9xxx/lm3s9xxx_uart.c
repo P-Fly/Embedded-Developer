@@ -67,6 +67,12 @@ static int lm3s9xxx_uart_configure(const object *		obj,
 
 	/* Set Word Length */
 	switch (UARD_CONFIG_WORD_LENGTH_MASK(config->configs)) {
+    case UART_CONFIG_WORD_LENGTH_5B:
+		word_length = UART_CONFIG_WLEN_5;
+		break;
+    case UART_CONFIG_WORD_LENGTH_6B:
+		word_length = UART_CONFIG_WLEN_6;
+		break;
 	case UART_CONFIG_WORD_LENGTH_7B:
 		word_length = UART_CONFIG_WLEN_7;
 		break;
@@ -159,7 +165,7 @@ static int lm3s9xxx_uart_write(const object *obj,
 		//if (ret)
 			//break;
 	}
- 
+
 //    MAP_IntDisable(handle->uart_base);
 
     //while (MAP_UARTSpaceAvail(handle->uart_base))
