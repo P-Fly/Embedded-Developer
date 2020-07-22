@@ -390,6 +390,13 @@
         </Group>
         <Group>
           <GroupName>bsp\drivers\lm3s9xxx</GroupName>
+          <Files>
+            <File>
+              <FileName>lm3s9xxx_uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\drivers\src\lm3s9xxx\lm3s9xxx_uart.c</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>bsp\drivers\lib\lm3s9xxx</GroupName>
@@ -508,6 +515,16 @@
               <FileName>watchdog.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\bsp\drivers\lib\lm3s9xxx\driverlib\watchdog.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>bsp\machine\ti\dk-lm3s9b96</GroupName>
+          <Files>
+            <File>
+              <FileName>hardware.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\machine\ti\dk-lm3s9b96\src\hardware.c</FilePath>
             </File>
           </Files>
         </Group>

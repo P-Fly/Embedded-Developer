@@ -20,7 +20,7 @@
 #include <string.h>
 #include "object.h"
 #include "err.h"
-#include "uart.h"
+#include "drv_uart.h"
 #include "utils_conf.h"
 
 #ifdef CONFIG_TRACE_ENABLE

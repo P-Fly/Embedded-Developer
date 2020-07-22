@@ -18,8 +18,9 @@
 
 #include <string.h>
 #include "ring_buff.h"
+#include "drv_uart.h"
+
 #include "stm32wbxx_hal.h"
-#include "uart.h"
 
 #if defined(CONFIG_UART1_ENABLE)
 
@@ -28,13 +29,12 @@
  */
 typedef struct {
 #ifdef CONFIG_UART1_TX_RING_BUFF_SIZE
-	ring_buff_t		tx;
+	ring_buff_t        tx;
 #endif
 #ifdef CONFIG_UART1_RX_RING_BUFF_SIZE
-	ring_buff_t		rx;
+	ring_buff_t        rx;
 #endif
-	UART_HandleTypeDef	uart;
-	void *			private_data;
+	UART_HandleTypeDef uart;
 } stm32wbxx_uart_handle_t;
 
 /**

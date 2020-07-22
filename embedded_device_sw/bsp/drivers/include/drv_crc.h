@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __CRC_H__
-#define __CRC_H__
+#ifndef __DRV_CRC_H__
+#define __DRV_CRC_H__
 
 #include <stddef.h>
 #include "object.h"
@@ -144,4 +144,4 @@ static int crc_accumulate(const object *obj,
 	return intf->accumulate(obj, buf, len, crc);
 }
 
-#endif /* __CRC_H__ */
+#endif /* __DRV_CRC_H__ */

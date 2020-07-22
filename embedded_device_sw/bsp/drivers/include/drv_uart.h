@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __UART_H__
-#define __UART_H__
+#ifndef __DRV_UART_H__
+#define __DRV_UART_H__
 
 #include <stddef.h>
 #include "object.h"
@@ -146,4 +146,4 @@ static inline int uart_read(const object *obj, void *rx_buf, int rx_len)
 	return intf->read(obj, rx_buf, rx_len);
 }
 
-#endif /* __UART_H__ */
+#endif /* __DRV_UART_H__ */

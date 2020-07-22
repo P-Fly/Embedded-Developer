@@ -91,17 +91,17 @@ __Vectors
         DCD     0                           ; Reserved
         DCD     0                           ; Reserved
         DCD     0                           ; Reserved
-        DCD     IntDefaultHandler           ; SVCall handler
+        DCD     SVC_Handler                 ; SVCall handler
         DCD     IntDefaultHandler           ; Debug monitor handler
         DCD     0                           ; Reserved
-        DCD     IntDefaultHandler           ; PendSV Handler
-        DCD     IntDefaultHandler           ; SysTick Handler
+        DCD     PendSV_Handler              ; PendSV Handler
+        DCD     SysTick_Handler             ; SysTick Handler
         DCD     IntDefaultHandler           ; GPIO Port A
         DCD     IntDefaultHandler           ; GPIO Port B
         DCD     IntDefaultHandler           ; GPIO Port C
         DCD     IntDefaultHandler           ; GPIO Port D
         DCD     IntDefaultHandler           ; GPIO Port E
-        DCD     IntDefaultHandler           ; UART0 Rx and Tx
+        DCD     USART0_IRQHandler           ; UART0 Rx and Tx
         DCD     IntDefaultHandler           ; UART1 Rx and Tx
         DCD     IntDefaultHandler           ; SSI0 Rx and Tx
         DCD     IntDefaultHandler           ; I2C0 Master and Slave
@@ -289,6 +289,30 @@ FaultISR
 ;******************************************************************************
 IntDefaultHandler
         B       IntDefaultHandler
+
+;******************************************************************************
+;
+; This is the code that gets called when the peripheral driver receives an interrupt
+;
+;******************************************************************************
+SVC_Handler     PROC
+                EXPORT  SVC_Handler                    [WEAK]
+                B       .
+                ENDP
+PendSV_Handler  PROC
+                EXPORT  PendSV_Handler                 [WEAK]
+                B       .
+                ENDP
+SysTick_Handler PROC
+                EXPORT  SysTick_Handler                [WEAK]
+                B       .
+                ENDP
+
+                EXPORT  USART0_IRQHandler              [WEAK]
+
+USART0_IRQHandler PROC
+                B       .
+                ENDP
 
 ;******************************************************************************
 ;
