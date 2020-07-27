@@ -19,6 +19,12 @@
 #ifndef __BSP_CONF_H__
 #define __BSP_CONF_H__
 
+#define CONFIG_CLOCK_ENABLE
+#if defined(CONFIG_CLOCK_ENABLE)
+#define CONFIG_CLOCK_NAME "lm3s9b96 clock driver"
+#define CONFIG_CLOCK_LABEL lm3s9b96_clock_driver
+#endif
+
 #define CONFIG_UART0_ENABLE
 #if defined(CONFIG_UART0_ENABLE)
 #define CONFIG_UART0_NAME "lm3s9b96 uart0 driver"

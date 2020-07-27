@@ -21,6 +21,7 @@
 #include "FreeRTOS.h"
 #include "ring_buff.h"
 #include "drv_uart.h"
+#include "drv_clock.h"
 
 #define TARGET_IS_TEMPEST_RC1
 #include "inc/hw_memmap.h"
