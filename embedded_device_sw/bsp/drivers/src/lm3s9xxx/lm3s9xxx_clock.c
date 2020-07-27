@@ -29,41 +29,57 @@
 
 #if defined(CONFIG_CLOCK_ENABLE)
 
+/**
+ * @brief   Clock sub-system definition.
+ */
 typedef struct
 {
 	clock_subsys_t sys;
 	unsigned int id;
 	unsigned long peripheral_base;
-} clock_subsys_onoff_remap_t;
+} lm3s9xxx_clock_subsys_onoff_t;
 
-static const clock_subsys_onoff_remap_t clock_subsys_onoff_remap[] =
+static const lm3s9xxx_clock_subsys_onoff_t clock_subsys_onoff[] =
 {
 	{ CLK_PORTA, 0, SYSCTL_PERIPH_GPIOA },
 	{ CLK_UART, 0, SYSCTL_PERIPH_UART0 },
 };
 
-#define DEF_CLOCK_SUBSYS_ONOFF_ARRAY_NUM (sizeof(clock_subsys_onoff_remap) / sizeof(clock_subsys_onoff_remap[0]))
+#define DEF_CLOCK_SUBSYS_ONOFF_NUM (sizeof(clock_subsys_onoff) / sizeof(clock_subsys_onoff[0]))
 
-static int clock_subsys_onoff_remap_search(clock_subsys_t sys, unsigned int id, unsigned long *peripheral_base)
+static int lm3s9xxx_clock_subsys_onoff_search(clock_subsys_t sys, unsigned int id, unsigned long *peripheral_base)
 {
     int i;
 
-    for (i = 0; i < DEF_CLOCK_SUBSYS_ONOFF_ARRAY_NUM; i++)
-        if (clock_subsys_onoff_remap[i].sys == sys && clock_subsys_onoff_remap[i].id == id) {
-			*peripheral_base = clock_subsys_onoff_remap[i].peripheral_base;
+    for (i = 0; i < DEF_CLOCK_SUBSYS_ONOFF_NUM; i++)
+        if (clock_subsys_onoff[i].sys == sys && clock_subsys_onoff[i].id == id) {
+			*peripheral_base = clock_subsys_onoff[i].peripheral_base;
             return i;
         }
 
-    return -EINVAL;
+    return -ENODEV;
 }
 
 /**
  * @brief   Clock handle definition.
  */
 typedef struct {
-	unsigned int clock_subsys_onoff_nesting[DEF_CLOCK_SUBSYS_ONOFF_ARRAY_NUM];
+	/*
+	 * Each clock of the sub-system maintains its
+	 * own status in the nesting variable.
+	 */
+	unsigned int clock_subsys_onoff_nesting[DEF_CLOCK_SUBSYS_ONOFF_NUM];
 } lm3s9xxx_clock_handle_t;
 
+/**
+ * @brief   Enable the clock of a sub-system controlled by the device.
+ *
+ * @param   obj Pointer to the clock object handle.
+ * @param   sys Pointer to an clock data representing the sub-system.
+ * @param   id Device id.
+ *
+ * @retval  Returns 0 on success, negative error code otherwise.
+ */
 static int lm3s9xxx_clock_on(const object *obj, clock_subsys_t sys, unsigned int id)
 {
 	lm3s9xxx_clock_handle_t *handle =
@@ -74,8 +90,8 @@ static int lm3s9xxx_clock_on(const object *obj, clock_subsys_t sys, unsigned int
 	if (!handle)
 		return -EINVAL;
 
-	index = clock_subsys_onoff_remap_search(sys, id, &peripheral_base);
-	if(index < 0)
+	index = lm3s9xxx_clock_subsys_onoff_search(sys, id, &peripheral_base);
+	if (index < 0)
 		return index;
 
 	if (handle->clock_subsys_onoff_nesting[index] + 1 == 0)
@@ -86,9 +102,18 @@ static int lm3s9xxx_clock_on(const object *obj, clock_subsys_t sys, unsigned int
 
 	handle->clock_subsys_onoff_nesting[index]++;
 
-	return  0;
+	return 0;
 }
 
+/**
+ * @brief   Disable the clock of a sub-system controlled by the device.
+ *
+ * @param   obj Pointer to the clcok object handle.
+ * @param   sys Pointer to an clock data representing the sub-system.
+ * @param   id Device id.
+ *
+ * @retval  Returns 0 on success, negative error code otherwise.
+ */
 static int lm3s9xxx_clock_off(const object *obj, clock_subsys_t sys, unsigned int id)
 {
 	lm3s9xxx_clock_handle_t *handle =
@@ -99,7 +124,7 @@ static int lm3s9xxx_clock_off(const object *obj, clock_subsys_t sys, unsigned in
 	if (!handle)
 		return -EINVAL;
 
-	index = clock_subsys_onoff_remap_search(sys, id, &peripheral_base);
+	index = lm3s9xxx_clock_subsys_onoff_search(sys, id, &peripheral_base);
 	if(index < 0)
 		return index;
 
@@ -111,9 +136,19 @@ static int lm3s9xxx_clock_off(const object *obj, clock_subsys_t sys, unsigned in
 	if (handle->clock_subsys_onoff_nesting[index] == 0)
 		MAP_SysCtlPeripheralDisable(peripheral_base);
 
-	return  0;
+	return 0;
 }
 
+/**
+ * @brief   Set the clock rate of given sub-system.
+ *
+ * @param   obj Pointer to the clock object handle.
+ * @param   sys Pointer to an clock data representing the sub-system.
+ * @param   id Device id.
+ * @param   rate Subsystem clock rate.
+ *
+ * @retval  Returns 0 on success, negative error code otherwise.
+ */
 static int lm3s9xxx_clock_set_rate(const object *obj, clock_subsys_t sys, unsigned int id, unsigned long rate)
 {
 	lm3s9xxx_clock_handle_t *handle =
@@ -122,9 +157,19 @@ static int lm3s9xxx_clock_set_rate(const object *obj, clock_subsys_t sys, unsign
 	if (!handle)
 		return -EINVAL;
 
-	return  0;
+	return 0;
 }
 
+/**
+ * @brief   Get the clock rate of given sub-system.
+ *
+ * @param   obj Pointer to the clock object handle.
+ * @param   sys Pointer to an clock data representing the sub-system.
+ * @param   id Device id.
+ * @param   rate Pointer to the subsystem clock rate.
+ *
+ * @retval  Returns 0 on success, negative error code otherwise.
+ */
 static int lm3s9xxx_clock_get_rate(const object *obj, clock_subsys_t sys, unsigned int id, unsigned long *rate)
 {
 	lm3s9xxx_clock_handle_t *handle =
@@ -136,7 +181,7 @@ static int lm3s9xxx_clock_get_rate(const object *obj, clock_subsys_t sys, unsign
 	if (!rate)
 		return -EINVAL;
 
-	return	0;
+	return 0;
 }
 
 static clock_intf_t clock_intf =
@@ -176,7 +221,9 @@ static int lm3s9xxx_clock_probe(const object *obj)
 static int lm3s9xxx_clock_shutdown(const object *obj)
 {
 	lm3s9xxx_clock_handle_t *handle =
-			(lm3s9xxx_clock_handle_t *)obj->object_data;
+		(lm3s9xxx_clock_handle_t *)obj->object_data;
+
+	(void)handle;
 
 	return 0;
 }

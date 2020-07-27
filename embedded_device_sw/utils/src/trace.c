@@ -99,7 +99,7 @@ static int trace_probe(const object *obj)
 
 	handle->port = object_get_binding(CONFIG_TRACE_PORT_NAME);
 	if (!handle->port)
-		return -ENXIO;
+		return -ENODEV;
 
 	return 0;
 }

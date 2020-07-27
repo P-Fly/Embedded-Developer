@@ -47,6 +47,7 @@ typedef struct {
 #endif
 	unsigned long uart_base;
 	unsigned long uart_interrupt;
+	const object *clock;
 } lm3s9xxx_uart_handle_t;
 
 /**
@@ -372,9 +373,17 @@ static int lm3s9xxx_uart0_probe(const object *obj)
     handle->uart_base = UART0_BASE;
 	handle->uart_interrupt = INT_UART0;
 
-    /* Enable the UART0 and GPIO Port A */
-    MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_UART0);
-    MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
+	handle->clock = object_get_binding(CONFIG_CLOCK_NAME);
+	if (!obj)
+		return -ENODEV;
+
+	ret = clock_on(handle->clock, CLK_UART, 0);
+	if (ret)
+		return ret;
+
+	ret = clock_on(handle->clock, CLK_PORTA, 0);
+	if (ret)
+		return ret;
 
     /* Configure the pin muxing for UART0 functions on port A0 and A1 */
     MAP_GPIOPinConfigure(GPIO_PA0_U0RX);
@@ -419,12 +428,21 @@ static int lm3s9xxx_uart0_shutdown(const object *obj)
 {
 	lm3s9xxx_uart_handle_t *handle =
 			(lm3s9xxx_uart_handle_t *)obj->object_data;
+	int ret;
 
 	/* Disable the UART interrupt */
 	MAP_IntDisable(handle->uart_interrupt);
 
 	/* Disable the UART */
 	MAP_UARTDisable(handle->uart_base);
+
+	ret = clock_off(handle->clock, CLK_UART, 0);
+	if (ret)
+		return ret;
+
+	ret = clock_off(handle->clock, CLK_PORTA, 0);
+	if (ret)
+		return ret;
 
 	return 0;
 }
