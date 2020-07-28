@@ -62,21 +62,17 @@ const osThreadAttr_t loop_attr = {
 
 static void loop_thread(void *argument)
 {
-    MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
-    MAP_GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_3);
-    long data;
+	const object *obj;
+	gpio_config_t config;
+
+	obj = object_get_binding(CONFIG_GPIOF_NAME);
+
+	config.configs = GPIO_CONFIG_MODE_OUTPUT_PP;
+    gpio_configure(obj, DRV_GPIO_PIN_3, &config);
 
     while(1)
     {
-        data = MAP_GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_3);
-        data |= GPIO_PIN_3;
-        MAP_GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_3, data);
-
-        osDelay(1000 * osKernelGetTickFreq() / 1000);
-
-        data = MAP_GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_3);
-        data &= ~GPIO_PIN_3;
-        MAP_GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_3, data);
+		gpio_toggle(obj, DRV_GPIO_PIN_3);
 
         osDelay(1000 * osKernelGetTickFreq() / 1000);
     }

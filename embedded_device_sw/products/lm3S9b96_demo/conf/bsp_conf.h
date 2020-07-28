@@ -27,32 +27,32 @@
 
 #define CONFIG_GPIO_ENABLE
 #if defined(CONFIG_GPIO_ENABLE)
-#define CONFIG_GPIOA_NAME "lm3s9b96 gpio a driver"
-#define CONFIG_GPIOA_LABEL lm3s9b96_gpio_a_driver
+#define CONFIG_GPIOA_NAME "lm3s9b96 PORTA driver"
+#define CONFIG_GPIOA_LABEL lm3s9b96_porta_driver
 
-#define CONFIG_GPIOB_NAME "lm3s9b96 gpio b driver"
-#define CONFIG_GPIOB_LABEL lm3s9b96_gpio_b_driver
+#define CONFIG_GPIOB_NAME "lm3s9b96 PORTB driver"
+#define CONFIG_GPIOB_LABEL lm3s9b96_portb_driver
 
-#define CONFIG_GPIOC_NAME "lm3s9b96 gpio c driver"
-#define CONFIG_GPIOC_LABEL lm3s9b96_gpio_c_driver
+#define CONFIG_GPIOC_NAME "lm3s9b96 PORTC driver"
+#define CONFIG_GPIOC_LABEL lm3s9b96_portc_driver
 
-#define CONFIG_GPIOD_NAME "lm3s9b96 gpio d driver"
-#define CONFIG_GPIOD_LABEL lm3s9b96_gpio_d_driver
+#define CONFIG_GPIOD_NAME "lm3s9b96 PORTD driver"
+#define CONFIG_GPIOD_LABEL lm3s9b96_portd_driver
 
-#define CONFIG_GPIOE_NAME "lm3s9b96 gpio e driver"
-#define CONFIG_GPIOE_LABEL lm3s9b96_gpio_e_driver
+#define CONFIG_GPIOE_NAME "lm3s9b96 PORTE driver"
+#define CONFIG_GPIOE_LABEL lm3s9b96_porte_driver
 
-#define CONFIG_GPIOF_NAME "lm3s9b96 gpio f driver"
-#define CONFIG_GPIOF_LABEL lm3s9b96_gpio_f_driver
+#define CONFIG_GPIOF_NAME "lm3s9b96 PORTF driver"
+#define CONFIG_GPIOF_LABEL lm3s9b96_portf_driver
 
-#define CONFIG_GPIOG_NAME "lm3s9b96 gpio g driver"
-#define CONFIG_GPIOG_LABEL lm3s9b96_gpio_g_driver
+#define CONFIG_GPIOG_NAME "lm3s9b96 PORTG driver"
+#define CONFIG_GPIOG_LABEL lm3s9b96_portg_driver
 
-#define CONFIG_GPIOH_NAME "lm3s9b96 gpio h driver"
-#define CONFIG_GPIOH_LABEL lm3s9b96_gpio_h_driver
+#define CONFIG_GPIOH_NAME "lm3s9b96 PORTH driver"
+#define CONFIG_GPIOH_LABEL lm3s9b96_porth_driver
 
-#define CONFIG_GPIOJ_NAME "lm3s9b96 gpio j driver"
-#define CONFIG_GPIOJ_LABEL lm3s9b96_gpio_j_driver
+#define CONFIG_GPIOJ_NAME "lm3s9b96 PORTJ driver"
+#define CONFIG_GPIOJ_LABEL lm3s9b96_portj_driver
 #endif
 
 #define CONFIG_UART0_ENABLE

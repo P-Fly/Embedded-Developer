@@ -16,20 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SERVICE_CONF_H__
-#define __SERVICE_CONF_H__
+#ifndef __SERVICES_IDS_H__
+#define __SERVICES_IDS_H__
 
-#define CONFIG_MSG_SEND_BLOCK_TIMEOUT_MS 20
+#define MSG_TYPE_EVT_BASE               0x40000000
+#define MSG_TYPE_REQ_BASE               0x80000000
+#define MSG_TYPE_RSP_BASE               0xC0000000
 
-#define CONFIG_INIT_THREAD_NAME "init thread"
-#define CONFIG_INIT_THREAD_STACK_SIZE 2048
-#define CONFIG_INIT_THREAD_PRIORITY osPriorityRealtime
+#define MSG_ID_ADC_SERVICE_BASE         0x00010000
+#define MSG_ID_LED_SERVICE_BASE         0x00020000
+#define MSG_ID_BUTTON_SERVICE_BASE      0x00030000
+#define MSG_ID_TUNIT_SERVICE_BASE    	0x00FF0000
 
-#define CONFIG_SERVICE_DEFAULT_THREAD_NAME "default service thread"
-#define CONFIG_SERVICE_DEFAULT_THREAD_STACK_SIZE 2048
-#define CONFIG_SERVICE_DEFAULT_THREAD_PRIORITY osPriorityNormal
-
-#define CONFIG_SERVICE_DEFAULT_QUEUE_NAME "default service queue"
-#define CONFIG_SERVICE_DEFAULT_QUEUE_LENGTH 10
-
-#endif /* __SERVICE_CONF_H__ */
+#endif /* __SERVICES_IDS_H__ */
