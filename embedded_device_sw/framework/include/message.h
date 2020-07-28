@@ -19,12 +19,6 @@
 #ifndef __MESSAGE_H__
 #define __MESSAGE_H__
 
-#include <stddef.h>
-#include "cmsis_os2.h"
-#include "object.h"
-#include "err.h"
-#include "framework_conf.h"
-
 /**
  * @brief	Message types definition.
  */

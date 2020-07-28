@@ -24,8 +24,8 @@
 #include "object.h"
 #include "err.h"
 #include "framework_conf.h"
-#include "message.h"
 #include "services_ids.h"
+#include "message.h"
 
 struct _service_t;
 typedef struct _service_t service_t;

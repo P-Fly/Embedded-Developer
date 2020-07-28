@@ -32,4 +32,10 @@
 #define CONFIG_SERVICE_DEFAULT_QUEUE_NAME "default service queue"
 #define CONFIG_SERVICE_DEFAULT_QUEUE_LENGTH 10
 
+#define CONFIG_LED_SERVICE_ENABLE
+#if defined(CONFIG_LED_SERVICE_ENABLE)
+#define CONFIG_LED_SERVICE_NAME "led service"
+#define CONFIG_LED_SERVICE_LABEL led_service
+#endif
+
 #endif /* __SERVICE_CONF_H__ */
