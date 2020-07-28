@@ -21,6 +21,7 @@
 #include "object.h"
 #include "err.h"
 #include "log.h"
+#include "drv_gpio.h"
 
 #define TARGET_IS_TEMPEST_RC1
 #include "inc/hw_memmap.h"

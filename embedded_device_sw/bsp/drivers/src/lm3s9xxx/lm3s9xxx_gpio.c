@@ -377,11 +377,11 @@ static int lm3s9xxx_uart0_probe(const object *obj)
 	if (!obj)
 		return -ENODEV;
 
-	ret = clock_on(handle->clock, DRV_CLK_UART, 0);
+	ret = clock_on(handle->clock, CLK_UART, 0);
 	if (ret)
 		return ret;
 
-	ret = clock_on(handle->clock, DRV_CLK_PORTA, 0);
+	ret = clock_on(handle->clock, CLK_PORTA, 0);
 	if (ret)
 		return ret;
 
@@ -436,11 +436,11 @@ static int lm3s9xxx_uart0_shutdown(const object *obj)
 	/* Disable the UART */
 	MAP_UARTDisable(handle->uart_base);
 
-	ret = clock_off(handle->clock, DRV_CLK_UART, 0);
+	ret = clock_off(handle->clock, CLK_UART, 0);
 	if (ret)
 		return ret;
 
-	ret = clock_off(handle->clock, DRV_CLK_PORTA, 0);
+	ret = clock_off(handle->clock, CLK_PORTA, 0);
 	if (ret)
 		return ret;
 

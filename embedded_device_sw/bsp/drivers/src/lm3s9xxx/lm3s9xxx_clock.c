@@ -41,8 +41,8 @@ typedef struct
 
 static const lm3s9xxx_clock_subsys_onoff_t clock_subsys_onoff[] =
 {
-	{ CLK_PORTA, 0, SYSCTL_PERIPH_GPIOA },
-	{ CLK_UART, 0, SYSCTL_PERIPH_UART0 },
+	{ DRV_CLK_PORTA, 0, SYSCTL_PERIPH_GPIOA },
+	{ DRV_CLK_UART, 0, SYSCTL_PERIPH_UART0 },
 };
 
 #define DEF_CLOCK_SUBSYS_ONOFF_NUM (sizeof(clock_subsys_onoff) / sizeof(clock_subsys_onoff[0]))
