@@ -68,6 +68,12 @@ static int lm3s9xxx_uart_configure(const object* obj,
     unsigned long stop_bits;
     unsigned long parity;
 
+	if (!handle)
+		return -EINVAL;
+
+	if (!config)
+		return -EINVAL;
+
 	baudrate = config->baudrate;
 
 	/* Set Word Length */
