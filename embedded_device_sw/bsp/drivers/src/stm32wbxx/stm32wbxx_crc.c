@@ -17,9 +17,10 @@
  */
 
 #include <string.h>
-#include "stm32wbxx_hal.h"
-#include "crc.h"
+#include "drv_crc.h"
 #include "log.h"
+
+#include "stm32wbxx_hal.h"
 
 #if defined(CONFIG_CRC_ENABLE)
 

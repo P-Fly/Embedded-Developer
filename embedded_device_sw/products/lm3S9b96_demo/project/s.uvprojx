@@ -7,23 +7,23 @@
 
   <Targets>
     <Target>
-      <TargetName>stm32wb55</TargetName>
+      <TargetName>lm3S9b96</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
-          <Device>STM32WB55RGVx</Device>
-          <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32WBxx_DFP.1.1.0</PackID>
+          <Device>LM3S9B96</Device>
+          <Vendor>Texas Instruments</Vendor>
+          <PackID>Keil.LM3S_DFP.1.1.0</PackID>
           <PackURL>http://www.keil.com/pack/</PackURL>
-          <Cpu>IRAM(0x20000000,0x00040000) IROM(0x08000000,0x00100000) CPUTYPE("Cortex-M4") FPU2 CLOCK(12000000) ESEL ELITTLE</Cpu>
+          <Cpu>IRAM(0x20000000,0x00018000) IROM(0x00000000,0x00040000) CPUTYPE("Cortex-M3") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
-          <FlashDriverDll>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC1000 -FN1 -FF0STM32WB_M4 -FS08000000 -FL0100000 -FP0($$Device:STM32WB55RGVx$CMSIS\Flash\STM32WB_M4.FLM))</FlashDriverDll>
+          <FlashDriverDll>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC1000 -FN1 -FF0LM3S_256 -FS00 -FL040000 -FP0($$Device:LM3S9B96$Flash\LM3S_256.FLM))</FlashDriverDll>
           <DeviceId>0</DeviceId>
-          <RegisterFile>$$Device:STM32WB55RGVx$Drivers\CMSIS\Device\ST\STM32WBxx\Include\stm32wbxx.h</RegisterFile>
+          <RegisterFile>$$Device:LM3S9B96$Device\Include\lm3s9b96.h</RegisterFile>
           <MemoryEnv></MemoryEnv>
           <Cmp></Cmp>
           <Asm></Asm>
@@ -33,7 +33,7 @@
           <SLE66CMisc></SLE66CMisc>
           <SLE66AMisc></SLE66AMisc>
           <SLE66LinkerMisc></SLE66LinkerMisc>
-          <SFDFile>$$Device:STM32WB55RGVx$CMSIS\SVD\STM32WB55_CM4.svd</SFDFile>
+          <SFDFile>$$Device:LM3S9B96$SVD\lm3s9b96.svd</SFDFile>
           <bCustSvd>0</bCustSvd>
           <UseEnv>0</UseEnv>
           <BinPath></BinPath>
@@ -49,7 +49,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\Objects\</OutputDirectory>
-          <OutputName>stm32wb55_demo</OutputName>
+          <OutputName>lm3s9b96_demo</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
@@ -110,13 +110,13 @@
         </CommonProperty>
         <DllOption>
           <SimDllName>SARMCM3.DLL</SimDllName>
-          <SimDllArguments> -REMAP -MPU</SimDllArguments>
+          <SimDllArguments>  -MPU</SimDllArguments>
           <SimDlgDll>DCM.DLL</SimDlgDll>
-          <SimDlgDllArguments>-pCM4</SimDlgDllArguments>
+          <SimDlgDllArguments>-pCM3</SimDlgDllArguments>
           <TargetDllName>SARMCM3.DLL</TargetDllName>
           <TargetDllArguments> -MPU</TargetDllArguments>
           <TargetDlgDll>TCM.DLL</TargetDlgDll>
-          <TargetDlgDllArguments>-pCM4</TargetDlgDllArguments>
+          <TargetDlgDllArguments>-pCM3</TargetDlgDllArguments>
         </DllOption>
         <DebugOption>
           <OPTHX>
@@ -133,7 +133,7 @@
             <UseExternalTool>0</UseExternalTool>
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
-            <Capability>1</Capability>
+            <Capability>0</Capability>
             <DriverSelection>4096</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
@@ -174,7 +174,7 @@
             <AdsLsxf>1</AdsLsxf>
             <RvctClst>0</RvctClst>
             <GenPPlst>0</GenPPlst>
-            <AdsCpuType>"Cortex-M4"</AdsCpuType>
+            <AdsCpuType>"Cortex-M3"</AdsCpuType>
             <RvctDeviceName></RvctDeviceName>
             <mOS>0</mOS>
             <uocRom>0</uocRom>
@@ -183,12 +183,12 @@
             <hadIRAM>1</hadIRAM>
             <hadXRAM>0</hadXRAM>
             <uocXRam>0</uocXRam>
-            <RvdsVP>2</RvdsVP>
+            <RvdsVP>0</RvdsVP>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
             <useUlib>1</useUlib>
-            <EndSel>1</EndSel>
+            <EndSel>0</EndSel>
             <uLtcg>0</uLtcg>
             <nSecure>0</nSecure>
             <RoSelD>3</RoSelD>
@@ -244,12 +244,12 @@
               <IRAM>
                 <Type>0</Type>
                 <StartAddress>0x20000000</StartAddress>
-                <Size>0x40000</Size>
+                <Size>0x18000</Size>
               </IRAM>
               <IROM>
                 <Type>1</Type>
-                <StartAddress>0x8000000</StartAddress>
-                <Size>0x100000</Size>
+                <StartAddress>0x0</StartAddress>
+                <Size>0x40000</Size>
               </IROM>
               <XRAM>
                 <Type>0</Type>
@@ -273,8 +273,8 @@
               </OCR_RVCT3>
               <OCR_RVCT4>
                 <Type>1</Type>
-                <StartAddress>0x8000000</StartAddress>
-                <Size>0x80000</Size>
+                <StartAddress>0x0</StartAddress>
+                <Size>0x40000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
                 <Type>1</Type>
@@ -299,7 +299,7 @@
               <OCR_RVCT9>
                 <Type>0</Type>
                 <StartAddress>0x20000000</StartAddress>
-                <Size>0x30000</Size>
+                <Size>0x18000</Size>
               </OCR_RVCT9>
               <OCR_RVCT10>
                 <Type>0</Type>
@@ -335,9 +335,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>CORE_CM4,STM32WB,STM32WB55xx,USE_HAL_DRIVER,__ASSERT_MSG</Define>
+              <Define>CORE_CM3,__ASSERT_MSG</Define>
               <Undefine></Undefine>
-              <IncludePath>..\conf;..\include;..\..\..\bsp\arch\arm\cortex_m\cmsis\core\include;..\..\..\bsp\arch\arm\cortex_m\cmsis\device\stm32wb55\include;..\..\..\bsp\drivers\include;..\..\..\bsp\drivers\lib\stm32wbxx\include;..\..\..\framework\include;..\..\..\middlewares\external\freertos\CMSIS_RTOS_V2;..\..\..\middlewares\external\freertos\include;..\..\..\middlewares\external\freertos\portable\RVDS\ARM_CM4F;..\..\..\middlewares\external\cunit\include;..\..\..\utils\include</IncludePath>
+              <IncludePath>..\conf;..\include;..\..\..\bsp\arch\arm\cortex_m\cmsis\core\include;..\..\..\bsp\arch\arm\cortex_m\cmsis\device\lm3S9b96\include;..\..\..\bsp\drivers\include;..\..\..\bsp\drivers\lib\lm3s9xxx;..\..\..\framework\include;..\..\..\middlewares\external\freertos\CMSIS_RTOS_V2;..\..\..\middlewares\external\freertos\include;..\..\..\middlewares\external\freertos\portable\RVDS\ARM_CM3;..\..\..\middlewares\external\cunit\include;..\..\..\utils\include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -365,10 +365,10 @@
             <noStLib>0</noStLib>
             <RepFail>1</RepFail>
             <useFile>0</useFile>
-            <TextAddressRange>0x08000000</TextAddressRange>
+            <TextAddressRange>0x00000000</TextAddressRange>
             <DataAddressRange>0x20000000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile>..\..\..\bsp\arch\arm\cortex_m\cmsis\device\stm32wb55\src\arm\linker\stm32wb55xx_flash_cm4.sct</ScatterFile>
+            <ScatterFile>..\..\..\bsp\arch\arm\cortex_m\cmsis\device\lm3S9b96\src\arm\linker\lm3s9b96_flash_cm3.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc>--diag_suppress L6314W,L6330W</Misc>
@@ -379,392 +379,162 @@
       </TargetOption>
       <Groups>
         <Group>
-          <GroupName>bsp\arch\arm\cortex_m\boot\stm32wb55</GroupName>
+          <GroupName>bsp\arch\arm\cortex_m\boot\lm3s9b96</GroupName>
           <Files>
             <File>
-              <FileName>system_stm32wbxx.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\arch\arm\cortex_m\cmsis\device\stm32wb55\src\system_stm32wbxx.c</FilePath>
-            </File>
-            <File>
-              <FileName>startup_stm32wb55xx_cm4.s</FileName>
+              <FileName>Startup.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\..\..\bsp\arch\arm\cortex_m\cmsis\device\stm32wb55\src\arm\startup_stm32wb55xx_cm4.s</FilePath>
+              <FilePath>..\..\..\bsp\arch\arm\cortex_m\cmsis\device\lm3S9b96\src\arm\Startup.s</FilePath>
             </File>
           </Files>
         </Group>
         <Group>
-          <GroupName>bsp\drivers\lib\stm32wbxx</GroupName>
+          <GroupName>bsp\drivers\lib\lm3s9xxx</GroupName>
           <Files>
             <File>
-              <FileName>stm32wbxx_hal.c</FileName>
+              <FileName>adc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal.c</FilePath>
+              <FilePath>..\..\..\bsp\drivers\lib\lm3s9xxx\driverlib\adc.c</FilePath>
             </File>
             <File>
-              <FileName>stm32wbxx_hal_adc.c</FileName>
+              <FileName>can.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_adc.c</FilePath>
+              <FilePath>..\..\..\bsp\drivers\lib\lm3s9xxx\driverlib\can.c</FilePath>
             </File>
             <File>
-              <FileName>stm32wbxx_hal_adc_ex.c</FileName>
+              <FileName>comp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_adc_ex.c</FilePath>
+              <FilePath>..\..\..\bsp\drivers\lib\lm3s9xxx\driverlib\comp.c</FilePath>
             </File>
             <File>
-              <FileName>stm32wbxx_hal_comp.c</FileName>
+              <FileName>cpu.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_comp.c</FilePath>
+              <FilePath>..\..\..\bsp\drivers\lib\lm3s9xxx\driverlib\cpu.c</FilePath>
             </File>
             <File>
-              <FileName>stm32wbxx_hal_cortex.c</FileName>
+              <FileName>epi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_cortex.c</FilePath>
+              <FilePath>..\..\..\bsp\drivers\lib\lm3s9xxx\driverlib\epi.c</FilePath>
             </File>
             <File>
-              <FileName>stm32wbxx_hal_crc.c</FileName>
+              <FileName>ethernet.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_crc.c</FilePath>
+              <FilePath>..\..\..\bsp\drivers\lib\lm3s9xxx\driverlib\ethernet.c</FilePath>
             </File>
             <File>
-              <FileName>stm32wbxx_hal_crc_ex.c</FileName>
+              <FileName>flash.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_crc_ex.c</FilePath>
+              <FilePath>..\..\..\bsp\drivers\lib\lm3s9xxx\driverlib\flash.c</FilePath>
             </File>
             <File>
-              <FileName>stm32wbxx_hal_cryp.c</FileName>
+              <FileName>gpio.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_cryp.c</FilePath>
+              <FilePath>..\..\..\bsp\drivers\lib\lm3s9xxx\driverlib\gpio.c</FilePath>
             </File>
             <File>
-              <FileName>stm32wbxx_hal_cryp_ex.c</FileName>
+              <FileName>hibernate.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_cryp_ex.c</FilePath>
+              <FilePath>..\..\..\bsp\drivers\lib\lm3s9xxx\driverlib\hibernate.c</FilePath>
             </File>
             <File>
-              <FileName>stm32wbxx_hal_dma.c</FileName>
+              <FileName>i2c.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_dma.c</FilePath>
+              <FilePath>..\..\..\bsp\drivers\lib\lm3s9xxx\driverlib\i2c.c</FilePath>
             </File>
             <File>
-              <FileName>stm32wbxx_hal_dma_ex.c</FileName>
+              <FileName>i2s.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_dma_ex.c</FilePath>
+              <FilePath>..\..\..\bsp\drivers\lib\lm3s9xxx\driverlib\i2s.c</FilePath>
             </File>
             <File>
-              <FileName>stm32wbxx_hal_exti.c</FileName>
+              <FileName>interrupt.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_exti.c</FilePath>
+              <FilePath>..\..\..\bsp\drivers\lib\lm3s9xxx\driverlib\interrupt.c</FilePath>
             </File>
             <File>
-              <FileName>stm32wbxx_hal_flash.c</FileName>
+              <FileName>mpu.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_flash.c</FilePath>
+              <FilePath>..\..\..\bsp\drivers\lib\lm3s9xxx\driverlib\mpu.c</FilePath>
             </File>
             <File>
-              <FileName>stm32wbxx_hal_flash_ex.c</FileName>
+              <FileName>pwm.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_flash_ex.c</FilePath>
+              <FilePath>..\..\..\bsp\drivers\lib\lm3s9xxx\driverlib\pwm.c</FilePath>
             </File>
             <File>
-              <FileName>stm32wbxx_hal_gpio.c</FileName>
+              <FileName>qei.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_gpio.c</FilePath>
+              <FilePath>..\..\..\bsp\drivers\lib\lm3s9xxx\driverlib\qei.c</FilePath>
             </File>
             <File>
-              <FileName>stm32wbxx_hal_hsem.c</FileName>
+              <FileName>ssi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_hsem.c</FilePath>
+              <FilePath>..\..\..\bsp\drivers\lib\lm3s9xxx\driverlib\ssi.c</FilePath>
             </File>
             <File>
-              <FileName>stm32wbxx_hal_i2c.c</FileName>
+              <FileName>sysctl.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_i2c.c</FilePath>
+              <FilePath>..\..\..\bsp\drivers\lib\lm3s9xxx\driverlib\sysctl.c</FilePath>
             </File>
             <File>
-              <FileName>stm32wbxx_hal_i2c_ex.c</FileName>
+              <FileName>systick.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_i2c_ex.c</FilePath>
+              <FilePath>..\..\..\bsp\drivers\lib\lm3s9xxx\driverlib\systick.c</FilePath>
             </File>
             <File>
-              <FileName>stm32wbxx_hal_ipcc.c</FileName>
+              <FileName>timer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_ipcc.c</FilePath>
+              <FilePath>..\..\..\bsp\drivers\lib\lm3s9xxx\driverlib\timer.c</FilePath>
             </File>
             <File>
-              <FileName>stm32wbxx_hal_irda.c</FileName>
+              <FileName>uart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_irda.c</FilePath>
+              <FilePath>..\..\..\bsp\drivers\lib\lm3s9xxx\driverlib\uart.c</FilePath>
             </File>
             <File>
-              <FileName>stm32wbxx_hal_iwdg.c</FileName>
+              <FileName>udma.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_iwdg.c</FilePath>
+              <FilePath>..\..\..\bsp\drivers\lib\lm3s9xxx\driverlib\udma.c</FilePath>
             </File>
             <File>
-              <FileName>stm32wbxx_hal_lcd.c</FileName>
+              <FileName>usb.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_lcd.c</FilePath>
+              <FilePath>..\..\..\bsp\drivers\lib\lm3s9xxx\driverlib\usb.c</FilePath>
             </File>
             <File>
-              <FileName>stm32wbxx_hal_lptim.c</FileName>
+              <FileName>watchdog.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_lptim.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_hal_pcd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_pcd.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_hal_pcd_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_pcd_ex.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_hal_pka.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_pka.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_hal_pwr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_pwr.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_hal_pwr_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_pwr_ex.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_hal_qspi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_qspi.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_hal_rcc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_rcc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_hal_rcc_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_rcc_ex.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_hal_rng.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_rng.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_hal_rtc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_rtc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_hal_rtc_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_rtc_ex.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_hal_sai.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_sai.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_hal_sai_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_sai_ex.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_hal_smartcard.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_smartcard.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_hal_smartcard_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_smartcard_ex.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_hal_smbus.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_smbus.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_hal_spi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_spi.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_hal_spi_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_spi_ex.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_hal_tim.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_tim.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_hal_tim_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_tim_ex.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_hal_tsc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_tsc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_hal_uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_uart.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_hal_uart_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_uart_ex.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_hal_usart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_usart.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_hal_usart_ex.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_usart_ex.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_hal_wwdg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_hal_wwdg.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_ll_adc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_ll_adc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_ll_comp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_ll_comp.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_ll_crc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_ll_crc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_ll_crs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_ll_crs.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_ll_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_ll_dma.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_ll_exti.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_ll_exti.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_ll_gpio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_ll_gpio.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_ll_i2c.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_ll_i2c.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_ll_lptim.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_ll_lptim.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_ll_lpuart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_ll_lpuart.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_ll_pka.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_ll_pka.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_ll_pwr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_ll_pwr.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_ll_rcc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_ll_rcc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_ll_rng.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_ll_rng.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_ll_rtc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_ll_rtc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_ll_spi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_ll_spi.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_ll_tim.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_ll_tim.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_ll_usart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_ll_usart.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_ll_usb.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_ll_usb.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32wbxx_ll_utils.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\lib\stm32wbxx\src\stm32wbxx_ll_utils.c</FilePath>
+              <FilePath>..\..\..\bsp\drivers\lib\lm3s9xxx\driverlib\watchdog.c</FilePath>
             </File>
           </Files>
         </Group>
         <Group>
-          <GroupName>bsp\drivers\stm32wbxx</GroupName>
+          <GroupName>bsp\drivers\lm3s9xxx</GroupName>
           <Files>
             <File>
-              <FileName>stm32wbxx_crc.c</FileName>
+              <FileName>lm3s9xxx_clock.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\src\stm32wbxx\stm32wbxx_crc.c</FilePath>
+              <FilePath>..\..\..\bsp\drivers\src\lm3s9xxx\lm3s9xxx_clock.c</FilePath>
             </File>
             <File>
-              <FileName>stm32wbxx_uart.c</FileName>
+              <FileName>lm3s9xxx_gpio.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\src\stm32wbxx\stm32wbxx_uart.c</FilePath>
+              <FilePath>..\..\..\bsp\drivers\src\lm3s9xxx\lm3s9xxx_gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>lm3s9xxx_uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\drivers\src\lm3s9xxx\lm3s9xxx_uart.c</FilePath>
             </File>
           </Files>
         </Group>
         <Group>
-          <GroupName>bsp\machine\st\p-nucleo-wb55_nucleo</GroupName>
+          <GroupName>bsp\machine\ti\dk-lm3s9b96</GroupName>
           <Files>
             <File>
               <FileName>hardware.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\machine\st\p-nucleo-wb55_nucleo\hardware.c</FilePath>
+              <FilePath>..\..\..\bsp\machine\ti\dk-lm3s9b96\src\hardware.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -814,7 +584,7 @@
             <File>
               <FileName>port.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\middlewares\external\freertos\portable\RVDS\ARM_CM4F\port.c</FilePath>
+              <FilePath>..\..\..\middlewares\external\freertos\portable\RVDS\ARM_CM3\port.c</FilePath>
             </File>
             <File>
               <FileName>cmsis_os2.c</FileName>
@@ -940,11 +710,6 @@
               <FileName>tcase_ring_buff.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\tcase\utils\tcase_ring_buff.c</FilePath>
-            </File>
-            <File>
-              <FileName>tcase_crc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\..\tcase\driver\tcase_crc.c</FilePath>
             </File>
           </Files>
         </Group>

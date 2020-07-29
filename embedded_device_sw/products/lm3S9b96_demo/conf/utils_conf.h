@@ -16,27 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __MESSAGE_H__
-#define __MESSAGE_H__
+#ifndef __UTILS_CONF_H__
+#define __UTILS_CONF_H__
 
-/**
- * @brief	Message types definition.
- */
-typedef enum {
-	MSG_TYPE_REQ,
-	MSG_TYPE_RSP,
-	MSG_TYPE_EVT,
-	MSG_TYPE_INT
-} message_type_t;
+#define CONFIG_TRACE_ENABLE
+#if defined(CONFIG_TRACE_ENABLE)
+#define CONFIG_TRACE_NAME "trace module"
+#define CONFIG_TRACE_LABEL trace_module
+#define CONFIG_TRACE_PORT_NAME CONFIG_UART0_NAME
+#endif
 
-/**
- * @brief	Message structure definitions.
- */
-typedef struct {
-	unsigned int	id;
-	unsigned int	param0;
-	unsigned int	param1;
-	void *		ptr;
-} message_t;
+#define CONFIG_ASSERT_ENABLE
 
-#endif /* __MESSAGE_H__ */
+#endif /* __UTILS_CONF_H__ */

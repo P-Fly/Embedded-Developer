@@ -17,7 +17,7 @@
  */
 
 #include <string.h>
-#include "crc.h"
+#include "drv_crc.h"
 #include "tunit.h"
 
 #ifdef CONFIG_TUNIT_CRC_SUIT_NAME

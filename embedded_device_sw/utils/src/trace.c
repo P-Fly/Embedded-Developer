@@ -20,7 +20,7 @@
 #include <string.h>
 #include "object.h"
 #include "err.h"
-#include "uart.h"
+#include "drv_uart.h"
 #include "utils_conf.h"
 
 #ifdef CONFIG_TRACE_ENABLE
@@ -99,7 +99,7 @@ static int trace_probe(const object *obj)
 
 	handle->port = object_get_binding(CONFIG_TRACE_PORT_NAME);
 	if (!handle->port)
-		return -ENXIO;
+		return -ENODEV;
 
 	return 0;
 }

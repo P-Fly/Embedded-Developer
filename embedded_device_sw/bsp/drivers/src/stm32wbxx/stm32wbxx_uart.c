@@ -18,8 +18,9 @@
 
 #include <string.h>
 #include "ring_buff.h"
+#include "drv_uart.h"
+
 #include "stm32wbxx_hal.h"
-#include "uart.h"
 
 #if defined(CONFIG_UART1_ENABLE)
 
@@ -34,7 +35,6 @@ typedef struct {
 	ring_buff_t		rx;
 #endif
 	UART_HandleTypeDef	uart;
-	void *			private_data;
 } stm32wbxx_uart_handle_t;
 
 /**
