@@ -36,6 +36,18 @@
 #if defined(CONFIG_LED_SERVICE_ENABLE)
 #define CONFIG_LED_SERVICE_NAME "led service"
 #define CONFIG_LED_SERVICE_LABEL led_service
+
+#define CONFIG_LED_INSTANCE_NUM 1
+#define CONFIG_LED_HW_CONFIGS \
+	{ \
+		{ \
+			0, \
+			CONFIG_GPIOF_NAME, \
+			DRV_GPIO_PIN_3, \
+			DRV_GPIO_PIN_SET, \
+			DRV_GPIO_PIN_CLR, \
+		}, \
+	}
 #endif
 
 #endif /* __SERVICE_CONF_H__ */

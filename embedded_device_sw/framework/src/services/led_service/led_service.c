@@ -19,17 +19,36 @@
 #include <string.h>
 #include "service.h"
 #include "log.h"
+#include "led_pattern.h"
+#include "led_hardware.h"
+#include "drv_gpio.h"
 
 #if defined(CONFIG_LED_SERVICE_ENABLE)
 
+typedef struct
+{
+	const led_hardware_t* config;
+	const led_pattern_t* pattern;
+	const object *port;
+	osTimerId_t timer;
+} led_instance_t;
+
 typedef struct {
+	led_instance_t instance[CONFIG_LED_INSTANCE_NUM];
 } led_service_priv_t;
 
 static int led_service_init(const service_t *svc, void *priv)
 {
 	led_service_priv_t *priv_data = (led_service_priv_t *)priv;
+	unsigned int i;
 
 	(void)memset(priv_data, 0, sizeof(led_service_priv_t));
+
+	for (i = 0; i < CONFIG_LED_INSTANCE_NUM; i++)
+	{
+		priv_data->instance[i].config = led_hardware_search_index(i);
+		/*osTimerNew (osTimerFunc_t func, osTimerOnce, NULL, const osTimerAttr_t *attr)*/
+	}
 
 	return 0;
 }
@@ -52,10 +71,16 @@ static void led_service_handle_message(const message_t *message,
 	(void)priv_data;
 
 	switch (message->id) {
-	case MSG_ID_LED_SERVICE_QUICK_FLASH_EVT:
+	case MSG_ID_LED_SERVICE_FLASH_ONCE_EVT:
 		break;
 
-	case MSG_ID_LED_SERVICE_SLOW_FLASH_EVT:
+	case MSG_ID_LED_SERVICE_FLASH_TWICE_EVT:
+		break;
+
+	case MSG_ID_LED_SERVICE_REPEAT_QUICK_FLASH_EVT:
+		break;
+
+	case MSG_ID_LED_SERVICE_REPEAT_SLOW_FLASH_EVT:
 		break;
 
 	default:
