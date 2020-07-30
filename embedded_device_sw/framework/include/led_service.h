@@ -16,21 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string.h>
-#include "service.h"
-#include "log.h"
-#include "led_hardware.h"
+#ifndef __LED_SERVICES_H__
+#define __LED_SERVICES_H__
 
-#if defined(CONFIG_LED_SERVICE_ENABLE)
+/**
+ * @brief   Led pattern ID definitions.
+ */
+typedef enum {
+	LED_PATTERN_FLASH_ONCE,
+	LED_PATTERN_FLASH_TWICE,
+	LED_PATTERN_QUICK_FLASH,
+	LED_PATTERN_SLOW_FLASH,
+} led_pattern_id_t;
 
-static const led_hardware_t led_hardware[] = CONFIG_LED_HW_CONFIGS;
-
-const led_hardware_t* led_hardware_search_index(unsigned int index)
-{
-	if (index >= sizeof(led_hardware) / sizeof(led_hardware[0]))
-		return NULL;
-
-	return &led_hardware[index];
-}
-
-#endif
+#endif /* __LED_SERVICES_H__ */

@@ -26,7 +26,6 @@
  */
 typedef struct
 {
-	unsigned int id;
 	const char *const port;
 	gpio_pin_id_t pin;
 	gpio_pin_level_t on;
@@ -34,6 +33,5 @@ typedef struct
 } led_hardware_t;
 
 extern const led_hardware_t* led_hardware_search_index(unsigned int index);
-extern unsigned int led_hardware_get_num(void);
 
 #endif /* __LED_HARDWARE_H__ */

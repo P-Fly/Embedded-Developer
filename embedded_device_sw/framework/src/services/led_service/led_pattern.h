@@ -20,16 +20,6 @@
 #define __LED_PATTERN_H__
 
 /**
- * @brief   Led pattern ID definitions.
- */
-typedef enum {
-	LED_PATTERN_FLASH_ONCE,
-	LED_PATTERN_FLASH_TWICE,
-	LED_PATTERN_QUICK_FLASH,
-	LED_PATTERN_SLOW_FLASH,
-} led_pattern_id_t;
-
-/**
  * @brief   Led pattern cycle definitions.
  */
 typedef struct {

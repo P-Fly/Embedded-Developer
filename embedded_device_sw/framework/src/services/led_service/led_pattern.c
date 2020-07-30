@@ -16,8 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stddef.h>
-#include "framework_conf.h"
+#include <string.h>
+#include "service.h"
+#include "log.h"
 #include "led_pattern.h"
 
 #if defined(CONFIG_LED_SERVICE_ENABLE)

@@ -21,6 +21,7 @@
 #include "object.h"
 #include "err.h"
 #include "log.h"
+#include "service.h"
 #include "drv_gpio.h"
 
 #define TARGET_IS_TEMPEST_RC1
@@ -89,10 +90,22 @@ static void loop_thread(void *argument)
 void hardware_late_startup(void)
 {
 	osThreadId_t thread_id;
+	int ret;
 
 	thread_id = osThreadNew(loop_thread, NULL, &loop_attr);
 	if (!thread_id)
 		pr_error("Create thread <%s> failed.", loop_attr.name);
 	else
 		pr_info("Create thread <%s> succeed.", loop_attr.name);
+
+	message_t message;
+	message.id = MSG_ID_SYS_STARTUP_COMPLETED;
+	message.param0 = 0;
+	message.param1 = 0;
+	message.ptr = NULL;
+	ret = service_broadcast_evt(&message);
+	if (ret)
+		pr_error("Broadcast event 0x%x failed.", message.id);
+	else
+		pr_error("Broadcast event 0x%x succeed.", message.id);
 }

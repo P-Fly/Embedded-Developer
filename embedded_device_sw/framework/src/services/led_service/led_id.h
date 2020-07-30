@@ -16,21 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string.h>
-#include "service.h"
-#include "log.h"
-#include "led_hardware.h"
+#ifndef __LED_ID_H__
+#define __LED_ID_H__
 
-#if defined(CONFIG_LED_SERVICE_ENABLE)
-
-static const led_hardware_t led_hardware[] = CONFIG_LED_HW_CONFIGS;
-
-const led_hardware_t* led_hardware_search_index(unsigned int index)
+/**
+ * @brief   Led ID definitions.
+ */
+typedef struct
 {
-	if (index >= sizeof(led_hardware) / sizeof(led_hardware[0]))
-		return NULL;
+	const char *const name;
+	unsigned int id;
+} led_id_t;
 
-	return &led_hardware[index];
-}
+extern const led_id_t* led_id_search_index(unsigned int index);
 
-#endif
+#endif /* __LED_ID_H__ */

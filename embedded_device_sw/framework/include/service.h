@@ -26,6 +26,7 @@
 #include "framework_conf.h"
 #include "services_ids.h"
 #include "message.h"
+#include "led_service.h"
 
 struct _service_t;
 typedef struct _service_t service_t;

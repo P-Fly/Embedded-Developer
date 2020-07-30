@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __SERVICE_CONF_H__
-#define __SERVICE_CONF_H__
+#ifndef __FRAMEWORK_CONF_H__
+#define __FRAMEWORK_CONF_H__
 
 #define CONFIG_MSG_SEND_BLOCK_TIMEOUT_MS 20
 
@@ -32,10 +32,16 @@
 #define CONFIG_SERVICE_DEFAULT_QUEUE_NAME "default service queue"
 #define CONFIG_SERVICE_DEFAULT_QUEUE_LENGTH 10
 
+#define CONFIG_UI_SERVICE_ENABLE
+#if defined(CONFIG_UI_SERVICE_ENABLE)
+#define CONFIG_UI_SERVICE_NAME "ui service"
+#define CONFIG_UI_SERVICE_LABEL ui_service
+#endif
+
 #define CONFIG_LED_SERVICE_ENABLE
 #if defined(CONFIG_LED_SERVICE_ENABLE)
 #define CONFIG_LED_SERVICE_NAME "led service"
 #define CONFIG_LED_SERVICE_LABEL led_service
 #endif
 
-#endif /* __SERVICE_CONF_H__ */
+#endif /* __FRAMEWORK_CONF_H__ */
