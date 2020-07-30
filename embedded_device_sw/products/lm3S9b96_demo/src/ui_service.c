@@ -64,14 +64,14 @@ static void ui_service_handle_message(const message_t *message,
 
 		send_message.id = MSG_ID_LED_START;
 		send_message.param0 = 0;
-		send_message.param1 = LED_PATTERN_SLOW_FLASH;
+		send_message.param1 = LED_PATTERN_QUICK_FLASH;
 		send_message.ptr = NULL;
 
 		ret = service_send_evt(priv_data->led_svc, &send_message);
 		if (ret)
 			pr_error("Send event 0x%x to <%s> failed.", send_message.id, priv_data->led_svc->name);
 		else
-			pr_error("Send event 0x%x to <%s> succeed.", send_message.id, priv_data->led_svc->name);
+			pr_info("Send event 0x%x to <%s> succeed.", send_message.id, priv_data->led_svc->name);
 
 		break;
 

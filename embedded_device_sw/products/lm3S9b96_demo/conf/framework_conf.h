@@ -57,6 +57,7 @@
 		{ \
 			CONFIG_GPIOF_NAME, \
 			DRV_GPIO_PIN_3, \
+			GPIO_CONFIG_MODE_OUTPUT_PP, \
 			DRV_GPIO_PIN_SET, \
 			DRV_GPIO_PIN_CLR, \
 		}, \

@@ -53,33 +53,6 @@ void hardware_early_startup(void)
 	SystemCoreClock = 50000000UL;
 }
 
-const osThreadAttr_t loop_attr = {
-	.name		= "loop thread",
-	.attr_bits	= osThreadDetached,
-	.cb_mem		= NULL,
-	.cb_size	= 0,
-	.stack_mem	= NULL,
-	.stack_size	= 2048,
-	.priority	= osPriorityNormal,
-};
-
-static void loop_thread(void *argument)
-{
-	const object *obj;
-	gpio_config_t config;
-
-	obj = object_get_binding(CONFIG_GPIOF_NAME);
-
-	config.configs = GPIO_CONFIG_MODE_OUTPUT_PP;
-	gpio_configure(obj, DRV_GPIO_PIN_3, &config);
-
-	while (1) {
-		gpio_toggle(obj, DRV_GPIO_PIN_3);
-
-		osDelay(1000 * osKernelGetTickFreq() / 1000);
-	}
-}
-
 /**
  * @brief   Startup hardware late.
  *
@@ -89,14 +62,9 @@ static void loop_thread(void *argument)
  */
 void hardware_late_startup(void)
 {
-	osThreadId_t thread_id;
 	int ret;
 
-	thread_id = osThreadNew(loop_thread, NULL, &loop_attr);
-	if (!thread_id)
-		pr_error("Create thread <%s> failed.", loop_attr.name);
-	else
-		pr_info("Create thread <%s> succeed.", loop_attr.name);
+	osDelay(500 * osKernelGetTickFreq() / 1000);
 
 	message_t message;
 	message.id = MSG_ID_SYS_STARTUP_COMPLETED;
@@ -107,5 +75,5 @@ void hardware_late_startup(void)
 	if (ret)
 		pr_error("Broadcast event 0x%x failed.", message.id);
 	else
-		pr_error("Broadcast event 0x%x succeed.", message.id);
+		pr_info("Broadcast event 0x%x succeed.", message.id);
 }

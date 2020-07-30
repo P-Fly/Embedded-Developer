@@ -28,6 +28,7 @@ typedef struct
 {
 	const char *const port;
 	gpio_pin_id_t pin;
+	gpio_config_t config;
 	gpio_pin_level_t on;
 	gpio_pin_level_t off;
 } led_hardware_t;

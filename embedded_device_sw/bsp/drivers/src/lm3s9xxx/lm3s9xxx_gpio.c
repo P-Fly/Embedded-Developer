@@ -294,6 +294,17 @@ static int lm3s9xxx_gpio_probe(const object *obj)
 	int ret;
 
 	handle->clock = object_get_binding(CONFIG_CLOCK_NAME);
+	if (!handle->clock)
+	{
+		pr_error("Drivce <%s> binding object <%s> failed.",
+			obj->name,
+			CONFIG_CLOCK_NAME);
+		return -ENODEV;
+	} else
+		pr_info("Drivce <%s> binding object <%s> succeed.",
+			obj->name,
+			CONFIG_CLOCK_NAME);
+
 	if (!obj)
 		return -ENODEV;
 
