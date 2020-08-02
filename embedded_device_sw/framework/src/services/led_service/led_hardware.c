@@ -18,8 +18,8 @@
 
 #include <string.h>
 #include "service.h"
-#include "log.h"
 #include "led_hardware.h"
+#include "log.h"
 
 #if defined(CONFIG_LED_SERVICE_ENABLE)
 

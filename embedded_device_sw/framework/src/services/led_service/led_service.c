@@ -18,10 +18,10 @@
 
 #include <string.h>
 #include "service.h"
-#include "log.h"
 #include "led_id.h"
 #include "led_hardware.h"
 #include "led_pattern.h"
+#include "log.h"
 #include "drv_gpio.h"
 
 #if defined(CONFIG_LED_SERVICE_ENABLE)
@@ -208,6 +208,12 @@ static void led_service_handle_message(const message_t *message,
 		break;
 
 	case MSG_ID_LED_STOP:
+		id = message->param0;
+
+		instance = led_service_instance_search_id(priv_data, id);
+		if (!instance)
+			break;
+
 		osTimerStop(instance->runtime.timer);
 		break;
 

@@ -31,7 +31,7 @@ typedef struct {
  * @brief   Led pattern definitions.
  */
 typedef struct {
-	led_pattern_id_t id;
+	led_pattern_id_t pattern_id;
 	const led_pattern_cycle_t* cycle;
 	int cycle_total;
 	int periodic;
