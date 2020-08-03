@@ -25,20 +25,20 @@
  * @brief   Led pattern cycle definitions.
  */
 typedef struct {
-    unsigned int onoff;
-    unsigned int time_ms;
+	unsigned int	onoff;
+	unsigned int	time_ms;
 } led_pattern_cycle_t;
 
 /**
  * @brief   Led pattern definitions.
  */
 typedef struct {
-	led_pattern_id_t pattern_id;
-	const led_pattern_cycle_t* cycle;
-	unsigned int cycle_total;
-	bool periodic;
+	led_pattern_id_t		pattern_id;
+	const led_pattern_cycle_t *	cycle;
+	unsigned int			cycle_total;
+	bool				periodic;
 } led_pattern_t;
 
-extern const led_pattern_t* led_pattern_search_id(led_pattern_id_t id);
+extern const led_pattern_t *led_pattern_search_id(led_pattern_id_t id);
 
 #endif /* __LED_PATTERN_H__ */

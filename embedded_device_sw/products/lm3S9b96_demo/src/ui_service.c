@@ -31,8 +31,8 @@
  * @brief   Private structure for UI service.
  */
 typedef struct {
-	const service_t *owner_svc;
-	const service_t *led_svc;
+	const service_t *	owner_svc;
+	const service_t *	led_svc;
 } ui_service_priv_t;
 
 /**
@@ -54,13 +54,14 @@ static int ui_service_init(const service_t *svc, void *priv)
 	priv_data->led_svc = service_get_binding(CONFIG_LED_SERVICE_NAME);
 	if (!priv_data->led_svc) {
 		ui_error("Service <%s> binding object <%s> failed.",
-			svc->name,
-			CONFIG_LED_SERVICE_NAME);
+			 svc->name,
+			 CONFIG_LED_SERVICE_NAME);
 		return -ENODEV;
-	} else
+	} else {
 		ui_info("Service <%s> binding object <%s> succeed.",
 			svc->name,
 			CONFIG_LED_SERVICE_NAME);
+	}
 
 	return 0;
 }
@@ -91,9 +92,9 @@ static int ui_service_deinit(const service_t *svc, void *priv)
  *
  * @retval  None.
  */
-static void ui_service_handle_message(const message_t *message,
-				       message_t *	rsp_message,
-				       void *		priv)
+static void ui_service_handle_message(const message_t * message,
+				      message_t *	rsp_message,
+				      void *		priv)
 {
 	ui_service_priv_t *priv_data = (ui_service_priv_t *)priv;
 	message_t send_message;
@@ -109,9 +110,13 @@ static void ui_service_handle_message(const message_t *message,
 
 		ret = service_send_evt(priv_data->led_svc, &send_message);
 		if (ret)
-			ui_error("Send event 0x%x to <%s> failed.", send_message.id, priv_data->led_svc->name);
+			ui_error("Send event 0x%x to <%s> failed.",
+				 send_message.id,
+				 priv_data->led_svc->name);
 		else
-			ui_info("Send event 0x%x to <%s> succeed.", send_message.id, priv_data->led_svc->name);
+			ui_info("Send event 0x%x to <%s> succeed.",
+				send_message.id,
+				priv_data->led_svc->name);
 
 		send_message.id = MSG_ID_LED_START;
 		send_message.param0 = 1;
@@ -120,9 +125,13 @@ static void ui_service_handle_message(const message_t *message,
 
 		ret = service_send_evt(priv_data->led_svc, &send_message);
 		if (ret)
-			ui_error("Send event 0x%x to <%s> failed.", send_message.id, priv_data->led_svc->name);
+			ui_error("Send event 0x%x to <%s> failed.",
+				 send_message.id,
+				 priv_data->led_svc->name);
 		else
-			ui_info("Send event 0x%x to <%s> succeed.", send_message.id, priv_data->led_svc->name);
+			ui_info("Send event 0x%x to <%s> succeed.",
+				send_message.id,
+				priv_data->led_svc->name);
 
 		break;
 

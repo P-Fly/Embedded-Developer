@@ -51,14 +51,16 @@
  */
 
 #define DEF_CYCLE_NUM_FLASH_ONCE 2
-static const led_pattern_cycle_t led_pattern_cycle_flash_once[DEF_CYCLE_NUM_FLASH_ONCE] =
+static const led_pattern_cycle_t led_pattern_cycle_flash_once[
+	DEF_CYCLE_NUM_FLASH_ONCE] =
 {
 	{ .onoff = 1, .time_ms = 300 },
 	{ .onoff = 0, .time_ms = 300 },
 };
 
 #define DEF_CYCLE_NUM_FLASH_TWICE 4
-static const led_pattern_cycle_t led_pattern_cycle_flash_twice[DEF_CYCLE_NUM_FLASH_TWICE] =
+static const led_pattern_cycle_t led_pattern_cycle_flash_twice[
+	DEF_CYCLE_NUM_FLASH_TWICE] =
 {
 	{ .onoff = 1, .time_ms = 300 },
 	{ .onoff = 0, .time_ms = 300 },
@@ -67,16 +69,18 @@ static const led_pattern_cycle_t led_pattern_cycle_flash_twice[DEF_CYCLE_NUM_FLA
 };
 
 #define DEF_CYCLE_NUM_QUICK_FLASH 2
-static const led_pattern_cycle_t led_pattern_cycle_quick_flash[DEF_CYCLE_NUM_QUICK_FLASH] =
+static const led_pattern_cycle_t led_pattern_cycle_quick_flash[
+	DEF_CYCLE_NUM_QUICK_FLASH] =
 {
 	{ .onoff = 1, .time_ms = 300 },
 	{ .onoff = 0, .time_ms = 300 },
 };
 
 #define DEF_CYCLE_NUM_SLOW_FLASH 2
-static const led_pattern_cycle_t led_pattern_cycle_slow_flash[DEF_CYCLE_NUM_SLOW_FLASH] =
+static const led_pattern_cycle_t led_pattern_cycle_slow_flash[
+	DEF_CYCLE_NUM_SLOW_FLASH] =
 {
-	{ .onoff = 1, .time_ms = 300 },
+	{ .onoff = 1, .time_ms = 300  },
 	{ .onoff = 0, .time_ms = 2700 },
 };
 
@@ -115,7 +119,7 @@ static const led_pattern_t led_pattern[] =
  *
  * @retval  Pattern handle for reference or NULL in case of error.
  */
-const led_pattern_t* led_pattern_search_id(led_pattern_id_t pattern_id)
+const led_pattern_t *led_pattern_search_id(led_pattern_id_t pattern_id)
 {
 	int i;
 

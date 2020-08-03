@@ -32,7 +32,7 @@ static const led_hardware_t led_hardware[] = CONFIG_LED_HW_CONFIGS;
  *
  * @retval  Hardware handle for reference or NULL in case of error.
  */
-const led_hardware_t* led_hardware_search_by_index(unsigned int index)
+const led_hardware_t *led_hardware_search_by_index(unsigned int index)
 {
 	if (index >= sizeof(led_hardware) / sizeof(led_hardware[0]))
 		return NULL;

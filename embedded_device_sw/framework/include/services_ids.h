@@ -43,7 +43,7 @@
  * @message.ptr     None.
  */
 #define MSG_ID_LED_START (MSG_TYPE_EVT_BASE | \
-					MSG_ID_LED_SERVICE_BASE | 0x0001)
+			  MSG_ID_LED_SERVICE_BASE | 0x0001)
 
 /**
  * @brief           Stop a LED pattern.
@@ -54,7 +54,7 @@
  * @message.ptr     None.
  */
 #define MSG_ID_LED_STOP (MSG_TYPE_EVT_BASE | \
-					MSG_ID_LED_SERVICE_BASE | 0x0002)
+			 MSG_ID_LED_SERVICE_BASE | 0x0002)
 
 /**
  * @brief           Notify LED pattern is completed.
@@ -65,7 +65,7 @@
  * @message.ptr     None.
  */
 #define MSG_ID_LED_PATTERN_COMPLETED (MSG_TYPE_EVT_BASE | \
-					MSG_ID_LED_SERVICE_BASE | 0x0003)
+				      MSG_ID_LED_SERVICE_BASE | 0x0003)
 
 /** Message ID for system service */
 
@@ -78,6 +78,6 @@
  * @message.ptr     None.
  */
 #define MSG_ID_SYS_STARTUP_COMPLETED (MSG_TYPE_EVT_BASE | \
-					MSG_ID_SYS_SERVICE_BASE | 0x0001)
+				      MSG_ID_SYS_SERVICE_BASE | 0x0001)
 
 #endif /* __SERVICES_IDS_H__ */

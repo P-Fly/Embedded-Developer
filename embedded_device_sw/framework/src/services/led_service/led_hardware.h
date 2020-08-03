@@ -24,15 +24,14 @@
 /**
  * @brief   Led hardware definitions.
  */
-typedef struct
-{
-	const char *const port;
-	gpio_pin_id_t pin;
-	gpio_config_t config;
-	gpio_pin_level_t on;
-	gpio_pin_level_t off;
+typedef struct {
+	const char *const	port;
+	gpio_pin_id_t		pin;
+	gpio_config_t		config;
+	gpio_pin_level_t	on;
+	gpio_pin_level_t	off;
 } led_hardware_t;
 
-extern const led_hardware_t* led_hardware_search_by_index(unsigned int index);
+extern const led_hardware_t *led_hardware_search_by_index(unsigned int index);
 
 #endif /* __LED_HARDWARE_H__ */

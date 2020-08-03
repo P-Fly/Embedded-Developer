@@ -32,7 +32,7 @@ static const led_id_t led_id[] = CONFIG_LED_ID_CONFIGS;
  *
  * @retval  led_id handle for reference or NULL in case of error.
  */
-const led_id_t* led_id_search_by_index(unsigned int index)
+const led_id_t *led_id_search_by_index(unsigned int index)
 {
 	if (index >= sizeof(led_id) / sizeof(led_id[0]))
 		return NULL;
