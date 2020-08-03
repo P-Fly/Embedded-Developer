@@ -72,11 +72,9 @@ static led_service_instance_t *led_instance_search_by_led_id(
 {
 	int i;
 
-	if (!priv_data->instance[i].led_id)
-		return NULL;
-
 	for (i = 0; i < CONFIG_LED_INSTANCE_NUM; i++)
-		if (priv_data->instance[i].led_id->id == id)
+		if (priv_data->instance[i].led_id &&
+			priv_data->instance[i].led_id->id == id)
 			return &priv_data->instance[i];
 
 	return NULL;
@@ -106,8 +104,7 @@ static void led_service_timer_callback(void *argument)
 
 	if (instance->runtime.cycle_idx >= instance->pattern->cycle_total)
 		if (!instance->pattern->periodic) {
-			led_debug("End Timer <%s> succeed, led %d <%s>.",
-				  osTimerGetName(instance->runtime.timer),
+			led_info("End Timer succeed, led %d <%s>.",
 				  instance->led_id->id,
 				  instance->led_id->name);
 			return;
@@ -126,18 +123,11 @@ static void led_service_timer_callback(void *argument)
 			   level);
 	if (ret)
 		led_error(
-			"Timer <%s> write gpio <%s> pin %d level %d failed, ret %d.",
-			osTimerGetName(instance->runtime.timer),
+			"Write gpio <%s> pin %d level %d failed, ret %d.",
 			instance->runtime.gpio->name,
 			instance->hardware->pin,
 			level,
 			ret);
-	else
-		led_debug("Timer <%s> write gpio <%s> pin %d level %d succeed.",
-			  osTimerGetName(instance->runtime.timer),
-			  instance->runtime.gpio->name,
-			  instance->hardware->pin,
-			  level);
 
 	stat =
 		osTimerStart(instance->runtime.timer,
@@ -146,20 +136,11 @@ static void led_service_timer_callback(void *argument)
 			     1000);
 	if (stat != osOK)
 		led_error(
-			"Start Timer <%s> period %d failed, led %d <%s>, stat = %d.",
-			osTimerGetName(
-				instance->runtime.timer),
+			"Start Timer period %d failed, led %d <%s>, stat %d.",
 			instance->pattern->cycle[instance->runtime.cycle_idx].time_ms,
 			instance->led_id->id,
 			instance->led_id->name,
 			stat);
-	else
-		led_debug("Start Timer <%s> period %d succeed, led %d <%s>",
-			  osTimerGetName(
-				  instance->runtime.timer),
-			  instance->pattern->cycle[instance->runtime.cycle_idx].time_ms,
-			  instance->led_id->id,
-			  instance->led_id->name);
 }
 
 /**
@@ -192,16 +173,16 @@ static int led_service_init(const service_t *svc, void *priv)
 			&priv_data->instance[i],
 			&led_service_timer_attr);
 		if (!priv_data->instance[i].runtime.timer) {
-			led_error("Service <%s> create timer <%s> failed.",
-				  svc->name,
-				  osTimerGetName(priv_data->instance[i].runtime.
-						 timer));
+			led_error("Service <%s> create timer <%s> in instance %d failed.",
+				svc->name,
+				osTimerGetName(priv_data->instance[i].runtime.timer),
+				i);
 			return -EINVAL;
 		} else {
-			led_info("Service <%s> create timer <%s> succeed.",
-				 svc->name,
-				 osTimerGetName(priv_data->instance[i].runtime.
-						timer));
+			led_info("Service <%s> create timer <%s> in instance %d succeed.",
+				svc->name,
+				osTimerGetName(priv_data->instance[i].runtime.timer),
+				i);
 		}
 
 		priv_data->instance[i].runtime.gpio = object_get_binding(
@@ -260,16 +241,16 @@ static int led_service_deinit(const service_t *svc, void *priv)
 		priv_data->instance[i].pattern = NULL;
 		stat = osTimerDelete(priv_data->instance[i].runtime.timer);
 		if (stat != osOK) {
-			led_error("Service <%s> delete timer <%s> failed.",
-				  svc->name,
-				  osTimerGetName(priv_data->instance[i].runtime.
-						 timer));
+			led_error("Service <%s> delete timer <%s> in instance %d failed.",
+				svc->name,
+				osTimerGetName(priv_data->instance[i].runtime.timer),
+				i);
 			return -EINVAL;
 		} else {
-			led_info("Service <%s> delete timer <%s> succeed.",
-				 svc->name,
-				 osTimerGetName(priv_data->instance[i].runtime.
-						timer));
+			led_info("Service <%s> delete timer <%s> in instance %d succeed.",
+				svc->name,
+				osTimerGetName(priv_data->instance[i].runtime.timer),
+				i);
 		}
 	}
 
@@ -303,39 +284,25 @@ static void led_service_handle_message(const message_t *message,
 		id = message->param0;
 		pattern_id = (led_pattern_id_t)message->param1;
 
-		led_info("Service <%s> received event 0x%x id %d pattern %d.",
-			 priv_data->owner_svc->name,
+		led_info("Received event 0x%x [%d, %d].",
 			 MSG_ID_LED_START,
 			 id,
 			 pattern_id);
 
 		instance = led_instance_search_by_led_id(priv_data, id);
 		if (!instance) {
-			led_error("Service <%s> search led_id %d failed.",
-				  priv_data->owner_svc->name,
-				  id);
+			led_error("Search led_id %d failed.", id);
 			break;
-		} else {
-			led_debug("Service <%s> search led_id %d succeed.",
-				  priv_data->owner_svc->name,
-				  id);
 		}
 
 		instance->pattern = led_pattern_search_id(pattern_id);
 		if (!instance->pattern) {
-			led_error("Service <%s> search pattern %d failed.",
-				  priv_data->owner_svc->name,
-				  pattern_id);
+			led_error("Search pattern %d failed.", pattern_id);
 			break;
-		} else {
-			led_debug("Service <%s> search pattern %d succeed.",
-				  priv_data->owner_svc->name,
-				  pattern_id);
 		}
 
 		if (!instance->hardware) {
-			led_error("Service <%s> hardware is NULL.",
-				  priv_data->owner_svc->name);
+			led_error("Hardware is NULL.");
 			break;
 		}
 
@@ -353,20 +320,12 @@ static void led_service_handle_message(const message_t *message,
 				 level);
 		if (ret) {
 			led_error(
-				"Service <%s> write gpio <%s> pin %d level %d failed, ret %d.",
-				priv_data->owner_svc->name,
+				"Write gpio <%s> pin %d level %d failed, ret %d.",
 				instance->runtime.gpio->name,
 				instance->hardware->pin,
 				level,
 				ret);
 			break;
-		} else {
-			led_debug(
-				"Service <%s> write gpio <%s> pin %d level %d succeed.",
-				priv_data->owner_svc->name,
-				instance->runtime.gpio->name,
-				instance->hardware->pin,
-				level);
 		}
 
 		stat = osTimerStart(instance->runtime.timer,
@@ -375,17 +334,11 @@ static void led_service_handle_message(const message_t *message,
 				    1000);
 		if (stat != osOK) {
 			led_error(
-				"Start Timer <%s> period %d failed, stat = %d.",
-				osTimerGetName(instance->runtime.timer),
+				"Start Timer period %d failed, stat %d.",
 				instance->pattern->cycle[instance->runtime.
 							 cycle_idx].time_ms,
 				stat);
 			break;
-		} else {
-			led_debug("Start Timer <%s> period %d succeed.",
-				  osTimerGetName(instance->runtime.timer),
-				  instance->pattern->cycle[instance->runtime.
-							   cycle_idx].time_ms);
 		}
 
 		break;
@@ -394,32 +347,20 @@ static void led_service_handle_message(const message_t *message,
 
 		id = message->param0;
 
-		led_info("Service <%s> received event 0x%x id %d.",
-			 priv_data->owner_svc->name,
+		led_info("Received event 0x%x [%d].",
 			 MSG_ID_LED_STOP,
 			 id);
 
 		instance = led_instance_search_by_led_id(priv_data, id);
 		if (!instance) {
-			led_error("Service <%s> search led_id %d failed.",
-				  priv_data->owner_svc->name,
-				  id);
+			led_error("Search led_id %d failed.", id);
 			break;
-		} else {
-			led_debug("Service <%s> search led_id %d succeed.",
-				  priv_data->owner_svc->name,
-				  id);
 		}
 
 		stat = osTimerStop(instance->runtime.timer);
 		if (stat != osOK) {
-			led_error("Stop Timer <%s> failed, stat = %d.",
-				  osTimerGetName(instance->runtime.timer),
-				  stat);
+			led_error("Stop Timer failed, stat %d.", stat);
 			break;
-		} else {
-			led_debug("Stop Timer <%s> succeed.",
-				  osTimerGetName(instance->runtime.timer));
 		}
 
 		break;

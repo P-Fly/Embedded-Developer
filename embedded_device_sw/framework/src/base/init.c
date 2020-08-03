@@ -123,8 +123,6 @@ int main(int argc, char *argv[])
 	thread_id = osThreadNew(init_thread, NULL, &init_attr);
 	if (!thread_id)
 		pr_error("Create thread <%s> failed.", init_attr.name);
-	else
-		pr_info("Create thread <%s> succeed.", init_attr.name);
 
 	stat = osKernelStart();
 	if (stat != osOK)

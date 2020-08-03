@@ -44,7 +44,7 @@
 #define CONFIG_LED_SERVICE_LABEL led_service
 
 #define CONFIG_LED_TIMER_NAME "default led timer"
-#define CONFIG_LED_INSTANCE_NUM 1
+#define CONFIG_LED_INSTANCE_NUM 2
 #define CONFIG_LED_ID_CONFIGS \
 	{ \
 		{ \
