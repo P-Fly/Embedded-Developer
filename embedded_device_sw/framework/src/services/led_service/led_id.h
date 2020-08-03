@@ -28,6 +28,6 @@ typedef struct
 	unsigned int id;
 } led_id_t;
 
-extern const led_id_t* led_id_search_index(unsigned int index);
+extern const led_id_t* led_id_search_by_index(unsigned int index);
 
 #endif /* __LED_ID_H__ */

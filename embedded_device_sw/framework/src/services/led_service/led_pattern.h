@@ -19,11 +19,13 @@
 #ifndef __LED_PATTERN_H__
 #define __LED_PATTERN_H__
 
+#include <stdbool.h>
+
 /**
  * @brief   Led pattern cycle definitions.
  */
 typedef struct {
-    int onoff;
+    unsigned int onoff;
     unsigned int time_ms;
 } led_pattern_cycle_t;
 
@@ -33,8 +35,8 @@ typedef struct {
 typedef struct {
 	led_pattern_id_t pattern_id;
 	const led_pattern_cycle_t* cycle;
-	int cycle_total;
-	int periodic;
+	unsigned int cycle_total;
+	bool periodic;
 } led_pattern_t;
 
 extern const led_pattern_t* led_pattern_search_id(led_pattern_id_t id);

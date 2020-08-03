@@ -33,6 +33,6 @@ typedef struct
 	gpio_pin_level_t off;
 } led_hardware_t;
 
-extern const led_hardware_t* led_hardware_search_index(unsigned int index);
+extern const led_hardware_t* led_hardware_search_by_index(unsigned int index);
 
 #endif /* __LED_HARDWARE_H__ */

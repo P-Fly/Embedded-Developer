@@ -17,14 +17,22 @@
  */
 
 #include <stddef.h>
-#include "framework_conf.h"
+#include "service.h"
 #include "led_id.h"
+#include "log.h"
 
 #if defined(CONFIG_LED_SERVICE_ENABLE)
 
 static const led_id_t led_id[] = CONFIG_LED_ID_CONFIGS;
 
-const led_id_t* led_id_search_index(unsigned int index)
+/**
+ * @brief   Search for the led_id by index.
+ *
+ * @param   index The index number.
+ *
+ * @retval  led_id handle for reference or NULL in case of error.
+ */
+const led_id_t* led_id_search_by_index(unsigned int index)
 {
 	if (index >= sizeof(led_id) / sizeof(led_id[0]))
 		return NULL;

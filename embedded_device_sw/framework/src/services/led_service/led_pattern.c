@@ -86,30 +86,30 @@ static const led_pattern_t led_pattern[] =
 		.pattern_id = LED_PATTERN_FLASH_ONCE,
 		.cycle = led_pattern_cycle_flash_once,
 		.cycle_total = DEF_CYCLE_NUM_FLASH_ONCE,
-		.periodic = 0,
+		.periodic = false,
 	},
 	{
 		.pattern_id = LED_PATTERN_FLASH_TWICE,
 		.cycle = led_pattern_cycle_flash_twice,
 		.cycle_total = DEF_CYCLE_NUM_FLASH_TWICE,
-		.periodic = 0,
+		.periodic = false,
 	},
 	{
 		.pattern_id = LED_PATTERN_QUICK_FLASH,
 		.cycle = led_pattern_cycle_quick_flash,
 		.cycle_total = DEF_CYCLE_NUM_QUICK_FLASH,
-		.periodic = 1,
+		.periodic = true,
 	},
 	{
 		.pattern_id = LED_PATTERN_SLOW_FLASH,
 		.cycle = led_pattern_cycle_slow_flash,
 		.cycle_total = DEF_CYCLE_NUM_SLOW_FLASH,
-		.periodic = 1,
+		.periodic = true,
 	},
 };
 
 /**
- * @brief   Search for the pattern instance by pattern ID.
+ * @brief   Search for the pattern by pattern ID.
  *
  * @param   pattern_id The pattern ID.
  *
