@@ -74,7 +74,7 @@ static led_service_instance_t *led_instance_search_by_led_id(
 
 	for (i = 0; i < CONFIG_LED_INSTANCE_NUM; i++)
 		if (priv_data->instance[i].led_id &&
-			priv_data->instance[i].led_id->id == id)
+		    priv_data->instance[i].led_id->id == id)
 			return &priv_data->instance[i];
 
 	return NULL;
@@ -105,8 +105,8 @@ static void led_service_timer_callback(void *argument)
 	if (instance->runtime.cycle_idx >= instance->pattern->cycle_total)
 		if (!instance->pattern->periodic) {
 			led_info("End Timer succeed, led %d <%s>.",
-				  instance->led_id->id,
-				  instance->led_id->name);
+				 instance->led_id->id,
+				 instance->led_id->name);
 			return;
 		} else {
 			instance->runtime.cycle_idx = 0;
@@ -173,15 +173,19 @@ static int led_service_init(const service_t *svc, void *priv)
 			&priv_data->instance[i],
 			&led_service_timer_attr);
 		if (!priv_data->instance[i].runtime.timer) {
-			led_error("Service <%s> create timer <%s> in instance %d failed.",
+			led_error(
+				"Service <%s> create timer <%s> in instance %d failed.",
 				svc->name,
-				osTimerGetName(priv_data->instance[i].runtime.timer),
+				osTimerGetName(priv_data->instance[i].runtime.
+					       timer),
 				i);
 			return -EINVAL;
 		} else {
-			led_info("Service <%s> create timer <%s> in instance %d succeed.",
+			led_info(
+				"Service <%s> create timer <%s> in instance %d succeed.",
 				svc->name,
-				osTimerGetName(priv_data->instance[i].runtime.timer),
+				osTimerGetName(priv_data->instance[i].runtime.
+					       timer),
 				i);
 		}
 
@@ -241,15 +245,19 @@ static int led_service_deinit(const service_t *svc, void *priv)
 		priv_data->instance[i].pattern = NULL;
 		stat = osTimerDelete(priv_data->instance[i].runtime.timer);
 		if (stat != osOK) {
-			led_error("Service <%s> delete timer <%s> in instance %d failed.",
+			led_error(
+				"Service <%s> delete timer <%s> in instance %d failed.",
 				svc->name,
-				osTimerGetName(priv_data->instance[i].runtime.timer),
+				osTimerGetName(priv_data->instance[i].runtime.
+					       timer),
 				i);
 			return -EINVAL;
 		} else {
-			led_info("Service <%s> delete timer <%s> in instance %d succeed.",
+			led_info(
+				"Service <%s> delete timer <%s> in instance %d succeed.",
 				svc->name,
-				osTimerGetName(priv_data->instance[i].runtime.timer),
+				osTimerGetName(priv_data->instance[i].runtime.
+					       timer),
 				i);
 		}
 	}
@@ -334,9 +342,11 @@ static void led_service_handle_message(const message_t *message,
 				    1000);
 		if (stat != osOK) {
 			led_error(
-				"Start Timer period %d failed, stat %d.",
+				"Start Timer period %d failed, led %d <%s>, stat %d.",
 				instance->pattern->cycle[instance->runtime.
 							 cycle_idx].time_ms,
+				instance->led_id->id,
+				instance->led_id->name,
 				stat);
 			break;
 		}
@@ -359,7 +369,10 @@ static void led_service_handle_message(const message_t *message,
 
 		stat = osTimerStop(instance->runtime.timer);
 		if (stat != osOK) {
-			led_error("Stop Timer failed, stat %d.", stat);
+			led_error("Stop Timer failed, led %d <%s>, stat %d.",
+				  instance->led_id->id,
+				  instance->led_id->name,
+				  stat);
 			break;
 		}
 
