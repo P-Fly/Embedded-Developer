@@ -18,6 +18,9 @@
 
 #include "err.h"
 
+#ifndef __RING_BUFF_H__
+#define __RING_BUFF_H__
+
 /**
  * @brief   Ring buffer definition.
  */
@@ -112,3 +115,5 @@ static inline int ring_buffer_init(ring_buff_t *ring, char *buffer, int size)
 
 	return 0;
 }
+
+#endif /* __RING_BUFF_H__ */
