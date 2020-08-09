@@ -31,8 +31,6 @@
 #include "driverlib/rom.h"
 #include "driverlib/rom_map.h"
 #include "driverlib/sysctl.h"
-#include "driverlib/gpio.h"
-#include "driverlib/uart.h"
 
 static const char *hardware_get_reset_reason(void);
 static void hardware_print_info(void);
@@ -57,7 +55,7 @@ void hardware_early_startup(void)
 		SYSCTL_SYSDIV_4 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN |
 		SYSCTL_XTAL_16MHZ);
 
-	SystemCoreClock = 50000000UL;
+	SystemCoreClock = MAP_SysCtlClockGet();
 }
 
 /**
@@ -75,7 +73,7 @@ void hardware_late_startup(void)
 typedef struct {
 	unsigned long reset;
 	const char *reason;
-}hardware_reset_reason_t;
+} hardware_reset_reason_t;
 
 static const hardware_reset_reason_t reset_reason[] =
 {
@@ -88,6 +86,13 @@ static const hardware_reset_reason_t reset_reason[] =
 	SYSCTL_RESC_EXT,         "External Reset",
 };
 
+/**
+ * @brief   Get hardware reset reason.
+ *
+ * @param   None.
+ *
+ * @retval  Return the string of reset reason.
+ */
 static const char *hardware_get_reset_reason(void)
 {
 	unsigned long reset;
@@ -106,6 +111,13 @@ static const char *hardware_get_reset_reason(void)
 	return "Unknow Reset";
 }
 
+/**
+ * @brief   Print some board info.
+ *
+ * @param   None.
+ *
+ * @retval  None.
+ */
 static void hardware_print_info(void)
 {
 	char version[25];
@@ -139,7 +151,7 @@ static void hardware_print_info(void)
 
 	pr_info("Flash Size: %d", MAP_SysCtlFlashSizeGet());
 	pr_info("SRAM Size: %d", MAP_SysCtlSRAMSizeGet());
-	pr_info("System Clock: %d", MAP_SysCtlClockGet());
+	pr_info("System Clock: %d", SystemCoreClock);
 	pr_info("PWM Clock: %d", MAP_SysCtlPWMClockGet());
 	pr_info("ADC Speed: %d", MAP_SysCtlADCSpeedGet());
 
