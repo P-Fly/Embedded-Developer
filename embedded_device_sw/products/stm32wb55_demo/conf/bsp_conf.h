@@ -19,6 +19,42 @@
 #ifndef __BSP_CONF_H__
 #define __BSP_CONF_H__
 
+#define CONFIG_CLOCK_ENABLE
+#if defined(CONFIG_CLOCK_ENABLE)
+#define CONFIG_CLOCK_NAME "stm32wbxx clock driver"
+#define CONFIG_CLOCK_LABEL stm32wbxx_clock_driver
+#endif
+
+#define CONFIG_GPIO_ENABLE
+#if defined(CONFIG_GPIO_ENABLE)
+#define CONFIG_GPIOA_NAME "stm32wbxx PORTA driver"
+#define CONFIG_GPIOA_LABEL stm32wbxx_porta_driver
+
+#define CONFIG_GPIOB_NAME "stm32wbxx PORTB driver"
+#define CONFIG_GPIOB_LABEL stm32wbxx_portb_driver
+
+#define CONFIG_GPIOC_NAME "stm32wbxx PORTC driver"
+#define CONFIG_GPIOC_LABEL stm32wbxx_portc_driver
+
+#define CONFIG_GPIOD_NAME "stm32wbxx PORTD driver"
+#define CONFIG_GPIOD_LABEL stm32wbxx_portd_driver
+
+#define CONFIG_GPIOE_NAME "stm32wbxx PORTE driver"
+#define CONFIG_GPIOE_LABEL stm32wbxx_porte_driver
+
+#define CONFIG_GPIOF_NAME "stm32wbxx PORTF driver"
+#define CONFIG_GPIOF_LABEL stm32wbxx_portf_driver
+
+#define CONFIG_GPIOG_NAME "stm32wbxx PORTG driver"
+#define CONFIG_GPIOG_LABEL stm32wbxx_portg_driver
+
+#define CONFIG_GPIOH_NAME "stm32wbxx PORTH driver"
+#define CONFIG_GPIOH_LABEL stm32wbxx_porth_driver
+
+#define CONFIG_GPIOJ_NAME "stm32wbxx PORTJ driver"
+#define CONFIG_GPIOJ_LABEL stm32wbxx_portj_driver
+#endif
+
 #define CONFIG_UART1_ENABLE
 #if defined(CONFIG_UART1_ENABLE)
 #define CONFIG_UART1_NAME "stm32wbxx uart1 driver"
