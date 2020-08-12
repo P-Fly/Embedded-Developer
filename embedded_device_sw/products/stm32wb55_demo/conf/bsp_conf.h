@@ -41,18 +41,6 @@
 
 #define CONFIG_GPIOE_NAME "stm32wbxx PORTE driver"
 #define CONFIG_GPIOE_LABEL stm32wbxx_porte_driver
-
-#define CONFIG_GPIOF_NAME "stm32wbxx PORTF driver"
-#define CONFIG_GPIOF_LABEL stm32wbxx_portf_driver
-
-#define CONFIG_GPIOG_NAME "stm32wbxx PORTG driver"
-#define CONFIG_GPIOG_LABEL stm32wbxx_portg_driver
-
-#define CONFIG_GPIOH_NAME "stm32wbxx PORTH driver"
-#define CONFIG_GPIOH_LABEL stm32wbxx_porth_driver
-
-#define CONFIG_GPIOJ_NAME "stm32wbxx PORTJ driver"
-#define CONFIG_GPIOJ_LABEL stm32wbxx_portj_driver
 #endif
 
 #define CONFIG_UART1_ENABLE

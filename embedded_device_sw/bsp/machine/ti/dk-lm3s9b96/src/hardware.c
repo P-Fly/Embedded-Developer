@@ -149,11 +149,11 @@ static void hardware_print_info(void)
 	pr_info("");
 	pr_info("");
 
-	pr_info("Flash Size: %d", MAP_SysCtlFlashSizeGet());
-	pr_info("SRAM Size: %d", MAP_SysCtlSRAMSizeGet());
-	pr_info("System Clock: %d", SystemCoreClock);
-	pr_info("PWM Clock: %d", MAP_SysCtlPWMClockGet());
-	pr_info("ADC Speed: %d", MAP_SysCtlADCSpeedGet());
+	pr_info("Flash Size: %d Byte", MAP_SysCtlFlashSizeGet());
+	pr_info("SRAM Size: %d Byte", MAP_SysCtlSRAMSizeGet());
+	pr_info("System Clock: %d Hz", SystemCoreClock);
+	pr_info("PWM Clock: %d Hz", MAP_SysCtlPWMClockGet());
+	pr_info("ADC Speed: %d Hz", MAP_SysCtlADCSpeedGet());
 
 	pr_info("*************************************************************");
 }

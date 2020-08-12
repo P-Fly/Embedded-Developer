@@ -16,59 +16,122 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "cmsis_version.h"
+#include "cmsis_os2.h"
 #include "object.h"
 #include "err.h"
+#include "log.h"
+#include "version.h"
+
 #include "stm32wbxx_hal.h"
 
-void Error_Handler(void)
-{
-}
+static void hardware_print_info(void);
 
-void SystemClock_Config(void)
-{
-	RCC_OscInitTypeDef RCC_OscInitStruct = { 0 };
-	RCC_ClkInitTypeDef RCC_ClkInitStruct = { 0 };
+#define CONFIG_CPU_NAME   "STM32WBXX"
+#define CONFIG_BOARD_NAME "NUCLEO-WB55"
 
-	/** Initializes the CPU, AHB and APB busses clocks
-	 */
-	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_MSI;
-	RCC_OscInitStruct.MSIState = RCC_MSI_ON;
-	RCC_OscInitStruct.MSICalibrationValue = RCC_MSICALIBRATION_DEFAULT;
-	RCC_OscInitStruct.MSIClockRange = RCC_MSIRANGE_6;
-	RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-	RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_MSI;
-	RCC_OscInitStruct.PLL.PLLM = RCC_PLLM_DIV1;
-	RCC_OscInitStruct.PLL.PLLN = 32;
-	RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV5;
-	RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
-	RCC_OscInitStruct.PLL.PLLQ = 4;
-	if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-		Error_Handler();
-	/** Configure the SYSCLKSource, HCLK, PCLK1 and PCLK2 clocks dividers
-	 */
-	RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK4 |
+void hardware_system_clock_config(void)
+{
+	RCC_OscInitTypeDef osc_config;
+	RCC_ClkInitTypeDef clk_config;
+
+	osc_config.OscillatorType = RCC_OSCILLATORTYPE_MSI;
+	osc_config.MSIState = RCC_MSI_ON;
+	osc_config.MSICalibrationValue = RCC_MSICALIBRATION_DEFAULT;
+	osc_config.MSIClockRange = RCC_MSIRANGE_6;
+	osc_config.PLL.PLLState = RCC_PLL_ON;
+	osc_config.PLL.PLLSource = RCC_PLLSOURCE_MSI;
+	osc_config.PLL.PLLM = RCC_PLLM_DIV1;
+	osc_config.PLL.PLLN = 32;
+	osc_config.PLL.PLLP = RCC_PLLP_DIV5;
+	osc_config.PLL.PLLR = RCC_PLLR_DIV2;
+	osc_config.PLL.PLLQ = 4;
+	if (HAL_RCC_OscConfig(&osc_config) != HAL_OK)
+		while(1);
+
+	clk_config.ClockType = RCC_CLOCKTYPE_HCLK4 |
 				      RCC_CLOCKTYPE_HCLK2 | RCC_CLOCKTYPE_HCLK |
 				      RCC_CLOCKTYPE_SYSCLK |
 				      RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
-	RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-	RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
-	RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
-	RCC_ClkInitStruct.AHBCLK2Divider = RCC_SYSCLK_DIV2;
-	RCC_ClkInitStruct.AHBCLK4Divider = RCC_SYSCLK_DIV1;
+	clk_config.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+	clk_config.AHBCLKDivider = RCC_SYSCLK_DIV1;
+	clk_config.APB1CLKDivider = RCC_HCLK_DIV1;
+	clk_config.APB2CLKDivider = RCC_HCLK_DIV1;
+	clk_config.AHBCLK2Divider = RCC_SYSCLK_DIV2;
+	clk_config.AHBCLK4Divider = RCC_SYSCLK_DIV1;
 
-	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_3) != HAL_OK)
-		Error_Handler();
+	if (HAL_RCC_ClockConfig(&clk_config, FLASH_LATENCY_3) != HAL_OK)
+		while(1);
 }
 
+/**
+ * @brief   Startup hardware early.
+ *
+ * @retval  None.
+ *
+ * @note    This process is called before the OS start.
+ */
 void hardware_early_startup(void)
 {
 	HAL_Init();
 
-	SystemClock_Config();
+	hardware_system_clock_config();
 
 	/* TBD: Need create RCC object */
 	__HAL_RCC_USART1_CLK_ENABLE();
 	__HAL_RCC_GPIOB_CLK_ENABLE();
 	__HAL_RCC_CRC_CLK_ENABLE();
+}
+
+/**
+ * @brief   Startup hardware late.
+ *
+ * @retval  None.
+ *
+ * @note    This process is called after initialization thread is completed.
+ */
+void hardware_late_startup(void)
+{
+	hardware_print_info();
+}
+
+/**
+ * @brief   Print some board info.
+ *
+ * @param   None.
+ *
+ * @retval  None.
+ */
+static void hardware_print_info(void)
+{
+	char version[25];
+
+	pr_info("*************************************************************");
+
+	pr_info("%s - %s (Build %s %s)",
+		CONFIG_ISSUE_NAME,
+		CONFIG_ISSUE_VERSION,
+		CONFIG_ISSUE_DATE,
+		CONFIG_ISSUE_TIME);
+
+	pr_info("CPU: %s", CONFIG_CPU_NAME);
+
+	pr_info("Board: %s", CONFIG_BOARD_NAME);
+
+#ifdef __ARMCC_VERSION
+	pr_info("ARMCC Version: 0x%08x", __ARMCC_VERSION);
+#endif
+
+	pr_info("CMSIS Version: 0x%08x", __CM_CMSIS_VERSION);
+
+	(void)osKernelGetInfo(NULL, version, sizeof(version));
+
+	pr_info("OS Version: %s", version);
+
+	pr_info("");
+	pr_info("");
+
+	pr_info("System Clock: %d Hz", SystemCoreClock);
+
+	pr_info("*************************************************************");
 }
