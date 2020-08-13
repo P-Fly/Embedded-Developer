@@ -76,11 +76,6 @@ void hardware_early_startup(void)
 	HAL_Init();
 
 	hardware_system_clock_config();
-
-	/* TBD: Need create RCC object */
-	__HAL_RCC_USART1_CLK_ENABLE();
-	__HAL_RCC_GPIOB_CLK_ENABLE();
-	__HAL_RCC_CRC_CLK_ENABLE();
 }
 
 /**

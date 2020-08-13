@@ -202,7 +202,7 @@ static int stm32wbxx_clock_on(const object *	obj,
 	if (handle->clock_subsys_onoff_nesting[index] == 0) {
 		ret = subsys_onoff(sys, id, 1);
 		if (ret)
-			return -EIO;
+			return ret;
 	}
 
 	handle->clock_subsys_onoff_nesting[index]++;
@@ -244,7 +244,7 @@ static int stm32wbxx_clock_off(const object *	obj,
 	if (handle->clock_subsys_onoff_nesting[index] == 0) {
 		ret = subsys_onoff(sys, id, 0);
 		if (ret)
-			return -EIO;
+			return ret;
 	}
 
 	return 0;

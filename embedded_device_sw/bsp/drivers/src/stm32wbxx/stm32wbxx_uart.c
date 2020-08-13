@@ -17,12 +17,18 @@
  */
 
 #include <string.h>
+#include "cmsis_os2.h"
+#include "FreeRTOS.h"
 #include "ring_buff.h"
 #include "drv_uart.h"
+#include "drv_clock.h"
 
 #include "stm32wbxx_hal.h"
 
 #if defined(CONFIG_UART1_ENABLE)
+
+#define CONFIG_UART_TX_TIMEOUT 50
+#define CONFIG_UART_RX_TIMEOUT 50
 
 /**
  * @brief   Uart handle definition.
@@ -35,6 +41,7 @@ typedef struct {
 	ring_buff_t		rx;
 #endif
 	UART_HandleTypeDef	uart;
+	const object *	clock;
 } stm32wbxx_uart_handle_t;
 
 /**
@@ -134,7 +141,7 @@ static int stm32wbxx_uart_configure(const object *		obj,
 					  UART_RXFIFO_THRESHOLD_1_8) != HAL_OK)
 		return -EIO;
 
-	if (HAL_UARTEx_DisableFifoMode(&handle->uart) != HAL_OK)
+	if (HAL_UARTEx_EnableFifoMode(&handle->uart) != HAL_OK)
 		return -EIO;
 
 	return 0;
@@ -157,7 +164,9 @@ static int stm32wbxx_uart_write(const object *obj,
 		(stm32wbxx_uart_handle_t *)obj->object_data;
 	char *buff = (char *)tx_buf;
 	int i;
+#ifdef CONFIG_UART1_TX_RING_BUFF_SIZE
 	int ret;
+#endif
 
 	if (!handle)
 		return -EINVAL;
@@ -169,17 +178,21 @@ static int stm32wbxx_uart_write(const object *obj,
 		return -EINVAL;
 
 #ifdef CONFIG_UART1_TX_RING_BUFF_SIZE
+	HAL_NVIC_DisableIRQ(USART1_IRQn);
+
 	for (i = 0; i < tx_len; i++) {
 		ret = ring_buffer_write(&handle->tx, buff[i]);
 		if (ret)
 			break;
 	}
 
+	HAL_NVIC_EnableIRQ(USART1_IRQn);
+
 	/* Enable the UART Transmit data register empty Interrupt */
 	__HAL_UART_ENABLE_IT(&handle->uart, UART_IT_TXE);
 #else
-	/* TBD: Not support*/
-#ERROR ("Not support");
+	if (HAL_UART_Transmit(&handle->uart, buff, tx_len, CONFIG_UART_TX_TIMEOUT) != HAL_OK)
+		return -EIO;
 #endif
 
 	return i;
@@ -202,7 +215,9 @@ static int stm32wbxx_uart_read(const object *obj,
 		(stm32wbxx_uart_handle_t *)obj->object_data;
 	char *buff = (char *)rx_buf;
 	int i;
-	int ret;
+#ifdef CONFIG_UART1_RX_RING_BUFF_SIZE
+		int ret;
+#endif
 
 	if (!handle)
 		return -EINVAL;
@@ -220,8 +235,8 @@ static int stm32wbxx_uart_read(const object *obj,
 			break;
 	}
 #else
-	/* TBD: Not support*/
-#ERROR ("Not support");
+	if (HAL_UART_Receive(&handle->uart, buff, rx_len, CONFIG_UART_RX_TIMEOUT) != HAL_OK)
+		return -EIO;
 #endif
 
 	return i;
@@ -328,9 +343,21 @@ static void stm32wbxx_uart1_msp_init(UART_HandleTypeDef *uart)
 	gpio.Alternate = GPIO_AF7_USART1;
 	HAL_GPIO_Init(GPIOB, &gpio);
 
-	/* TBD: USART1 interrupt Init */
 	HAL_NVIC_SetPriority(USART1_IRQn, 0, 0);
 	HAL_NVIC_EnableIRQ(USART1_IRQn);
+}
+
+/**
+ * @brief   Deinitialize uart MSP.
+ *
+ * @param   uart Pointer to the uart driver handle.
+ *
+ * @retval  None.
+ */
+static void stm32wbxx_uart1_msp_deinit(UART_HandleTypeDef *uart)
+{
+	HAL_NVIC_DisableIRQ(USART1_IRQn);
+	HAL_GPIO_DeInit(GPIOB, GPIO_PIN_6 | GPIO_PIN_7);
 }
 
 /**
@@ -350,9 +377,25 @@ static int stm32wbxx_uart1_probe(const object *obj)
 
 	handle->uart.Instance = USART1;
 
+	handle->clock = object_get_binding(CONFIG_CLOCK_NAME);
+	if (!obj)
+		return -ENODEV;
+
+	ret = clock_on(handle->clock, DRV_CLK_UART, 0);
+	if (ret)
+		return ret;
+
+	ret = clock_on(handle->clock, DRV_CLK_PORTB, 0);
+	if (ret)
+		return ret;
+
 	if (HAL_UART_RegisterCallback(&handle->uart, HAL_UART_MSPINIT_CB_ID,
 				      stm32wbxx_uart1_msp_init) != HAL_OK)
 		return -EIO;
+
+    if (HAL_UART_RegisterCallback(&handle->uart, HAL_UART_MSPDEINIT_CB_ID,
+				      stm32wbxx_uart1_msp_deinit) != HAL_OK)
+        return -EIO;
 
 	ret = uart_configure(obj, obj->object_config);
 	if (ret)
@@ -388,6 +431,21 @@ static int stm32wbxx_uart1_probe(const object *obj)
  */
 static int stm32wbxx_uart1_shutdown(const object *obj)
 {
+	stm32wbxx_uart_handle_t *handle =
+		(stm32wbxx_uart_handle_t *)obj->object_data;
+	int ret;
+
+	if (HAL_UART_DeInit(&handle->uart) != HAL_OK)
+		return -EIO;
+
+	ret = clock_off(handle->clock, DRV_CLK_UART, 0);
+	if (ret)
+		return ret;
+
+	ret = clock_off(handle->clock, DRV_CLK_PORTB, 0);
+	if (ret)
+		return ret;
+
 	return 0;
 }
 

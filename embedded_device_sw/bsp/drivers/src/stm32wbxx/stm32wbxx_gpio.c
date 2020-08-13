@@ -17,18 +17,13 @@
  */
 
 #include <string.h>
+#include "cmsis_os2.h"
+#include "FreeRTOS.h"
 #include "drv_gpio.h"
 #include "drv_clock.h"
 #include "log.h"
 
-#define TARGET_IS_TEMPEST_RC1
-#include "inc/hw_memmap.h"
-#include "inc/hw_types.h"
-#include "inc/hw_ints.h"
-#include "driverlib/rom.h"
-#include "driverlib/rom_map.h"
-#include "driverlib/sysctl.h"
-#include "driverlib/gpio.h"
+#include "stm32wbxx_hal.h"
 
 #if defined(CONFIG_GPIO_ENABLE)
 
@@ -39,7 +34,7 @@ typedef struct {
 	const object *	clock;
 	clock_subsys_t	sys;
 	unsigned long	port;
-} lm3s9xxx_gpio_handle_t;
+} stm32wbxx_gpio_handle_t;
 
 /**
  * @brief   GPIO pin internal ID definitions.
@@ -47,9 +42,9 @@ typedef struct {
 typedef struct {
 	gpio_pin_id_t	pin;
 	unsigned char	pad_id;
-} lm3s9xxx_gpio_internal_id_t;
+} stm32wbxx_gpio_internal_id_t;
 
-static const lm3s9xxx_gpio_internal_id_t gpio_internal_id[] =
+static const stm32wbxx_gpio_internal_id_t gpio_internal_id[] =
 {
 	{ DRV_GPIO_PIN_0, GPIO_PIN_0 },
 	{ DRV_GPIO_PIN_1, GPIO_PIN_1 },
@@ -61,7 +56,7 @@ static const lm3s9xxx_gpio_internal_id_t gpio_internal_id[] =
 	{ DRV_GPIO_PIN_7, GPIO_PIN_7 },
 };
 
-static int lm3s9xxx_gpio_pad_id_search(gpio_pin_id_t pin, unsigned char *pad_id)
+static int stm32wbxx_gpio_pad_id_search(gpio_pin_id_t pin, unsigned char *pad_id)
 {
 	int i;
 
@@ -85,12 +80,12 @@ static int lm3s9xxx_gpio_pad_id_search(gpio_pin_id_t pin, unsigned char *pad_id)
  *
  * @retval  Returns 0 on success, negative error code otherwise.
  */
-static int lm3s9xxx_gpio_configure(const object *	obj,
+static int stm32wbxx_gpio_configure(const object *	obj,
 				   gpio_pin_id_t	pin,
 				   const gpio_config_t *config)
 {
-	lm3s9xxx_gpio_handle_t *handle =
-		(lm3s9xxx_gpio_handle_t *)obj->object_data;
+	stm32wbxx_gpio_handle_t *handle =
+		(stm32wbxx_gpio_handle_t *)obj->object_data;
 	unsigned long pad_type = 0;
 	unsigned long pad_strength;
 	unsigned long pad_dir;
@@ -103,7 +98,7 @@ static int lm3s9xxx_gpio_configure(const object *	obj,
 	if (!config)
 		return -EINVAL;
 
-	ret = lm3s9xxx_gpio_pad_id_search(pin, &pad_id);
+	ret = stm32wbxx_gpio_pad_id_search(pin, &pad_id);
 	if (ret < 0)
 		return ret;
 
@@ -174,12 +169,12 @@ static int lm3s9xxx_gpio_configure(const object *	obj,
  *
  * @retval  Returns 0 on success, negative error code otherwise.
  */
-static int lm3s9xxx_gpio_write(const object *	obj,
+static int stm32wbxx_gpio_write(const object *	obj,
 			       gpio_pin_id_t	pin,
 			       gpio_pin_level_t level)
 {
-	lm3s9xxx_gpio_handle_t *handle =
-		(lm3s9xxx_gpio_handle_t *)obj->object_data;
+	stm32wbxx_gpio_handle_t *handle =
+		(stm32wbxx_gpio_handle_t *)obj->object_data;
 	unsigned char pad_id;
 	unsigned char value;
 	int ret;
@@ -187,7 +182,7 @@ static int lm3s9xxx_gpio_write(const object *	obj,
 	if (!handle)
 		return -EINVAL;
 
-	ret = lm3s9xxx_gpio_pad_id_search(pin, &pad_id);
+	ret = stm32wbxx_gpio_pad_id_search(pin, &pad_id);
 	if (ret < 0)
 		return ret;
 
@@ -209,10 +204,10 @@ static int lm3s9xxx_gpio_write(const object *	obj,
  *
  * @retval  Returns 0 on success, negative error code otherwise.
  */
-static int lm3s9xxx_gpio_toggle(const object *obj, gpio_pin_id_t pin)
+static int stm32wbxx_gpio_toggle(const object *obj, gpio_pin_id_t pin)
 {
-	lm3s9xxx_gpio_handle_t *handle =
-		(lm3s9xxx_gpio_handle_t *)obj->object_data;
+	stm32wbxx_gpio_handle_t *handle =
+		(stm32wbxx_gpio_handle_t *)obj->object_data;
 	unsigned char pad_id;
 	unsigned char value;
 	int ret;
@@ -220,7 +215,7 @@ static int lm3s9xxx_gpio_toggle(const object *obj, gpio_pin_id_t pin)
 	if (!handle)
 		return -EINVAL;
 
-	ret = lm3s9xxx_gpio_pad_id_search(pin, &pad_id);
+	ret = stm32wbxx_gpio_pad_id_search(pin, &pad_id);
 	if (ret < 0)
 		return ret;
 
@@ -245,12 +240,12 @@ static int lm3s9xxx_gpio_toggle(const object *obj, gpio_pin_id_t pin)
  *
  * @retval  Returns 0 on success, negative error code otherwise.
  */
-static int lm3s9xxx_gpio_read(const object *	obj,
+static int stm32wbxx_gpio_read(const object *	obj,
 			      gpio_pin_id_t	pin,
 			      gpio_pin_level_t *level)
 {
-	lm3s9xxx_gpio_handle_t *handle =
-		(lm3s9xxx_gpio_handle_t *)obj->object_data;
+	stm32wbxx_gpio_handle_t *handle =
+		(stm32wbxx_gpio_handle_t *)obj->object_data;
 	unsigned char pad_id;
 	unsigned char value;
 	int ret;
@@ -261,7 +256,7 @@ static int lm3s9xxx_gpio_read(const object *	obj,
 	if (!level)
 		return -EINVAL;
 
-	ret = lm3s9xxx_gpio_pad_id_search(pin, &pad_id);
+	ret = stm32wbxx_gpio_pad_id_search(pin, &pad_id);
 	if (ret < 0)
 		return ret;
 
@@ -274,10 +269,10 @@ static int lm3s9xxx_gpio_read(const object *	obj,
 
 static gpio_intf_t gpio_intf =
 {
-	.configure	= lm3s9xxx_gpio_configure,
-	.write		= lm3s9xxx_gpio_write,
-	.toggle		= lm3s9xxx_gpio_toggle,
-	.read		= lm3s9xxx_gpio_read,
+	.configure	= stm32wbxx_gpio_configure,
+	.write		= stm32wbxx_gpio_write,
+	.toggle		= stm32wbxx_gpio_toggle,
+	.read		= stm32wbxx_gpio_read,
 };
 
 /**
@@ -287,10 +282,10 @@ static gpio_intf_t gpio_intf =
  *
  * @retval  Returns 0 on success, negative error code otherwise.
  */
-static int lm3s9xxx_gpio_probe(const object *obj)
+static int stm32wbxx_gpio_probe(const object *obj)
 {
-	lm3s9xxx_gpio_handle_t *handle =
-		(lm3s9xxx_gpio_handle_t *)obj->object_data;
+	stm32wbxx_gpio_handle_t *handle =
+		(stm32wbxx_gpio_handle_t *)obj->object_data;
 	int ret;
 
 	handle->clock = object_get_binding(CONFIG_CLOCK_NAME);
@@ -321,10 +316,10 @@ static int lm3s9xxx_gpio_probe(const object *obj)
  *
  * @retval  Returns 0 on success, negative error code otherwise.
  */
-static int lm3s9xxx_gpio_shutdown(const object *obj)
+static int stm32wbxx_gpio_shutdown(const object *obj)
 {
-	lm3s9xxx_gpio_handle_t *handle =
-		(lm3s9xxx_gpio_handle_t *)obj->object_data;
+	stm32wbxx_gpio_handle_t *handle =
+		(stm32wbxx_gpio_handle_t *)obj->object_data;
 	int ret;
 
 	ret = clock_off(handle->clock, handle->sys, 0);
@@ -338,7 +333,7 @@ static int lm3s9xxx_gpio_shutdown(const object *obj)
 #endif
 
 #ifdef CONFIG_GPIOA_NAME
-static lm3s9xxx_gpio_handle_t gpioa_handle =
+static stm32wbxx_gpio_handle_t gpioa_handle =
 {
 	.clock	= NULL,
 	.sys	= DRV_CLK_PORTA,
@@ -347,13 +342,13 @@ static lm3s9xxx_gpio_handle_t gpioa_handle =
 
 module_driver(CONFIG_GPIOA_NAME,
 	      CONFIG_GPIOA_LABEL,
-	      lm3s9xxx_gpio_probe,
-	      lm3s9xxx_gpio_shutdown,
+	      stm32wbxx_gpio_probe,
+	      stm32wbxx_gpio_shutdown,
 	      &gpio_intf, &gpioa_handle, NULL);
 #endif
 
 #ifdef CONFIG_GPIOB_NAME
-static lm3s9xxx_gpio_handle_t gpiob_handle =
+static stm32wbxx_gpio_handle_t gpiob_handle =
 {
 	.clock	= NULL,
 	.sys	= DRV_CLK_PORTB,
@@ -362,13 +357,13 @@ static lm3s9xxx_gpio_handle_t gpiob_handle =
 
 module_driver(CONFIG_GPIOB_NAME,
 	      CONFIG_GPIOB_LABEL,
-	      lm3s9xxx_gpio_probe,
-	      lm3s9xxx_gpio_shutdown,
+	      stm32wbxx_gpio_probe,
+	      stm32wbxx_gpio_shutdown,
 	      &gpio_intf, &gpiob_handle, NULL);
 #endif
 
 #ifdef CONFIG_GPIOC_NAME
-static lm3s9xxx_gpio_handle_t gpioc_handle =
+static stm32wbxx_gpio_handle_t gpioc_handle =
 {
 	.clock	= NULL,
 	.sys	= DRV_CLK_PORTC,
@@ -377,13 +372,13 @@ static lm3s9xxx_gpio_handle_t gpioc_handle =
 
 module_driver(CONFIG_GPIOC_NAME,
 	      CONFIG_GPIOC_LABEL,
-	      lm3s9xxx_gpio_probe,
-	      lm3s9xxx_gpio_shutdown,
+	      stm32wbxx_gpio_probe,
+	      stm32wbxx_gpio_shutdown,
 	      &gpio_intf, &gpioc_handle, NULL);
 #endif
 
 #ifdef CONFIG_GPIOD_NAME
-static lm3s9xxx_gpio_handle_t gpiod_handle =
+static stm32wbxx_gpio_handle_t gpiod_handle =
 {
 	.clock	= NULL,
 	.sys	= DRV_CLK_PORTD,
@@ -392,13 +387,13 @@ static lm3s9xxx_gpio_handle_t gpiod_handle =
 
 module_driver(CONFIG_GPIOD_NAME,
 	      CONFIG_GPIOD_LABEL,
-	      lm3s9xxx_gpio_probe,
-	      lm3s9xxx_gpio_shutdown,
+	      stm32wbxx_gpio_probe,
+	      stm32wbxx_gpio_shutdown,
 	      &gpio_intf, &gpiod_handle, NULL);
 #endif
 
 #ifdef CONFIG_GPIOE_NAME
-static lm3s9xxx_gpio_handle_t gpioe_handle =
+static stm32wbxx_gpio_handle_t gpioe_handle =
 {
 	.clock	= NULL,
 	.sys	= DRV_CLK_PORTE,
@@ -407,67 +402,7 @@ static lm3s9xxx_gpio_handle_t gpioe_handle =
 
 module_driver(CONFIG_GPIOE_NAME,
 	      CONFIG_GPIOE_LABEL,
-	      lm3s9xxx_gpio_probe,
-	      lm3s9xxx_gpio_shutdown,
+	      stm32wbxx_gpio_probe,
+	      stm32wbxx_gpio_shutdown,
 	      &gpio_intf, &gpioe_handle, NULL);
-#endif
-
-#ifdef CONFIG_GPIOF_NAME
-static lm3s9xxx_gpio_handle_t gpiof_handle =
-{
-	.clock	= NULL,
-	.sys	= DRV_CLK_PORTF,
-	.port	= GPIO_PORTF_BASE,
-};
-
-module_driver(CONFIG_GPIOF_NAME,
-	      CONFIG_GPIOF_LABEL,
-	      lm3s9xxx_gpio_probe,
-	      lm3s9xxx_gpio_shutdown,
-	      &gpio_intf, &gpiof_handle, NULL);
-#endif
-
-#ifdef CONFIG_GPIOG_NAME
-static lm3s9xxx_gpio_handle_t gpiog_handle =
-{
-	.clock	= NULL,
-	.sys	= DRV_CLK_PORTG,
-	.port	= GPIO_PORTG_BASE,
-};
-
-module_driver(CONFIG_GPIOG_NAME,
-	      CONFIG_GPIOG_LABEL,
-	      lm3s9xxx_gpio_probe,
-	      lm3s9xxx_gpio_shutdown,
-	      &gpio_intf, &gpiog_handle, NULL);
-#endif
-
-#ifdef CONFIG_GPIOH_NAME
-static lm3s9xxx_gpio_handle_t gpioh_handle =
-{
-	.clock	= NULL,
-	.sys	= DRV_CLK_PORTH,
-	.port	= GPIO_PORTH_BASE,
-};
-
-module_driver(CONFIG_GPIOH_NAME,
-	      CONFIG_GPIOH_LABEL,
-	      lm3s9xxx_gpio_probe,
-	      lm3s9xxx_gpio_shutdown,
-	      &gpio_intf, &gpioh_handle, NULL);
-#endif
-
-#ifdef CONFIG_GPIOJ_NAME
-static lm3s9xxx_gpio_handle_t gpioj_handle =
-{
-	.clock	= NULL,
-	.sys	= DRV_CLK_PORTJ,
-	.port	= GPIO_PORTJ_BASE,
-};
-
-module_driver(CONFIG_GPIOJ_NAME,
-	      CONFIG_GPIOJ_LABEL,
-	      lm3s9xxx_gpio_probe,
-	      lm3s9xxx_gpio_shutdown,
-	      &gpio_intf, &gpioj_handle, NULL);
 #endif
