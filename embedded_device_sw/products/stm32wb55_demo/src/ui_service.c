@@ -125,6 +125,17 @@ static void ui_service_handle_message(const message_t * message,
 				 send_message.id,
 				 priv_data->led_svc->name);
 
+		send_message.id = MSG_ID_LED_START;
+		send_message.param0 = 2;
+		send_message.param1 = LED_PATTERN_FLASH_TWICE;
+		send_message.ptr = NULL;
+
+		ret = service_send_evt(priv_data->led_svc, &send_message);
+		if (ret)
+			ui_error("Send event 0x%x to <%s> failed.",
+				 send_message.id,
+				 priv_data->led_svc->name);
+
 		break;
 
 	default:

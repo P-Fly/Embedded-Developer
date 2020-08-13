@@ -31,9 +31,9 @@
  * @brief   GPIO handle definition.
  */
 typedef struct {
-	const object *	clock;
-	clock_subsys_t	sys;
-	unsigned long	port;
+	const object * clock;
+	clock_subsys_t sys;
+	GPIO_TypeDef * port;
 } stm32wbxx_gpio_handle_t;
 
 /**
@@ -41,22 +41,30 @@ typedef struct {
  */
 typedef struct {
 	gpio_pin_id_t	pin;
-	unsigned char	pad_id;
+	unsigned short  pad_id;
 } stm32wbxx_gpio_internal_id_t;
 
 static const stm32wbxx_gpio_internal_id_t gpio_internal_id[] =
 {
-	{ DRV_GPIO_PIN_0, GPIO_PIN_0 },
-	{ DRV_GPIO_PIN_1, GPIO_PIN_1 },
-	{ DRV_GPIO_PIN_2, GPIO_PIN_2 },
-	{ DRV_GPIO_PIN_3, GPIO_PIN_3 },
-	{ DRV_GPIO_PIN_4, GPIO_PIN_4 },
-	{ DRV_GPIO_PIN_5, GPIO_PIN_5 },
-	{ DRV_GPIO_PIN_6, GPIO_PIN_6 },
-	{ DRV_GPIO_PIN_7, GPIO_PIN_7 },
+	{ DRV_GPIO_PIN_0,  GPIO_PIN_0 },
+	{ DRV_GPIO_PIN_1,  GPIO_PIN_1 },
+	{ DRV_GPIO_PIN_2,  GPIO_PIN_2 },
+	{ DRV_GPIO_PIN_3,  GPIO_PIN_3 },
+	{ DRV_GPIO_PIN_4,  GPIO_PIN_4 },
+	{ DRV_GPIO_PIN_5,  GPIO_PIN_5 },
+	{ DRV_GPIO_PIN_6,  GPIO_PIN_6 },
+	{ DRV_GPIO_PIN_7,  GPIO_PIN_7 },
+	{ DRV_GPIO_PIN_8,  GPIO_PIN_8 },
+	{ DRV_GPIO_PIN_9,  GPIO_PIN_9 },
+	{ DRV_GPIO_PIN_10, GPIO_PIN_10 },
+	{ DRV_GPIO_PIN_11, GPIO_PIN_11 },
+	{ DRV_GPIO_PIN_12, GPIO_PIN_12 },
+	{ DRV_GPIO_PIN_13, GPIO_PIN_13 },
+	{ DRV_GPIO_PIN_14, GPIO_PIN_14 },
+	{ DRV_GPIO_PIN_15, GPIO_PIN_15 },
 };
 
-static int stm32wbxx_gpio_pad_id_search(gpio_pin_id_t pin, unsigned char *pad_id)
+static int stm32wbxx_gpio_pad_id_search(gpio_pin_id_t pin, unsigned short *pad_id)
 {
 	int i;
 
@@ -86,10 +94,8 @@ static int stm32wbxx_gpio_configure(const object *	obj,
 {
 	stm32wbxx_gpio_handle_t *handle =
 		(stm32wbxx_gpio_handle_t *)obj->object_data;
-	unsigned long pad_type = 0;
-	unsigned long pad_strength;
-	unsigned long pad_dir;
-	unsigned char pad_id;
+	GPIO_InitTypeDef gpio_config;
+	unsigned short pad_id;
 	int ret;
 
 	if (!handle)
@@ -102,22 +108,20 @@ static int stm32wbxx_gpio_configure(const object *	obj,
 	if (ret < 0)
 		return ret;
 
+	gpio_config.Pin = pad_id;
+
 	switch (GPIO_CONFIG_MODE_MASK(config->configs)) {
 	case GPIO_CONFIG_MODE_INPUT:
-		pad_dir = GPIO_DIR_MODE_IN;
-		pad_type |= 0x08;
+		gpio_config.Mode = GPIO_MODE_INPUT;
 		break;
 	case GPIO_CONFIG_MODE_OUTPUT_PP:
-		pad_dir = GPIO_DIR_MODE_OUT;
-		pad_type |= 0x08;
+		gpio_config.Mode = GPIO_MODE_OUTPUT_PP;
 		break;
 	case GPIO_CONFIG_MODE_OUTPUT_OD:
-		pad_dir = GPIO_DIR_MODE_OUT;
-		pad_type |= 0x09;
+		gpio_config.Mode = GPIO_MODE_OUTPUT_OD;
 		break;
 	case GPIO_CONFIG_MODE_ANALOG:
-		pad_dir = GPIO_DIR_MODE_IN;
-		pad_type = GPIO_PIN_TYPE_ANALOG;
+		gpio_config.Mode = GPIO_MODE_ANALOG;
 		break;
 	default:
 		return -EINVAL;
@@ -125,12 +129,13 @@ static int stm32wbxx_gpio_configure(const object *	obj,
 
 	switch (GPIO_CONFIG_PULL_MASK(config->configs)) {
 	case GPIO_CONFIG_NOPULL:
+		gpio_config.Pull = GPIO_NOPULL;
 		break;
 	case GPIO_CONFIG_PULLUP:
-		pad_type |= 0x02;
+		gpio_config.Pull = GPIO_PULLUP;
 		break;
 	case GPIO_CONFIG_PULLDOWN:
-		pad_type |= 0x04;
+		gpio_config.Pull = GPIO_PULLDOWN;
 		break;
 	default:
 		return -EINVAL;
@@ -138,24 +143,22 @@ static int stm32wbxx_gpio_configure(const object *	obj,
 
 	switch (GPIO_CONFIG_SPEED_MASK(config->configs)) {
 	case GPIO_CONFIG_SPEED_FREQ_LOW:
-		pad_strength = GPIO_STRENGTH_2MA;
+		gpio_config.Speed = GPIO_SPEED_FREQ_LOW;
 		break;
 	case GPIO_CONFIG_SPEED_FREQ_MEDIUM:
-		pad_strength = GPIO_STRENGTH_4MA;
+		gpio_config.Speed = GPIO_SPEED_FREQ_MEDIUM;
 		break;
 	case GPIO_CONFIG_SPEED_FREQ_HIGH:
-		pad_strength = GPIO_STRENGTH_8MA;
+		gpio_config.Speed = GPIO_SPEED_FREQ_HIGH;
 		break;
 	case GPIO_CONFIG_SPEED_FREQ_VERY_HIGH:
-		pad_strength = GPIO_STRENGTH_8MA_SC;
+		gpio_config.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
 		break;
 	default:
 		return -EINVAL;
 	}
 
-	MAP_GPIODirModeSet(handle->port, pad_id, pad_dir);
-
-	MAP_GPIOPadConfigSet(handle->port, pad_id, pad_strength, pad_type);
+	HAL_GPIO_Init(handle->port, &gpio_config);
 
 	return 0;
 }
@@ -175,8 +178,8 @@ static int stm32wbxx_gpio_write(const object *	obj,
 {
 	stm32wbxx_gpio_handle_t *handle =
 		(stm32wbxx_gpio_handle_t *)obj->object_data;
-	unsigned char pad_id;
-	unsigned char value;
+	unsigned short pad_id;
+	GPIO_PinState value;
 	int ret;
 
 	if (!handle)
@@ -187,11 +190,11 @@ static int stm32wbxx_gpio_write(const object *	obj,
 		return ret;
 
 	if (level == DRV_GPIO_PIN_SET)
-		value = pad_id;
+		value = GPIO_PIN_SET;
 	else
-		value = 0;
+		value = GPIO_PIN_RESET;
 
-	MAP_GPIOPinWrite(handle->port, pad_id, value);
+	HAL_GPIO_WritePin(handle->port, pad_id, value);
 
 	return 0;
 }
@@ -208,8 +211,7 @@ static int stm32wbxx_gpio_toggle(const object *obj, gpio_pin_id_t pin)
 {
 	stm32wbxx_gpio_handle_t *handle =
 		(stm32wbxx_gpio_handle_t *)obj->object_data;
-	unsigned char pad_id;
-	unsigned char value;
+	unsigned short pad_id;
 	int ret;
 
 	if (!handle)
@@ -219,14 +221,7 @@ static int stm32wbxx_gpio_toggle(const object *obj, gpio_pin_id_t pin)
 	if (ret < 0)
 		return ret;
 
-	value = MAP_GPIOPinRead(handle->port, pad_id);
-
-	if (value & pad_id)
-		value &= ~pad_id;
-	else
-		value |= pad_id;
-
-	MAP_GPIOPinWrite(handle->port, pad_id, value);
+	HAL_GPIO_TogglePin(handle->port, pad_id);
 
 	return 0;
 }
@@ -246,8 +241,8 @@ static int stm32wbxx_gpio_read(const object *	obj,
 {
 	stm32wbxx_gpio_handle_t *handle =
 		(stm32wbxx_gpio_handle_t *)obj->object_data;
-	unsigned char pad_id;
-	unsigned char value;
+	unsigned short pad_id;
+	GPIO_PinState value;
 	int ret;
 
 	if (!handle)
@@ -260,9 +255,9 @@ static int stm32wbxx_gpio_read(const object *	obj,
 	if (ret < 0)
 		return ret;
 
-	value = MAP_GPIOPinRead(handle->port, pad_id);
+	value = HAL_GPIO_ReadPin(handle->port, pad_id);
 
-	*level = value ? DRV_GPIO_PIN_SET : DRV_GPIO_PIN_CLR;
+	*level = value == GPIO_PIN_SET ? DRV_GPIO_PIN_SET : DRV_GPIO_PIN_CLR;
 
 	return 0;
 }
@@ -337,7 +332,7 @@ static stm32wbxx_gpio_handle_t gpioa_handle =
 {
 	.clock	= NULL,
 	.sys	= DRV_CLK_PORTA,
-	.port	= GPIO_PORTA_BASE,
+	.port	= GPIOA,
 };
 
 module_driver(CONFIG_GPIOA_NAME,
@@ -352,7 +347,7 @@ static stm32wbxx_gpio_handle_t gpiob_handle =
 {
 	.clock	= NULL,
 	.sys	= DRV_CLK_PORTB,
-	.port	= GPIO_PORTB_BASE,
+	.port	= GPIOB,
 };
 
 module_driver(CONFIG_GPIOB_NAME,
@@ -367,7 +362,7 @@ static stm32wbxx_gpio_handle_t gpioc_handle =
 {
 	.clock	= NULL,
 	.sys	= DRV_CLK_PORTC,
-	.port	= GPIO_PORTC_BASE,
+	.port	= GPIOC,
 };
 
 module_driver(CONFIG_GPIOC_NAME,
@@ -382,7 +377,7 @@ static stm32wbxx_gpio_handle_t gpiod_handle =
 {
 	.clock	= NULL,
 	.sys	= DRV_CLK_PORTD,
-	.port	= GPIO_PORTD_BASE,
+	.port	= GPIOD,
 };
 
 module_driver(CONFIG_GPIOD_NAME,
@@ -397,7 +392,7 @@ static stm32wbxx_gpio_handle_t gpioe_handle =
 {
 	.clock	= NULL,
 	.sys	= DRV_CLK_PORTE,
-	.port	= GPIO_PORTE_BASE,
+	.port	= GPIOE,
 };
 
 module_driver(CONFIG_GPIOE_NAME,

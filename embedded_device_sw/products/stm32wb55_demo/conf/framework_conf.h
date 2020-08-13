@@ -44,16 +44,20 @@
 #define CONFIG_LED_SERVICE_LABEL led_service
 
 #define CONFIG_LED_TIMER_NAME "default led timer"
-#define CONFIG_LED_INSTANCE_NUM 2
+#define CONFIG_LED_INSTANCE_NUM 3
 #define CONFIG_LED_ID_CONFIGS \
 	{ \
 		{ \
-			"yellow_led", \
+			"blue_led", \
 			0, \
 		}, \
 		{ \
-			"blue_led", \
+			"green_led", \
 			1, \
+		}, \
+		{ \
+			"red_led", \
+			2, \
 		}, \
 	}
 #define CONFIG_LED_HW_CONFIGS \
@@ -62,22 +66,22 @@
 			CONFIG_GPIOB_NAME, \
 			DRV_GPIO_PIN_5, \
 			GPIO_CONFIG_MODE_OUTPUT_PP, \
-			DRV_GPIO_PIN_CLR, \
 			DRV_GPIO_PIN_SET, \
+			DRV_GPIO_PIN_CLR, \
 		}, \
 		{ \
 			CONFIG_GPIOB_NAME, \
 			DRV_GPIO_PIN_0, \
 			GPIO_CONFIG_MODE_OUTPUT_PP, \
-			DRV_GPIO_PIN_CLR, \
 			DRV_GPIO_PIN_SET, \
+			DRV_GPIO_PIN_CLR, \
 		}, \
 		{ \
 			CONFIG_GPIOB_NAME, \
 			DRV_GPIO_PIN_1, \
 			GPIO_CONFIG_MODE_OUTPUT_PP, \
-			DRV_GPIO_PIN_CLR, \
 			DRV_GPIO_PIN_SET, \
+			DRV_GPIO_PIN_CLR, \
 		}, \
 	}
 #endif
