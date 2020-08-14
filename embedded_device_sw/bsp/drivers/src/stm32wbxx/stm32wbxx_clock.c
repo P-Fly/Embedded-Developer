@@ -39,7 +39,9 @@ typedef int (*subsys_onoff_t)(clock_subsys_t sys, unsigned int id, bool onoff);
  *
  * @retval  Returns 0 on success, negative error code otherwise.
  */
-static int stm32wbxx_clock_gpio_onoff(clock_subsys_t sys, unsigned int id, bool onoff)
+static int stm32wbxx_clock_gpio_onoff(clock_subsys_t	sys,
+				      unsigned int	id,
+				      bool		onoff)
 {
 	switch (sys) {
 	case DRV_CLK_PORTA:
@@ -89,7 +91,9 @@ static int stm32wbxx_clock_gpio_onoff(clock_subsys_t sys, unsigned int id, bool 
  *
  * @retval  Returns 0 on success, negative error code otherwise.
  */
-static int stm32wbxx_clock_uart_onoff(clock_subsys_t sys, unsigned int id, bool onoff)
+static int stm32wbxx_clock_uart_onoff(clock_subsys_t	sys,
+				      unsigned int	id,
+				      bool		onoff)
 {
 	if (onoff)
 		__HAL_RCC_USART1_CLK_ENABLE();
@@ -109,7 +113,9 @@ static int stm32wbxx_clock_uart_onoff(clock_subsys_t sys, unsigned int id, bool 
  *
  * @retval  Returns 0 on success, negative error code otherwise.
  */
-static int stm32wbxx_clock_crc_onoff(clock_subsys_t sys, unsigned int id, bool onoff)
+static int stm32wbxx_clock_crc_onoff(clock_subsys_t	sys,
+				     unsigned int	id,
+				     bool		onoff)
 {
 	if (onoff)
 		__HAL_RCC_CRC_CLK_ENABLE();
@@ -123,28 +129,28 @@ static int stm32wbxx_clock_crc_onoff(clock_subsys_t sys, unsigned int id, bool o
  * @brief   Clock sub-system definition.
  */
 typedef struct {
-	clock_subsys_t sys;
-	unsigned int   id;
-	subsys_onoff_t subsys_onoff;
+	clock_subsys_t	sys;
+	unsigned int	id;
+	subsys_onoff_t	subsys_onoff;
 } stm32wbxx_clock_subsys_onoff_t;
 
 static const stm32wbxx_clock_subsys_onoff_t clock_subsys_onoff[] =
 {
-	{ DRV_CLK_PORTA, 0,  stm32wbxx_clock_gpio_onoff },
-	{ DRV_CLK_PORTB, 0,  stm32wbxx_clock_gpio_onoff },
-	{ DRV_CLK_PORTC, 0,  stm32wbxx_clock_gpio_onoff },
-	{ DRV_CLK_PORTD, 0,  stm32wbxx_clock_gpio_onoff },
-	{ DRV_CLK_PORTE, 0,  stm32wbxx_clock_gpio_onoff },
-	{ DRV_CLK_UART,	 0,  stm32wbxx_clock_uart_onoff },
-	{ DRV_CLK_CRC,	 0,  stm32wbxx_clock_crc_onoff  },
+	{ DRV_CLK_PORTA, 0,   stm32wbxx_clock_gpio_onoff },
+	{ DRV_CLK_PORTB, 0,   stm32wbxx_clock_gpio_onoff },
+	{ DRV_CLK_PORTC, 0,   stm32wbxx_clock_gpio_onoff },
+	{ DRV_CLK_PORTD, 0,   stm32wbxx_clock_gpio_onoff },
+	{ DRV_CLK_PORTE, 0,   stm32wbxx_clock_gpio_onoff },
+	{ DRV_CLK_UART,	 0,   stm32wbxx_clock_uart_onoff },
+	{ DRV_CLK_CRC,	 0,   stm32wbxx_clock_crc_onoff	 },
 };
 
 #define DEF_CLOCK_SUBSYS_ONOFF_NUM (sizeof(clock_subsys_onoff) / \
 				    sizeof(clock_subsys_onoff[0]))
 
 static int stm32wbxx_clock_subsys_onoff_search(
-	clock_subsys_t sys,
-	unsigned int id,
+	clock_subsys_t	sys,
+	unsigned int	id,
 	subsys_onoff_t *subsys_onoff)
 {
 	int i;
@@ -180,8 +186,8 @@ typedef struct {
  * @retval  Returns 0 on success, negative error code otherwise.
  */
 static int stm32wbxx_clock_on(const object *	obj,
-			     clock_subsys_t	sys,
-			     unsigned int	id)
+			      clock_subsys_t	sys,
+			      unsigned int	id)
 {
 	stm32wbxx_clock_handle_t *handle =
 		(stm32wbxx_clock_handle_t *)obj->object_data;
@@ -220,8 +226,8 @@ static int stm32wbxx_clock_on(const object *	obj,
  * @retval  Returns 0 on success, negative error code otherwise.
  */
 static int stm32wbxx_clock_off(const object *	obj,
-			      clock_subsys_t	sys,
-			      unsigned int	id)
+			       clock_subsys_t	sys,
+			       unsigned int	id)
 {
 	stm32wbxx_clock_handle_t *handle =
 		(stm32wbxx_clock_handle_t *)obj->object_data;
@@ -260,10 +266,10 @@ static int stm32wbxx_clock_off(const object *	obj,
  *
  * @retval  Returns 0 on success, negative error code otherwise.
  */
-static int stm32wbxx_clock_set_rate(const object *obj,
-				   clock_subsys_t	sys,
-				   unsigned int		id,
-				   unsigned long	rate)
+static int stm32wbxx_clock_set_rate(const object *	obj,
+				    clock_subsys_t	sys,
+				    unsigned int	id,
+				    unsigned long	rate)
 {
 	stm32wbxx_clock_handle_t *handle =
 		(stm32wbxx_clock_handle_t *)obj->object_data;
@@ -284,10 +290,10 @@ static int stm32wbxx_clock_set_rate(const object *obj,
  *
  * @retval  Returns 0 on success, negative error code otherwise.
  */
-static int stm32wbxx_clock_get_rate(const object *obj,
-				   clock_subsys_t	sys,
-				   unsigned int		id,
-				   unsigned long *	rate)
+static int stm32wbxx_clock_get_rate(const object *	obj,
+				    clock_subsys_t	sys,
+				    unsigned int	id,
+				    unsigned long *	rate)
 {
 	stm32wbxx_clock_handle_t *handle =
 		(stm32wbxx_clock_handle_t *)obj->object_data;
@@ -303,7 +309,7 @@ static int stm32wbxx_clock_get_rate(const object *obj,
 
 static clock_intf_t clock_intf =
 {
-	.on			= stm32wbxx_clock_on,
+	.on		= stm32wbxx_clock_on,
 	.off		= stm32wbxx_clock_off,
 	.set_rate	= stm32wbxx_clock_set_rate,
 	.get_rate	= stm32wbxx_clock_get_rate,

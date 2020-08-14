@@ -41,7 +41,7 @@ typedef struct {
 	ring_buff_t		rx;
 #endif
 	UART_HandleTypeDef	uart;
-	const object *	clock;
+	const object *		clock;
 } stm32wbxx_uart_handle_t;
 
 /**
@@ -164,6 +164,7 @@ static int stm32wbxx_uart_write(const object *obj,
 		(stm32wbxx_uart_handle_t *)obj->object_data;
 	char *buff = (char *)tx_buf;
 	int i;
+
 #ifdef CONFIG_UART1_TX_RING_BUFF_SIZE
 	int ret;
 #endif
@@ -189,9 +190,11 @@ static int stm32wbxx_uart_write(const object *obj,
 	HAL_NVIC_EnableIRQ(USART1_IRQn);
 
 	/* Enable the UART Transmit data register empty Interrupt */
-	__HAL_UART_ENABLE_IT(&handle->uart, UART_IT_TXE);
+	__HAL_UART_ENABLE_IT(&handle->uart,
+			     UART_IT_TXE);
 #else
-	if (HAL_UART_Transmit(&handle->uart, buff, tx_len, CONFIG_UART_TX_TIMEOUT) != HAL_OK)
+	if (HAL_UART_Transmit(&handle->uart, buff, tx_len,
+			      CONFIG_UART_TX_TIMEOUT) != HAL_OK)
 		return -EIO;
 #endif
 
@@ -215,8 +218,9 @@ static int stm32wbxx_uart_read(const object *obj,
 		(stm32wbxx_uart_handle_t *)obj->object_data;
 	char *buff = (char *)rx_buf;
 	int i;
+
 #ifdef CONFIG_UART1_RX_RING_BUFF_SIZE
-		int ret;
+	int ret;
 #endif
 
 	if (!handle)
@@ -235,7 +239,8 @@ static int stm32wbxx_uart_read(const object *obj,
 			break;
 	}
 #else
-	if (HAL_UART_Receive(&handle->uart, buff, rx_len, CONFIG_UART_RX_TIMEOUT) != HAL_OK)
+	if (HAL_UART_Receive(&handle->uart, buff, rx_len,
+			     CONFIG_UART_RX_TIMEOUT) != HAL_OK)
 		return -EIO;
 #endif
 
@@ -393,9 +398,9 @@ static int stm32wbxx_uart1_probe(const object *obj)
 				      stm32wbxx_uart1_msp_init) != HAL_OK)
 		return -EIO;
 
-    if (HAL_UART_RegisterCallback(&handle->uart, HAL_UART_MSPDEINIT_CB_ID,
+	if (HAL_UART_RegisterCallback(&handle->uart, HAL_UART_MSPDEINIT_CB_ID,
 				      stm32wbxx_uart1_msp_deinit) != HAL_OK)
-        return -EIO;
+		return -EIO;
 
 	ret = uart_configure(obj, obj->object_config);
 	if (ret)

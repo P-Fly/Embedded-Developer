@@ -31,8 +31,8 @@
  * @brief   CRC handle definition.
  */
 typedef struct {
-	CRC_HandleTypeDef crc;
-	const object *	clock;
+	CRC_HandleTypeDef	crc;
+	const object *		clock;
 } stm32wbxx_crc_handle_t;
 
 /**

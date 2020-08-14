@@ -19,6 +19,6 @@
 #ifndef __DBG_TRACE_H__
 #define __DBG_TRACE_H__
 
-extern int dbg_trace_output(const char * format, ...);
+extern int dbg_trace_output(const char *format, ...);
 
 #endif /* __DBG_TRACE_H__ */

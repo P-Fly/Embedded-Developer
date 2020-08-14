@@ -31,9 +31,9 @@
  * @brief   GPIO handle definition.
  */
 typedef struct {
-	const object * clock;
-	clock_subsys_t sys;
-	GPIO_TypeDef * port;
+	const object *	clock;
+	clock_subsys_t	sys;
+	GPIO_TypeDef *	port;
 } stm32wbxx_gpio_handle_t;
 
 /**
@@ -41,30 +41,31 @@ typedef struct {
  */
 typedef struct {
 	gpio_pin_id_t	pin;
-	unsigned short  pad_id;
+	unsigned short	pad_id;
 } stm32wbxx_gpio_internal_id_t;
 
 static const stm32wbxx_gpio_internal_id_t gpio_internal_id[] =
 {
-	{ DRV_GPIO_PIN_0,  GPIO_PIN_0 },
-	{ DRV_GPIO_PIN_1,  GPIO_PIN_1 },
-	{ DRV_GPIO_PIN_2,  GPIO_PIN_2 },
-	{ DRV_GPIO_PIN_3,  GPIO_PIN_3 },
-	{ DRV_GPIO_PIN_4,  GPIO_PIN_4 },
-	{ DRV_GPIO_PIN_5,  GPIO_PIN_5 },
-	{ DRV_GPIO_PIN_6,  GPIO_PIN_6 },
-	{ DRV_GPIO_PIN_7,  GPIO_PIN_7 },
-	{ DRV_GPIO_PIN_8,  GPIO_PIN_8 },
-	{ DRV_GPIO_PIN_9,  GPIO_PIN_9 },
-	{ DRV_GPIO_PIN_10, GPIO_PIN_10 },
-	{ DRV_GPIO_PIN_11, GPIO_PIN_11 },
-	{ DRV_GPIO_PIN_12, GPIO_PIN_12 },
-	{ DRV_GPIO_PIN_13, GPIO_PIN_13 },
-	{ DRV_GPIO_PIN_14, GPIO_PIN_14 },
-	{ DRV_GPIO_PIN_15, GPIO_PIN_15 },
+	{ DRV_GPIO_PIN_0,  GPIO_PIN_0	},
+	{ DRV_GPIO_PIN_1,  GPIO_PIN_1	},
+	{ DRV_GPIO_PIN_2,  GPIO_PIN_2	},
+	{ DRV_GPIO_PIN_3,  GPIO_PIN_3	},
+	{ DRV_GPIO_PIN_4,  GPIO_PIN_4	},
+	{ DRV_GPIO_PIN_5,  GPIO_PIN_5	},
+	{ DRV_GPIO_PIN_6,  GPIO_PIN_6	},
+	{ DRV_GPIO_PIN_7,  GPIO_PIN_7	},
+	{ DRV_GPIO_PIN_8,  GPIO_PIN_8	},
+	{ DRV_GPIO_PIN_9,  GPIO_PIN_9	},
+	{ DRV_GPIO_PIN_10, GPIO_PIN_10	},
+	{ DRV_GPIO_PIN_11, GPIO_PIN_11	},
+	{ DRV_GPIO_PIN_12, GPIO_PIN_12	},
+	{ DRV_GPIO_PIN_13, GPIO_PIN_13	},
+	{ DRV_GPIO_PIN_14, GPIO_PIN_14	},
+	{ DRV_GPIO_PIN_15, GPIO_PIN_15	},
 };
 
-static int stm32wbxx_gpio_pad_id_search(gpio_pin_id_t pin, unsigned short *pad_id)
+static int stm32wbxx_gpio_pad_id_search(gpio_pin_id_t	pin,
+					unsigned short *pad_id)
 {
 	int i;
 
@@ -88,9 +89,9 @@ static int stm32wbxx_gpio_pad_id_search(gpio_pin_id_t pin, unsigned short *pad_i
  *
  * @retval  Returns 0 on success, negative error code otherwise.
  */
-static int stm32wbxx_gpio_configure(const object *	obj,
-				   gpio_pin_id_t	pin,
-				   const gpio_config_t *config)
+static int stm32wbxx_gpio_configure(const object *		obj,
+				    gpio_pin_id_t		pin,
+				    const gpio_config_t *	config)
 {
 	stm32wbxx_gpio_handle_t *handle =
 		(stm32wbxx_gpio_handle_t *)obj->object_data;
@@ -172,9 +173,9 @@ static int stm32wbxx_gpio_configure(const object *	obj,
  *
  * @retval  Returns 0 on success, negative error code otherwise.
  */
-static int stm32wbxx_gpio_write(const object *	obj,
-			       gpio_pin_id_t	pin,
-			       gpio_pin_level_t level)
+static int stm32wbxx_gpio_write(const object *		obj,
+				gpio_pin_id_t		pin,
+				gpio_pin_level_t	level)
 {
 	stm32wbxx_gpio_handle_t *handle =
 		(stm32wbxx_gpio_handle_t *)obj->object_data;
@@ -235,9 +236,9 @@ static int stm32wbxx_gpio_toggle(const object *obj, gpio_pin_id_t pin)
  *
  * @retval  Returns 0 on success, negative error code otherwise.
  */
-static int stm32wbxx_gpio_read(const object *	obj,
-			      gpio_pin_id_t	pin,
-			      gpio_pin_level_t *level)
+static int stm32wbxx_gpio_read(const object *		obj,
+			       gpio_pin_id_t		pin,
+			       gpio_pin_level_t *	level)
 {
 	stm32wbxx_gpio_handle_t *handle =
 		(stm32wbxx_gpio_handle_t *)obj->object_data;

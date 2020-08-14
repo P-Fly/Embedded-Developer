@@ -41,7 +41,7 @@ static dbg_trace_handle_t dbg_trace_handle;
  * @retval  The number of data bytes write to the slave on success,
  *          negative error code otherwise.
  */
-int dbg_trace_output(const char * format, ...)
+int dbg_trace_output(const char *format, ...)
 {
 	char trace_buff[CONFIG_DBG_TRACE_MAX_LEN];
 	int len;
@@ -51,9 +51,9 @@ int dbg_trace_output(const char * format, ...)
 		return -EIO;
 
 	va_list args;
-    va_start (args, format);
-    len = vsnprintf(trace_buff, CONFIG_DBG_TRACE_MAX_LEN, format, args);
-    va_end (args);
+	va_start(args, format);
+	len = vsnprintf(trace_buff, CONFIG_DBG_TRACE_MAX_LEN, format, args);
+	va_end(args);
 
 	ret = uart_write(dbg_trace_handle.port, trace_buff, len);
 	if (ret < 0)

@@ -47,12 +47,12 @@ void hardware_system_clock_config(void)
 	osc_config.PLL.PLLR = RCC_PLLR_DIV2;
 	osc_config.PLL.PLLQ = 4;
 	if (HAL_RCC_OscConfig(&osc_config) != HAL_OK)
-		while(1);
+		while (1);
 
 	clk_config.ClockType = RCC_CLOCKTYPE_HCLK4 |
-				      RCC_CLOCKTYPE_HCLK2 | RCC_CLOCKTYPE_HCLK |
-				      RCC_CLOCKTYPE_SYSCLK |
-				      RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
+			       RCC_CLOCKTYPE_HCLK2 | RCC_CLOCKTYPE_HCLK |
+			       RCC_CLOCKTYPE_SYSCLK |
+			       RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
 	clk_config.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
 	clk_config.AHBCLKDivider = RCC_SYSCLK_DIV1;
 	clk_config.APB1CLKDivider = RCC_HCLK_DIV1;
@@ -61,7 +61,7 @@ void hardware_system_clock_config(void)
 	clk_config.AHBCLK4Divider = RCC_SYSCLK_DIV1;
 
 	if (HAL_RCC_ClockConfig(&clk_config, FLASH_LATENCY_3) != HAL_OK)
-		while(1);
+		while (1);
 }
 
 /**

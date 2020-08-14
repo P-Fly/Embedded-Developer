@@ -47,16 +47,16 @@
  * Log an info message.
  */
 #define pr_info(format, ...) dbg_trace_output("[INFO][%s][%d] " format "\r\n", \
-				    __FUNCTION__, \
-				    __LINE__, \
-				    ## __VA_ARGS__)
+					      __FUNCTION__, \
+					      __LINE__, \
+					      ## __VA_ARGS__)
 
 /**
  * Log a debug message.
  */
 #define pr_debug(format, ...) dbg_trace_output("[DBG][%s][%d] " format "\r\n", \
-				     __FUNCTION__, \
-				     __LINE__, \
-				     ## __VA_ARGS__)
+					       __FUNCTION__, \
+					       __LINE__, \
+					       ## __VA_ARGS__)
 
 #endif /* __LOG_H__ */

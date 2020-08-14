@@ -71,19 +71,19 @@ void hardware_late_startup(void)
 }
 
 typedef struct {
-	unsigned long reset;
-	const char *reason;
+	unsigned long	reset;
+	const char *	reason;
 } hardware_reset_reason_t;
 
 static const hardware_reset_reason_t reset_reason[] =
 {
-	SYSCTL_RESC_MOSCFAIL,    "MOSC Failure Reset",
-	SYSCTL_RESC_WDT1,        "Watchdog Timer 1 Reset",
-	SYSCTL_RESC_SW,          "Software Reset",
-	SYSCTL_RESC_WDT0,        "Watchdog Timer 0 Reset",
-	SYSCTL_RESC_BOR,         "Brown-Out Reset",
-	SYSCTL_RESC_POR,         "Power-On Reset",
-	SYSCTL_RESC_EXT,         "External Reset",
+	SYSCTL_RESC_MOSCFAIL, "MOSC Failure Reset",
+	SYSCTL_RESC_WDT1,     "Watchdog Timer 1 Reset",
+	SYSCTL_RESC_SW,	      "Software Reset",
+	SYSCTL_RESC_WDT0,     "Watchdog Timer 0 Reset",
+	SYSCTL_RESC_BOR,      "Brown-Out Reset",
+	SYSCTL_RESC_POR,      "Power-On Reset",
+	SYSCTL_RESC_EXT,      "External Reset",
 };
 
 /**
@@ -102,11 +102,9 @@ static const char *hardware_get_reset_reason(void)
 
 	MAP_SysCtlResetCauseClear(reset);
 
-	for (i = 0; i < sizeof(reset_reason) / sizeof(reset_reason[0]); i++) {
-		if (reset & reset_reason[i].reset) {
+	for (i = 0; i < sizeof(reset_reason) / sizeof(reset_reason[0]); i++)
+		if (reset & reset_reason[i].reset)
 			return reset_reason[i].reason;
-		}
-	}
 
 	return "Unknow Reset";
 }

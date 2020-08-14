@@ -177,6 +177,7 @@ static int lm3s9xxx_uart_write(const object *obj,
 		(lm3s9xxx_uart_handle_t *)obj->object_data;
 	char *buff = (char *)tx_buf;
 	int i;
+
 #ifdef CONFIG_UART0_TX_RING_BUFF_SIZE
 	int ret;
 #endif
@@ -245,6 +246,7 @@ static int lm3s9xxx_uart_read(const object *obj,
 		(lm3s9xxx_uart_handle_t *)obj->object_data;
 	char *buff = (char *)rx_buf;
 	int i;
+
 #ifdef CONFIG_UART0_RX_RING_BUFF_SIZE
 	int ret;
 #endif
