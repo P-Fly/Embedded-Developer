@@ -192,15 +192,19 @@ static int lm3s9xxx_uart_write(const object *obj,
 		return -EINVAL;
 
 #ifdef CONFIG_UART0_TX_RING_BUFF_SIZE
+	MAP_IntDisable(handle->uart_interrupt);
+
 	for (i = 0; i < tx_len; i++) {
 		ret = ring_buffer_write(&handle->tx, buff[i]);
 		if (ret)
 			break;
 	}
 
-	/*
-	 *      When the data is written to the ring buffer,
-	 *      we need to start sending and fill the hardware buffer.
+	MAP_IntEnable(handle->uart_interrupt);
+
+	/**
+	 * When the data is written to the ring buffer,
+	 * we need to start sending and fill the hardware buffer.
 	 */
 	MAP_IntDisable(handle->uart_interrupt);
 
@@ -243,6 +247,10 @@ static int lm3s9xxx_uart_read(const object *obj,
 	char *buff = (char *)rx_buf;
 	int i;
 
+#ifdef CONFIG_UART0_RX_RING_BUFF_SIZE
+	int ret;
+#endif
+
 	if (!handle)
 		return -EINVAL;
 
@@ -254,8 +262,6 @@ static int lm3s9xxx_uart_read(const object *obj,
 
 #ifdef CONFIG_UART0_RX_RING_BUFF_SIZE
 	for (i = 0; i < rx_len; i++) {
-		int ret;
-
 		ret = ring_buffer_read(&handle->rx, &buff[i]);
 		if (ret)
 			break;

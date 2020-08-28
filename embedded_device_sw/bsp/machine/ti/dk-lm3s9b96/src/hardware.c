@@ -16,23 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdint.h>
+#include "cmsis_version.h"
 #include "cmsis_os2.h"
 #include "object.h"
 #include "err.h"
 #include "log.h"
-#include "drv_gpio.h"
+#include "version.h"
 
 #define TARGET_IS_TEMPEST_RC1
 #include "inc/hw_memmap.h"
 #include "inc/hw_types.h"
 #include "inc/hw_ints.h"
+#include "inc/hw_sysctl.h"
 #include "driverlib/rom.h"
 #include "driverlib/rom_map.h"
 #include "driverlib/sysctl.h"
-#include "driverlib/gpio.h"
-#include "driverlib/uart.h"
 
+static const char *hardware_get_reset_reason(void);
+static void hardware_print_info(void);
+
+#define CONFIG_CPU_NAME   "LM3S9B96"
+#define CONFIG_BOARD_NAME "DK-LM3S9B96"
+
+/* Default system clock */
 uint32_t SystemCoreClock = 16000000UL;
 
 /**
@@ -49,34 +55,7 @@ void hardware_early_startup(void)
 		SYSCTL_SYSDIV_4 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN |
 		SYSCTL_XTAL_16MHZ);
 
-	SystemCoreClock = 50000000UL;
-}
-
-const osThreadAttr_t loop_attr = {
-	.name		= "loop thread",
-	.attr_bits	= osThreadDetached,
-	.cb_mem		= NULL,
-	.cb_size	= 0,
-	.stack_mem	= NULL,
-	.stack_size	= 2048,
-	.priority	= osPriorityNormal,
-};
-
-static void loop_thread(void *argument)
-{
-	const object *obj;
-	gpio_config_t config;
-
-	obj = object_get_binding(CONFIG_GPIOF_NAME);
-
-	config.configs = GPIO_CONFIG_MODE_OUTPUT_PP;
-	gpio_configure(obj, DRV_GPIO_PIN_3, &config);
-
-	while (1) {
-		gpio_toggle(obj, DRV_GPIO_PIN_3);
-
-		osDelay(1000 * osKernelGetTickFreq() / 1000);
-	}
+	SystemCoreClock = MAP_SysCtlClockGet();
 }
 
 /**
@@ -88,11 +67,91 @@ static void loop_thread(void *argument)
  */
 void hardware_late_startup(void)
 {
-	osThreadId_t thread_id;
+	hardware_print_info();
+}
 
-	thread_id = osThreadNew(loop_thread, NULL, &loop_attr);
-	if (!thread_id)
-		pr_error("Create thread <%s> failed.", loop_attr.name);
-	else
-		pr_info("Create thread <%s> succeed.", loop_attr.name);
+typedef struct {
+	unsigned long	reset;
+	const char *	reason;
+} hardware_reset_reason_t;
+
+static const hardware_reset_reason_t reset_reason[] =
+{
+	SYSCTL_RESC_MOSCFAIL, "MOSC Failure Reset",
+	SYSCTL_RESC_WDT1,     "Watchdog Timer 1 Reset",
+	SYSCTL_RESC_SW,	      "Software Reset",
+	SYSCTL_RESC_WDT0,     "Watchdog Timer 0 Reset",
+	SYSCTL_RESC_BOR,      "Brown-Out Reset",
+	SYSCTL_RESC_POR,      "Power-On Reset",
+	SYSCTL_RESC_EXT,      "External Reset",
+};
+
+/**
+ * @brief   Get hardware reset reason.
+ *
+ * @param   None.
+ *
+ * @retval  Return the string of reset reason.
+ */
+static const char *hardware_get_reset_reason(void)
+{
+	unsigned long reset;
+	int i;
+
+	reset = MAP_SysCtlResetCauseGet();
+
+	MAP_SysCtlResetCauseClear(reset);
+
+	for (i = 0; i < sizeof(reset_reason) / sizeof(reset_reason[0]); i++)
+		if (reset & reset_reason[i].reset)
+			return reset_reason[i].reason;
+
+	return "Unknow Reset";
+}
+
+/**
+ * @brief   Print some board info.
+ *
+ * @param   None.
+ *
+ * @retval  None.
+ */
+static void hardware_print_info(void)
+{
+	char version[25];
+
+	pr_info("*************************************************************");
+
+	pr_info("%s - %s (Build %s %s)",
+		CONFIG_ISSUE_NAME,
+		CONFIG_ISSUE_VERSION,
+		CONFIG_ISSUE_DATE,
+		CONFIG_ISSUE_TIME);
+
+	pr_info("Reset reason: %s", hardware_get_reset_reason());
+
+	pr_info("CPU: %s", CONFIG_CPU_NAME);
+
+	pr_info("Board: %s", CONFIG_BOARD_NAME);
+
+#ifdef __ARMCC_VERSION
+	pr_info("ARMCC Version: 0x%08x", __ARMCC_VERSION);
+#endif
+
+	pr_info("CMSIS Version: 0x%08x", __CM_CMSIS_VERSION);
+
+	(void)osKernelGetInfo(NULL, version, sizeof(version));
+
+	pr_info("OS Version: %s", version);
+
+	pr_info("");
+	pr_info("");
+
+	pr_info("Flash Size: %d Byte", MAP_SysCtlFlashSizeGet());
+	pr_info("SRAM Size: %d Byte", MAP_SysCtlSRAMSizeGet());
+	pr_info("System Clock: %d Hz", SystemCoreClock);
+	pr_info("PWM Clock: %d Hz", MAP_SysCtlPWMClockGet());
+	pr_info("ADC Speed: %d Hz", MAP_SysCtlADCSpeedGet());
+
+	pr_info("*************************************************************");
 }

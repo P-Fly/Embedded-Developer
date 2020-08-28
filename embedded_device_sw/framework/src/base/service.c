@@ -432,6 +432,10 @@ int service_send_evt(const service_t *dst, const message_t *message)
 	service_message.type = MSG_TYPE_EVT;
 	memcpy(&service_message.msg, message, sizeof(message_t));
 
+	//pr_info("Send event 0x%x to service <%s>.",
+	//	message->id,
+	//	dst->name);
+
 	return service_send_message(obj, &service_message);
 }
 
@@ -468,6 +472,11 @@ int service_send_req(const service_t *	dst,
 	service_message.src = src;
 	service_message.type = MSG_TYPE_REQ;
 	memcpy(&service_message.msg, message, sizeof(message_t));
+
+	//pr_info("Send request 0x%x from service <%s> to service <%s>.",
+	//	message->id,
+	//	src->name,
+	//	dst->name);
 
 	return service_send_message(obj, &service_message);
 }
@@ -506,6 +515,11 @@ int service_send_rsp(const service_t *	dst,
 	service_message.type = MSG_TYPE_RSP;
 	memcpy(&service_message.msg, message, sizeof(message_t));
 
+	//pr_info("Send respond 0x%x from service <%s> to service <%s>.",
+	//		message->id,
+	//		src->name,
+	//		dst->name);
+
 	return service_send_message(obj, &service_message);
 }
 
@@ -524,6 +538,8 @@ int service_broadcast_evt(const message_t *message)
 
 	if (!message)
 		return -EINVAL;
+
+	//pr_info("Broadcast event 0x%x.", message->id);
 
 	for (svc = start; svc < end; svc++)
 		if (svc)

@@ -20,6 +20,7 @@
 #define __LOG_H__
 
 #include <stdio.h>
+#include "dbg_trace.h"
 
 #define RED_LABEL    "\033[47;31m"
 #define NORMAL_LABEL "\033[0m"
@@ -27,7 +28,7 @@
 /**
  * Log an error message.
  */
-#define pr_error(format, ...) printf( \
+#define pr_error(format, ...) dbg_trace_output( \
 		RED_LABEL "[ERR][%s][%d] " format "\r\n" NORMAL_LABEL, \
 		__FUNCTION__, \
 		__LINE__, \
@@ -36,7 +37,7 @@
 /**
  * Log a warning message.
  */
-#define pr_warning(format, ...) printf( \
+#define pr_warning(format, ...) dbg_trace_output( \
 		RED_LABEL "[WARN][%s][%d] " format "\r\n" NORMAL_LABEL, \
 		__FUNCTION__, \
 		__LINE__, \
@@ -45,17 +46,17 @@
 /**
  * Log an info message.
  */
-#define pr_info(format, ...) printf("[INFO][%s][%d] " format "\r\n", \
-				    __FUNCTION__, \
-				    __LINE__, \
-				    ## __VA_ARGS__)
+#define pr_info(format, ...) dbg_trace_output("[INFO][%s][%d] " format "\r\n", \
+					      __FUNCTION__, \
+					      __LINE__, \
+					      ## __VA_ARGS__)
 
 /**
  * Log a debug message.
  */
-#define pr_debug(format, ...) printf("[DBG][%s][%d] " format "\r\n", \
-				     __FUNCTION__, \
-				     __LINE__, \
-				     ## __VA_ARGS__)
+#define pr_debug(format, ...) dbg_trace_output("[DBG][%s][%d] " format "\r\n", \
+					       __FUNCTION__, \
+					       __LINE__, \
+					       ## __VA_ARGS__)
 
 #endif /* __LOG_H__ */

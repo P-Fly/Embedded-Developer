@@ -16,24 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __UTILS_CONF_H__
-#define __UTILS_CONF_H__
+#ifndef __LED_PATTERN_H__
+#define __LED_PATTERN_H__
 
-#define CONFIG_DBG_TRACE_ENABLE
-#if defined(CONFIG_DBG_TRACE_ENABLE)
-#define CONFIG_DBG_TRACE_NAME "dbg trace module"
-#define CONFIG_DBG_TRACE_LABEL dbg_trace_module
-#define CONFIG_DBG_TRACE_PORT_NAME CONFIG_UART1_NAME
-#define CONFIG_DBG_TRACE_MAX_LEN 256
-#endif
+#include <stdbool.h>
 
-#define CONFIG_TRACE_ENABLE
-#if defined(CONFIG_TRACE_ENABLE)
-#define CONFIG_TRACE_NAME "trace module"
-#define CONFIG_TRACE_LABEL trace_module
-#define CONFIG_TRACE_PORT_NAME CONFIG_UART1_NAME
-#endif
+/**
+ * @brief   Led pattern cycle definitions.
+ */
+typedef struct {
+	unsigned int	onoff;
+	unsigned int	time_ms;
+} led_pattern_cycle_t;
 
-#define CONFIG_ASSERT_ENABLE
+/**
+ * @brief   Led pattern definitions.
+ */
+typedef struct {
+	led_pattern_id_t		pattern_id;
+	const led_pattern_cycle_t *	cycle;
+	unsigned int			cycle_total;
+	bool				periodic;
+} led_pattern_t;
 
-#endif /* __UTILS_CONF_H__ */
+extern const led_pattern_t *led_pattern_search_id(led_pattern_id_t id);
+
+#endif /* __LED_PATTERN_H__ */

@@ -17,7 +17,10 @@
  */
 
 #include <string.h>
+#include "cmsis_os2.h"
+#include "FreeRTOS.h"
 #include "drv_crc.h"
+#include "drv_clock.h"
 #include "log.h"
 
 #include "stm32wbxx_hal.h"
@@ -28,7 +31,8 @@
  * @brief   CRC handle definition.
  */
 typedef struct {
-	CRC_HandleTypeDef crc;
+	CRC_HandleTypeDef	crc;
+	const object *		clock;
 } stm32wbxx_crc_handle_t;
 
 /**
@@ -205,6 +209,22 @@ static int stm32wbxx_crc_probe(const object *obj)
 
 	handle->crc.Instance = CRC;
 
+	handle->clock = object_get_binding(CONFIG_CLOCK_NAME);
+	if (!handle->clock) {
+		pr_error("Drivce <%s> binding object <%s> failed.",
+			 obj->name,
+			 CONFIG_CLOCK_NAME);
+		return -ENODEV;
+	} else {
+		pr_info("Drivce <%s> binding object <%s> succeed.",
+			obj->name,
+			CONFIG_CLOCK_NAME);
+	}
+
+	ret = clock_on(handle->clock, DRV_CLK_CRC, 0);
+	if (ret)
+		return ret;
+
 	ret = crc_configure(obj, obj->object_config);
 	if (ret)
 		return ret;
@@ -225,9 +245,14 @@ static int stm32wbxx_crc_shutdown(const object *obj)
 {
 	stm32wbxx_crc_handle_t *handle =
 		(stm32wbxx_crc_handle_t *)obj->object_data;
+	int ret;
 
 	if (HAL_CRC_DeInit(&handle->crc) != HAL_OK)
 		return -EIO;
+
+	ret = clock_off(handle->clock, DRV_CLK_CRC, 0);
+	if (ret)
+		return ret;
 
 	pr_info("Object <%s> shutdown succeed.", obj->name);
 

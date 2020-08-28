@@ -16,24 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __UTILS_CONF_H__
-#define __UTILS_CONF_H__
+#include <string.h>
+#include "service.h"
+#include "led_hardware.h"
+#include "log.h"
 
-#define CONFIG_DBG_TRACE_ENABLE
-#if defined(CONFIG_DBG_TRACE_ENABLE)
-#define CONFIG_DBG_TRACE_NAME "dbg trace module"
-#define CONFIG_DBG_TRACE_LABEL dbg_trace_module
-#define CONFIG_DBG_TRACE_PORT_NAME CONFIG_UART1_NAME
-#define CONFIG_DBG_TRACE_MAX_LEN 256
+#if defined(CONFIG_LED_SERVICE_ENABLE)
+
+static const led_hardware_t led_hardware[] = CONFIG_LED_HW_CONFIGS;
+
+/**
+ * @brief   Search for the hardware by index.
+ *
+ * @param   index The index number.
+ *
+ * @retval  Hardware handle for reference or NULL in case of error.
+ */
+const led_hardware_t *led_hardware_search_by_index(unsigned int index)
+{
+	if (index >= sizeof(led_hardware) / sizeof(led_hardware[0]))
+		return NULL;
+
+	return &led_hardware[index];
+}
+
 #endif
-
-#define CONFIG_TRACE_ENABLE
-#if defined(CONFIG_TRACE_ENABLE)
-#define CONFIG_TRACE_NAME "trace module"
-#define CONFIG_TRACE_LABEL trace_module
-#define CONFIG_TRACE_PORT_NAME CONFIG_UART1_NAME
-#endif
-
-#define CONFIG_ASSERT_ENABLE
-
-#endif /* __UTILS_CONF_H__ */

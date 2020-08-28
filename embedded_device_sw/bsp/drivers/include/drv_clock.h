@@ -47,6 +47,7 @@ typedef enum {
 	DRV_CLK_CAN,
 	DRV_CLK_I2S,
 	DRV_CLK_USB,
+	DRV_CLK_CRC,
 
 	DRV_CLK_MAX_NUM,
 } clock_subsys_t;

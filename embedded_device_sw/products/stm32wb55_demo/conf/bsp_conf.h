@@ -19,11 +19,35 @@
 #ifndef __BSP_CONF_H__
 #define __BSP_CONF_H__
 
+#define CONFIG_CLOCK_ENABLE
+#if defined(CONFIG_CLOCK_ENABLE)
+#define CONFIG_CLOCK_NAME "stm32wbxx clock driver"
+#define CONFIG_CLOCK_LABEL stm32wbxx_clock_driver
+#endif
+
+#define CONFIG_GPIO_ENABLE
+#if defined(CONFIG_GPIO_ENABLE)
+#define CONFIG_GPIOA_NAME "stm32wbxx PORTA driver"
+#define CONFIG_GPIOA_LABEL stm32wbxx_porta_driver
+
+#define CONFIG_GPIOB_NAME "stm32wbxx PORTB driver"
+#define CONFIG_GPIOB_LABEL stm32wbxx_portb_driver
+
+#define CONFIG_GPIOC_NAME "stm32wbxx PORTC driver"
+#define CONFIG_GPIOC_LABEL stm32wbxx_portc_driver
+
+#define CONFIG_GPIOD_NAME "stm32wbxx PORTD driver"
+#define CONFIG_GPIOD_LABEL stm32wbxx_portd_driver
+
+#define CONFIG_GPIOE_NAME "stm32wbxx PORTE driver"
+#define CONFIG_GPIOE_LABEL stm32wbxx_porte_driver
+#endif
+
 #define CONFIG_UART1_ENABLE
 #if defined(CONFIG_UART1_ENABLE)
 #define CONFIG_UART1_NAME "stm32wbxx uart1 driver"
 #define CONFIG_UART1_LABEL stm32wbxx_uart1_driver
-#define CONFIG_UART1_TX_RING_BUFF_SIZE (2 * 1024)
+#define CONFIG_UART1_TX_RING_BUFF_SIZE (8 * 1024)
 #define CONFIG_UART1_RX_RING_BUFF_SIZE (2 * 1024)
 #define CONFIG_UART1_HW_BAUDRATE 115200
 #define CONFIG_UART1_HW_CONFIGS UART_CONFIG_WORD_LENGTH_8B | \

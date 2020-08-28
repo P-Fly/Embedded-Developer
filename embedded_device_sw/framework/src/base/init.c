@@ -21,6 +21,7 @@
 #include "err.h"
 #include "log.h"
 #include "framework_conf.h"
+#include "service.h"
 
 /**
  * @brief   Startup hardware early.
@@ -74,15 +75,31 @@ const osThreadAttr_t init_attr = {
  */
 static void init_thread(void *argument)
 {
+	message_t message;
 	osStatus_t stat;
+	int ret;
 
 	(void)argument;
 
-	(void)object_init();
-
-	pr_info("All objects initialized.");
+	ret = object_init();
+	if (ret)
+		pr_error("Some objects initialize failed.");
+	else
+		pr_info("All objects initialized.");
 
 	hardware_late_startup();
+
+	osDelay(500 * osKernelGetTickFreq() / 1000);
+
+	message.id = MSG_ID_SYS_STARTUP_COMPLETED;
+	message.param0 = 0;
+	message.param1 = 0;
+	message.ptr = NULL;
+	ret = service_broadcast_evt(&message);
+	if (ret)
+		pr_error("Broadcast event 0x%x failed.", message.id);
+	else
+		pr_info("Broadcast event 0x%x succeed.", message.id);
 
 	stat = osThreadSuspend(osThreadGetId());
 	if (stat != osOK)
@@ -106,8 +123,6 @@ int main(int argc, char *argv[])
 	thread_id = osThreadNew(init_thread, NULL, &init_attr);
 	if (!thread_id)
 		pr_error("Create thread <%s> failed.", init_attr.name);
-	else
-		pr_info("Create thread <%s> succeed.", init_attr.name);
 
 	stat = osKernelStart();
 	if (stat != osOK)

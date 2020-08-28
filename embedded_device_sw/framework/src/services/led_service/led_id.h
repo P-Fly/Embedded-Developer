@@ -16,24 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __UTILS_CONF_H__
-#define __UTILS_CONF_H__
+#ifndef __LED_ID_H__
+#define __LED_ID_H__
 
-#define CONFIG_DBG_TRACE_ENABLE
-#if defined(CONFIG_DBG_TRACE_ENABLE)
-#define CONFIG_DBG_TRACE_NAME "dbg trace module"
-#define CONFIG_DBG_TRACE_LABEL dbg_trace_module
-#define CONFIG_DBG_TRACE_PORT_NAME CONFIG_UART1_NAME
-#define CONFIG_DBG_TRACE_MAX_LEN 256
-#endif
+/**
+ * @brief   Led ID definitions.
+ */
+typedef struct {
+	const char *const	name;
+	unsigned int		id;
+} led_id_t;
 
-#define CONFIG_TRACE_ENABLE
-#if defined(CONFIG_TRACE_ENABLE)
-#define CONFIG_TRACE_NAME "trace module"
-#define CONFIG_TRACE_LABEL trace_module
-#define CONFIG_TRACE_PORT_NAME CONFIG_UART1_NAME
-#endif
+extern const led_id_t *led_id_search_by_index(unsigned int index);
 
-#define CONFIG_ASSERT_ENABLE
-
-#endif /* __UTILS_CONF_H__ */
+#endif /* __LED_ID_H__ */

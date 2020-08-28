@@ -747,14 +747,24 @@
           <GroupName>bsp\drivers\stm32wbxx</GroupName>
           <Files>
             <File>
-              <FileName>stm32wbxx_crc.c</FileName>
+              <FileName>stm32wbxx_clock.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\bsp\drivers\src\stm32wbxx\stm32wbxx_crc.c</FilePath>
+              <FilePath>..\..\..\bsp\drivers\src\stm32wbxx\stm32wbxx_clock.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32wbxx_gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\drivers\src\stm32wbxx\stm32wbxx_gpio.c</FilePath>
             </File>
             <File>
               <FileName>stm32wbxx_uart.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\bsp\drivers\src\stm32wbxx\stm32wbxx_uart.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32wbxx_crc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\bsp\drivers\src\stm32wbxx\stm32wbxx_crc.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -901,6 +911,21 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\framework\src\services\led_service\led_service.c</FilePath>
             </File>
+            <File>
+              <FileName>led_pattern.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\framework\src\services\led_service\led_pattern.c</FilePath>
+            </File>
+            <File>
+              <FileName>led_hardware.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\framework\src\services\led_service\led_hardware.c</FilePath>
+            </File>
+            <File>
+              <FileName>led_id.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\framework\src\services\led_service\led_id.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -926,6 +951,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\utils\src\trace.c</FilePath>
             </File>
+            <File>
+              <FileName>dbg_trace.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\utils\src\dbg_trace.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -950,6 +980,13 @@
         </Group>
         <Group>
           <GroupName>products</GroupName>
+          <Files>
+            <File>
+              <FileName>ui_service.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\ui_service.c</FilePath>
+            </File>
+          </Files>
         </Group>
       </Groups>
     </Target>
